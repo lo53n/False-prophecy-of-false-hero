@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Map">
+      <UniqueIdentifier>{0764ff86-e192-4df4-b9a8-513d78bf93ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Map">
+      <UniqueIdentifier>{174e937a-073c-441b-8ffd-d21f8fa00eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Game">
+      <UniqueIdentifier>{02321e4d-4ecf-4076-8b5e-046896ee4c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{70da3cd8-ded0-45e5-9031-0cde210ff750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Map\BuilderPattern">
+      <UniqueIdentifier>{fe88b3db-4479-44c9-964a-839fe2e1c587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Map\BuilderPattern">
+      <UniqueIdentifier>{73fdefb4-d959-4bd0-8f32-3da1f87333c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{ebd8921f-0dc1-476d-9d77-bb664e65eb0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Player">
+      <UniqueIdentifier>{4e4593ab-4d0d-40e0-b526-fd0218064eb0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapBuilderPattern.cpp">
+      <Filter>Resource Files\Map\BuilderPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\LandBuilderPattern.cpp">
+      <Filter>Resource Files\Map\BuilderPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapLoader.cpp">
+      <Filter>Resource Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapsHolder.cpp">
+      <Filter>Resource Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Game.cpp">
+      <Filter>Resource Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Map.cpp">
+      <Filter>Resource Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\NormalBuilder.cpp">
+      <Filter>Resource Files\Map\BuilderPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>Resource Files\Player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Map\MapBuilderPattern.h">
+      <Filter>Header Files\Map\BuilderPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\LandBuilderPattern.h">
+      <Filter>Header Files\Map\BuilderPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapLoader.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapsHolder.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Map.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\NormalBuilder.h">
+      <Filter>Header Files\Map\BuilderPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
