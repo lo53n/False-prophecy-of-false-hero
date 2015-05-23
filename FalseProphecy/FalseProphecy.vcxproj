@@ -31,6 +31,9 @@
     <ClInclude Include="Map\NormalBuilder.h" />
     <ClInclude Include="Player\Player.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\changelog.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BD41A94C-FAC9-49DC-9D40-9167D3604BDE}</ProjectGuid>
     <RootNamespace>Project1</RootNamespace>

@@ -42,8 +42,8 @@ private:
 	/////////////////
 	//Magic Numbers//
 	/////////////////
-	const float __TILE_SIZE_X__ = 32.f; //Height of tile
-	const float __TILE_SIZE_Y__ = 32.f; //Width of tile
+	const float __TILE_SIZE_X__ = 32.0f; //Height of tile
+	const float __TILE_SIZE_Y__ = 32.0f; //Width of tile
 
 private:
 	void getMaxSizes();

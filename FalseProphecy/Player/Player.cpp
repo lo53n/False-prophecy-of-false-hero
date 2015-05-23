@@ -4,7 +4,7 @@ Player::Player()
 {
 	sf::RectangleShape player;
 	player.setSize(sf::Vector2f(__PLAYER_HEIGHT__, __PLAYER_WIDTH__));
-	player.setPosition(0.f, 0.f);
+	player.setPosition(0.0f, 0.0f);
 	player.setFillColor(sf::Color::Red);
 
 	_playerTexture.create(__PLAYER_WIDTH__, __PLAYER_HEIGHT__);
@@ -31,37 +31,56 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 ///////////
 //Getters//
 ///////////
-sf::Vector2f& Player::getPlayerPosition()
+sf::Vector2f& Player::getPlayerPositionOnMap()
 {
-	return _position;
+	return _positionOnMap;
 }
-sf::Vector2f& Player::getPlayerPositionOnGrid()
+sf::Vector2i& Player::getPlayerPositionOnGrid()
 {
 	return _positionOnGrid;
+}
+
+///////////
+//Setters//
+///////////
+void Player::setPlayerPositionOnMap(sf::Vector2f newPositionOnMap)
+{
+	_positionOnMap = newPositionOnMap;
+	_positionOnGrid = (sf::Vector2i)(_positionOnMap / __PLAYER_HEIGHT__);
+	_playerSprite.setPosition(_positionOnMap);
+}
+
+void Player::setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid)
+{
+	_positionOnGrid = newPositionOnGrid;
+	_positionOnMap = (sf::Vector2f)(_positionOnGrid * (int)__PLAYER_HEIGHT__);
+	_playerSprite.setPosition(_positionOnMap);
 }
 ///////////////////
 //Player movement//
 ///////////////////
 void Player::movePlayer(int direction)
 {
-	sf::Vector2f movement;
+	sf::Vector2i movement;
 
 	switch (direction){
 	case 0:
-		movement = sf::Vector2f(0, -1);
+		movement = sf::Vector2i(0, -1);
 		break;
 	case 1:
-		movement = sf::Vector2f(1, 0);
+		movement = sf::Vector2i(1, 0);
 		break;
 	case 2:
-		movement = sf::Vector2f(0, 1);
+		movement = sf::Vector2i(0, 1);
 		break;
 	case 3:
-		movement = sf::Vector2f(-1, 0);
+		movement = sf::Vector2i(-1, 0);
 		break;
 
 	}
 	_positionOnGrid += movement;
-	_position += movement * __PLAYER_HEIGHT__;
-	_playerSprite.setPosition(_position);
+	_positionOnMap += (sf::Vector2f)(movement * (int)__PLAYER_HEIGHT__);
+	_playerSprite.setPosition(_positionOnMap);
+	std::cout << "My position on grid: " << _positionOnGrid.x << " " << _positionOnGrid.y << std::endl;
+	std::cout << "My position on map: " << _positionOnMap.x << " " << _positionOnMap.y << std::endl;
 }

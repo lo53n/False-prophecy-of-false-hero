@@ -89,4 +89,7 @@
       <Filter>Header Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\changelog.txt" />
+  </ItemGroup>
 </Project>

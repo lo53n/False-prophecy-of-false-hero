@@ -28,22 +28,28 @@ public:
 	///////////
 	//Getters//
 	///////////
-	sf::Vector2f& getPlayerPosition();		//get player position on map
-	sf::Vector2f& getPlayerPositionOnGrid();//get player position in px
+	sf::Vector2f& getPlayerPositionOnMap();		//get player position on map
+	sf::Vector2i& getPlayerPositionOnGrid();//get player position in px
+
+	///////////
+	//Setters//
+	///////////
+	void setPlayerPositionOnMap(sf::Vector2f newPositionOnMap);		//set player position on map
+	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);	//set player position in px
 private:
 	sf::Sprite _playerSprite;
 	sf::RenderTexture _playerTexture;
 	
-	sf::Vector2f _position;			//Position on map
-	sf::Vector2f _positionOnGrid;	//Position in px
+	sf::Vector2f _positionOnMap;	//Position on map
+	sf::Vector2i _positionOnGrid;	//Position in px
 
 
 	/////////////////
 	//Magic numbers//
 	/////////////////
 
-	const float __PLAYER_HEIGHT__ = 32.f;
-	const float __PLAYER_WIDTH__ = 32.f;
+	const float __PLAYER_HEIGHT__ = 32.0f;
+	const float __PLAYER_WIDTH__ = 32.0f;
 
 
 

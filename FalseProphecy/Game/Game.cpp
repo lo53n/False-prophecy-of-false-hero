@@ -1,15 +1,12 @@
 #include "Game.h"
 
 Game::Game()
-	: _window(sf::VideoMode(800, 640), "SFML Application") 
-	, _shape()
-	, _gameView(sf::FloatRect(0.f, 0.f, 800.f, 640.f))
+	: _window(sf::VideoMode(800, 640), "SFML Application")
+	, _gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 640.0f))
 {
-	_shape.setFillColor(sf::Color::Green);
-	_shape.setRadius(40.f);
-	_shape.setPosition(100.f, 100.f);
+	_player.setPlayerPositionOnMap(sf::Vector2f(64.f, 64.f));
 
-	_gameView.setCenter(_player.getPlayerPosition());
+	_gameView.setCenter(_player.getPlayerPositionOnMap());
 	_window.setView(_gameView);
 }
 
@@ -85,7 +82,6 @@ void Game::update()
 void Game::draw()
 {
 	_window.clear();
-	_window.draw(_shape);
 	//for (int i = 0, len = _maps.size(); i < len; i++) _window.draw(*_maps[i]);
 	_window.draw(*_currentMap);
 	_window.draw(_player);
@@ -106,7 +102,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 		_newMap->drawMap();
 		_maps.push_back(_newMap);
-		_currentMap = _maps[_currentMapNumber];
+		_currentMap = _maps[_maps.size() - 1];
 	}
 	///////////////////////////////
 	//Process normal player input//
@@ -131,21 +127,62 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		else if (key == sf::Keyboard::Numpad9)
 			_gameView.move(__CAMERA_MOVE_LENGTH__, -__CAMERA_MOVE_LENGTH__); //right-up
 		else if (key == sf::Keyboard::Numpad5)
-			_gameView.setCenter(_player.getPlayerPosition()); //center
+			_gameView.setCenter(_player.getPlayerPositionOnMap()); //center
 		_window.setView(_gameView);
 	}
 	//Player Movement//
 	if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
-		if (key == sf::Keyboard::Up)
+		bool canMove = false;
+		sf::Vector2i checkForPosition;
+		switch (key){
+
+		case sf::Keyboard::Up:
+			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, 1);
+			if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
+				canMove = true;
+			else std::cout << "shit! " << checkForPosition.x << " " << checkForPosition.y << std::endl;
+			if (canMove)
+				_player.movePlayer(Player::UP);
+			break;
+
+		case sf::Keyboard::Right:
+			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(-1, 0);
+			if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
+				canMove = true;
+			else std::cout << "shit! " << checkForPosition.x << " " << checkForPosition.y << std::endl;
+			if (canMove) 
+				_player.movePlayer(Player::RIGHT);
+			break;
+
+		case sf::Keyboard::Down:
+			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, -1);
+			if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
+				canMove = true;
+			else std::cout << "shit! " << checkForPosition.x << " " << checkForPosition.y << std::endl;
+			if (canMove) 
+				_player.movePlayer(Player::DOWN);
+			break;
+
+		case sf::Keyboard::Left:
+			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(1, 0);
+			if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
+				canMove = true;
+			else std::cout << "shit! " << checkForPosition.x << " " << checkForPosition.y << std::endl;
+			if (canMove)
+				_player.movePlayer(Player::LEFT);
+		}
+
+		/*if (key == sf::Keyboard::Up)
 			_player.movePlayer(Player::UP);
 		else if (key == sf::Keyboard::Right)
 			_player.movePlayer(Player::RIGHT);
 		else if (key == sf::Keyboard::Down)
 			_player.movePlayer(Player::DOWN);
 		else if (key == sf::Keyboard::Left)
-			_player.movePlayer(Player::LEFT);
-		_gameView.setCenter(_player.getPlayerPosition());
+			_player.movePlayer(Player::LEFT);*/
+		_gameView.setCenter(_player.getPlayerPositionOnMap());
 		_window.setView(_gameView);
+		std::cout << _currentMap->getMap()[_player.getPlayerPositionOnGrid().y][_player.getPlayerPositionOnGrid().x] << std::endl;
 	}
 
 

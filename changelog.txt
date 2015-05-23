@@ -10,6 +10,8 @@ What is done?
 
 	- View is now glued to player, unless moved with Numpad.
 
+	- checking if there is wall, need to be improved.
+
 TODO?
 
 

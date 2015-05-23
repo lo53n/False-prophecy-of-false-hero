@@ -21,7 +21,6 @@ private:
 	//Game Window//
 	///////////////
 	sf::RenderWindow _window;
-	sf::CircleShape _shape;
 	sf::View _gameView;
 
 
@@ -45,12 +44,13 @@ private:
 	/////////////////
 	//Magic numbers//
 	/////////////////
-	const float __CAMERA_MOVE_LENGTH__ = 32.f;
+	const float __CAMERA_MOVE_LENGTH__ = 32.0f;
 
 private:
 	void processEvents();
 	void update();
 	void draw();
+
 
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
