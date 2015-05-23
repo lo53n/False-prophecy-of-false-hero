@@ -6,7 +6,8 @@ This is going to be 2D RPG dungeon crawler, which features high modability by ch
 
 Changelog? Yah, why not?
 
-[------------]
+------------
+
 2015-05-23
 What is done?
 	- some player stuff, mainly walking around.
@@ -14,7 +15,8 @@ What is done?
 TODO?
 	- some collision would be cool.
 	- some nice textures! yah, that would be nice to eyes.
-[------------]
+------------
+
 2015-05-22
 What is done?
 	- working view and resize.
@@ -24,12 +26,14 @@ TODO?
 	- move around as player
 	- maybe some collision stuff? why not.
 	- stick View to player and implement way to move around camera.
-[------------]
+------------
+
 2015-04-27
 What is done?
 	- nothing in particular, some changes in MapBuilder.
 	- completed map loading of different sizes.
-[------------]
+------------
+
 2015-04-26/27
 What is done?
 	- completed MapsHolder, which holds many map schemes
