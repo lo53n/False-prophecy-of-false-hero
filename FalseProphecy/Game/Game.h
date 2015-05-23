@@ -40,6 +40,11 @@ private:
 	////////////////////////
 	Player _player;
 
+	///////////////
+	//Some cheats//
+	///////////////
+	bool noClip = false;
+
 
 	/////////////////
 	//Magic numbers//
@@ -54,6 +59,9 @@ private:
 
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
+
+	//check, if player can move into specific place
+	bool checkMovement(int direction);
 
 };
 

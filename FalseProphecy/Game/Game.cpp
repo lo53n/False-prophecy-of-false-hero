@@ -17,7 +17,8 @@ Game::Game()
 void Game::run(){
 
 	MapLoader mapLoader;
-	mapLoader.loadFromFile();
+	mapLoader.loadFromFile(); //Load maps from file
+
 
 	_currentMapNumber = 0;
 	
@@ -30,7 +31,7 @@ void Game::run(){
 
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	const sf::Time timePerFrame = sf::seconds(1.0f/60.0f);
+	const sf::Time timePerFrame = sf::seconds(1.0f/60.0f); //set to 60fps
 
 	while (_window.isOpen()){
 		processEvents();
@@ -94,7 +95,7 @@ void Game::draw()
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	//Generate next map, not optimalized
+	//Generate next map, not optimalized//
 	if (key == sf::Keyboard::Return && isPressed){
 		std::cout << _currentMapNumber << " Another!" << std::endl;
 		_currentMapNumber++;
@@ -107,8 +108,20 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	///////////////////////////////
 	//Process normal player input//
 	///////////////////////////////
+	//
+	//TODO: move those cheats into some kind of debug mode maybe?
+	//
+	////////////////
+	//Some cheats!//
+	////////////////
+	//No clip - if true, collisions does not apply//
+	if (key == sf::Keyboard::Numpad0 && isPressed)
+		if (noClip) noClip = false;
+		else noClip = true;
 
+	////////////////
 	//Map Movement//
+	////////////////
 	if (key >= sf::Keyboard::Numpad1 && key <= sf::Keyboard::Numpad9 && isPressed){
 		if (key == sf::Keyboard::Numpad1)
 			_gameView.move(-__CAMERA_MOVE_LENGTH__, __CAMERA_MOVE_LENGTH__); //left-down
@@ -128,63 +141,85 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 			_gameView.move(__CAMERA_MOVE_LENGTH__, -__CAMERA_MOVE_LENGTH__); //right-up
 		else if (key == sf::Keyboard::Numpad5)
 			_gameView.setCenter(_player.getPlayerPositionOnMap()); //center
-		_window.setView(_gameView);
-	}
-	//Player Movement//
-	if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
-		bool canMove = false;
-		sf::Vector2i checkForPosition;
-		switch (key){
 
+		_window.setView(_gameView); //refresh view
+	}
+	///////////////////
+	//Player Movement//
+	///////////////////
+	if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
+		bool canMove = false; //for collision
+		sf::Vector2i checkForPosition;
+		if (!noClip) //No Clip cheat!//
+		switch (key){
+			//Move one step up//
 		case sf::Keyboard::Up:
-			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, 1);
-			if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
-				canMove = true;
-			else std::cout << "shit! " << checkForPosition.x << " " << checkForPosition.y << std::endl;
-			if (canMove)
+			if (checkMovement(Player::UP))
 				_player.movePlayer(Player::UP);
 			break;
 
+			//Move one step right//
 		case sf::Keyboard::Right:
-			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(-1, 0);
-			if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
-				canMove = true;
-			else std::cout << "shit! " << checkForPosition.x << " " << checkForPosition.y << std::endl;
-			if (canMove) 
+			if (checkMovement(Player::RIGHT))
 				_player.movePlayer(Player::RIGHT);
 			break;
 
+			//Move one step down//
 		case sf::Keyboard::Down:
-			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, -1);
-			if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
-				canMove = true;
-			else std::cout << "shit! " << checkForPosition.x << " " << checkForPosition.y << std::endl;
-			if (canMove) 
+			if (checkMovement(Player::DOWN))
 				_player.movePlayer(Player::DOWN);
 			break;
 
+			//Move one step left//
 		case sf::Keyboard::Left:
-			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(1, 0);
-			if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
-				canMove = true;
-			else std::cout << "shit! " << checkForPosition.x << " " << checkForPosition.y << std::endl;
-			if (canMove)
+			if (checkMovement(Player::LEFT))
 				_player.movePlayer(Player::LEFT);
 		}
 
-		/*if (key == sf::Keyboard::Up)
-			_player.movePlayer(Player::UP);
-		else if (key == sf::Keyboard::Right)
-			_player.movePlayer(Player::RIGHT);
-		else if (key == sf::Keyboard::Down)
-			_player.movePlayer(Player::DOWN);
-		else if (key == sf::Keyboard::Left)
-			_player.movePlayer(Player::LEFT);*/
-		_gameView.setCenter(_player.getPlayerPositionOnMap());
-		_window.setView(_gameView);
-		std::cout << _currentMap->getMap()[_player.getPlayerPositionOnGrid().y][_player.getPlayerPositionOnGrid().x] << std::endl;
+		if (noClip)//No Clip cheat!//
+			if (key == sf::Keyboard::Up)
+				_player.movePlayer(Player::UP);
+			else if (key == sf::Keyboard::Right)
+				_player.movePlayer(Player::RIGHT);
+			else if (key == sf::Keyboard::Down)
+				_player.movePlayer(Player::DOWN);
+			else if (key == sf::Keyboard::Left)
+				_player.movePlayer(Player::LEFT);
+
+
+		_gameView.setCenter(_player.getPlayerPositionOnMap()); //center view on player
+		_window.setView(_gameView); //refresh the view
 	}
 
 
 	//TODO: Debug Menu
+}
+
+
+
+bool Game::checkMovement(int direction)
+{
+	bool canMove = false;
+	sf::Vector2i checkForPosition;
+	switch (direction){
+		//We must give opposite vectors to achieve our goal of checking desired tile
+	case 0: //UP
+		checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, 1);
+		break;
+	case 1: //RIGHT
+		checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(-1, 0);
+		break;
+	case 2: //DOWN
+		checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, -1);
+		break;
+	case 3: //LEFT
+		checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(1, 0);
+		break;
+	}
+	//We check now tiles
+	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
+		return true;
+
+	//if we get here, that mean there was any obstacle
+	return false;
 }
