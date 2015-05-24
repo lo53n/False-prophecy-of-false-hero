@@ -1,5 +1,27 @@
 [-----]
 
+2015-05-24
+
+
+What is done?
+
+
+	- again, some movement stuff. Now correctly stops at Exit tiles and doesn't wander off the map. Unless NoClip is enabled.
+
+	- Maps now can come in irregular shape of right and bottom wall.
+
+	- shuffled around code to tidy things up.
+
+TODO?
+
+
+	- again, some collision would be cool. Not anything much yet...
+
+	- and again, some nice textures, for Christ's sake. Not everything, but something like wall and floor texture would be REALLY nice, you lazy f*ck.
+
+
+[-----]
+
 2015-05-23
 
 

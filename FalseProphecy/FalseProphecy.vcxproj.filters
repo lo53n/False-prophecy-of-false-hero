@@ -91,5 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
+    <Text Include="data\map.txt" />
   </ItemGroup>
 </Project>

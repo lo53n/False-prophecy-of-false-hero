@@ -9,7 +9,8 @@ Map::Map()
 
 Map::Map(std::vector<std::vector<char>> mapTemplate) : _mapTemplate(mapTemplate)
 {
-	_mapTexture.create((unsigned int)(__TILE_SIZE_X__ * _mapTemplate[0].size()), (unsigned int)(__TILE_SIZE_Y__ * _mapTemplate.size()));
+	checkMaxSizes();
+	_mapTexture.create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
 	_mapTexture.clear();
 }
 Map::~Map()
@@ -23,6 +24,19 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(_mapSprite);
 
 }
+
+///////////////////////////
+//Check Map Max Dimension//
+///////////////////////////
+
+void Map::checkMaxSizes()
+{
+	_maxDimensionY = _mapTemplate.size();
+	_maxDimensionX = 0;
+	for (int i = 0; i < _maxDimensionY; i++){
+		if (_mapTemplate[i].size() > _maxDimensionX) _maxDimensionX = _mapTemplate[i].size();
+	}
+	}
 
 ///////////
 //Setters//

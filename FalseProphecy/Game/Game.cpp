@@ -95,15 +95,9 @@ void Game::draw()
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	//Generate next map, not optimalized//
+	//Show next map//
 	if (key == sf::Keyboard::Return && isPressed){
-		std::cout << _currentMapNumber << " Another!" << std::endl;
-		_currentMapNumber++;
-		if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
-		_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
-		_newMap->drawMap();
-		_maps.push_back(_newMap);
-		_currentMap = _maps[_maps.size() - 1];
+		generateNewMap();
 	}
 	///////////////////////////////
 	//Process normal player input//
@@ -201,20 +195,37 @@ bool Game::checkMovement(int direction)
 {
 	bool canMove = false;
 	sf::Vector2i checkForPosition;
-	switch (direction){
-		//We must give opposite vectors to achieve our goal of checking desired tile
-	case 0: //UP
-		checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, 1);
-		break;
-	case 1: //RIGHT
-		checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(-1, 0);
-		break;
-	case 2: //DOWN
-		checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, -1);
-		break;
-	case 3: //LEFT
-		checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(1, 0);
-		break;
+	try{
+		switch (direction){
+			//We must give opposite vectors to achieve our goal of checking desired tile
+		case 0: //UP
+			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, 1);
+			break;
+		case 1: //RIGHT
+			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(-1, 0);
+			break;
+		case 2: //DOWN
+			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, -1);
+			break;
+		case 3: //LEFT
+			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(1, 0);
+			break;
+		}
+		//Check if you don't go out-of-bound. If this is the case, it can be the exit
+		if (
+			checkForPosition.x < 0 
+			|| checkForPosition.y < 0
+			|| (unsigned)(checkForPosition.y) >= _currentMap->getMap().size()
+			|| (unsigned)(checkForPosition.x) >= _currentMap->getMap()[checkForPosition.y].size()
+			|| _currentMap->getMap()[checkForPosition.y][checkForPosition.x] == ' '
+			)
+
+			throw _currentMap->getMap()[_player.getPlayerPositionOnGrid().y][_player.getPlayerPositionOnGrid().x];
+	}
+	catch(char currentTile){
+		if ( currentTile == 'E')
+			std::cout << "Wyjœcie" << std::endl;
+		return false;
 	}
 	//We check now tiles
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
@@ -222,4 +233,23 @@ bool Game::checkMovement(int direction)
 
 	//if we get here, that mean there was any obstacle
 	return false;
+}
+
+
+/////////////
+//Map Stuff//
+/////////////
+
+//Generate next map//
+//TODO:
+//could use some checking if map exist when coming back. Also, some optimalization?//
+void Game::generateNewMap()
+{
+	std::cout << _currentMapNumber << " Another!" << std::endl;
+	_currentMapNumber++;
+	if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
+	_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
+	_newMap->drawMap();
+	_maps.push_back(_newMap);
+	_currentMap = _maps[_maps.size() - 1];
 }

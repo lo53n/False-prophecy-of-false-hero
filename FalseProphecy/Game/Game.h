@@ -35,6 +35,8 @@ private:
 
 	int _currentMapNumber;
 
+	void generateNewMap();
+
 	////////////////////////
 	//Player related stuff//
 	////////////////////////

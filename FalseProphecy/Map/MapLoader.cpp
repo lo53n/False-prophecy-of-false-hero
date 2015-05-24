@@ -16,7 +16,7 @@ void MapLoader::loadFromFile()
 
 	std::fstream mapFile;
 
-	mapFile.open("map.txt");
+	mapFile.open("data/map.txt");
 	if (!mapFile.good()) return;
 
 	std::string stringLine;

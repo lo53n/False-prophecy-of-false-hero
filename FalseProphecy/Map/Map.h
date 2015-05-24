@@ -31,12 +31,16 @@ public:
 
 
 private:
-	std::vector<std::vector<char>> _mapTemplate; //Representation of 2D map
+	std::vector<std::vector<char>> _mapTemplate; //Representation of 2D map, it ended with _mapTemplate[y_dimension][x_dimension]
 
 	sf::RenderTexture _mapTexture;
 	sf::Sprite _mapSprite;
 
-
+	//////////////////
+	//Map Dimensions//
+	//////////////////
+	int _maxDimensionX;
+	int _maxDimensionY;
 
 
 	/////////////////
@@ -46,7 +50,7 @@ private:
 	const float __TILE_SIZE_Y__ = 32.0f; //Width of tile
 
 private:
-	void getMaxSizes();
+	void checkMaxSizes();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
