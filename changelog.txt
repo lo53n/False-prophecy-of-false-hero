@@ -3,7 +3,7 @@
 2015-05-24
 
 
-What is done?
+What is done? 
 
 
 	- again, some movement stuff. Now correctly stops at Exit tiles and doesn't wander off the map. Unless NoClip is enabled.
