@@ -4,7 +4,7 @@ Game::Game()
 	: _window(sf::VideoMode(800, 640), "SFML Application")
 	, _gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 640.0f))
 {
-	_player.setPlayerPositionOnMap(sf::Vector2f(64.f, 64.f));
+	_player.setPlayerPositionOnGrid(sf::Vector2i(5, 5));
 
 	_gameView.setCenter(_player.getPlayerPositionOnMap());
 	_window.setView(_gameView);
@@ -223,8 +223,11 @@ bool Game::checkMovement(int direction)
 			throw _currentMap->getMap()[_player.getPlayerPositionOnGrid().y][_player.getPlayerPositionOnGrid().x];
 	}
 	catch(char currentTile){
-		if ( currentTile == 'E')
-			std::cout << "Wyjœcie" << std::endl;
+		if (currentTile == 'E'){
+			//std::cout << "Wyjœcie" << std::endl;
+			generateNewMap();
+			_player.setPlayerPositionOnGrid(sf::Vector2i(3, 2));
+		}
 		return false;
 	}
 	//We check now tiles
@@ -245,11 +248,11 @@ bool Game::checkMovement(int direction)
 //could use some checking if map exist when coming back. Also, some optimalization?//
 void Game::generateNewMap()
 {
-	std::cout << _currentMapNumber << " Another!" << std::endl;
 	_currentMapNumber++;
 	if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
 	_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 	_newMap->drawMap();
 	_maps.push_back(_newMap);
 	_currentMap = _maps[_maps.size() - 1];
+	std::cout << _currentMapNumber << " Another! " << _maps.size() << std::endl;
 }

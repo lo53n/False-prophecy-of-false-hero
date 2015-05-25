@@ -7,7 +7,7 @@ Player::Player()
 	player.setPosition(0.0f, 0.0f);
 	player.setFillColor(sf::Color::Red);
 
-	_playerTexture.create(__PLAYER_WIDTH__, __PLAYER_HEIGHT__);
+	_playerTexture.create((unsigned int)__PLAYER_WIDTH__, (unsigned int)__PLAYER_HEIGHT__);
 	_playerTexture.clear();
 	_playerTexture.draw(player);
 	_playerTexture.display();

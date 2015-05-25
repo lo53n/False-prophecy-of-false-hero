@@ -34,14 +34,14 @@ public:
 	///////////
 	//Setters//
 	///////////
-	void setPlayerPositionOnMap(sf::Vector2f newPositionOnMap);		//set player position on map
-	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);	//set player position in px
+	void setPlayerPositionOnMap(sf::Vector2f newPositionOnMap);		//set player position in px
+	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);	//set player position on map
 private:
 	sf::Sprite _playerSprite;
 	sf::RenderTexture _playerTexture;
 	
-	sf::Vector2f _positionOnMap;	//Position on map
-	sf::Vector2i _positionOnGrid;	//Position in px
+	sf::Vector2f _positionOnMap;	//Position in px
+	sf::Vector2i _positionOnGrid;	//Position on map
 
 
 	/////////////////

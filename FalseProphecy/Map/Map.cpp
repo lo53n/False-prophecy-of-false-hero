@@ -2,8 +2,8 @@
 
 Map::Map()
 {
-	_mapTexture.create(800, 600);
-	_mapTexture.clear();
+	//_mapTexture.create(800, 600);
+	//_mapTexture.clear();
 
 }
 
@@ -34,7 +34,7 @@ void Map::checkMaxSizes()
 	_maxDimensionY = _mapTemplate.size();
 	_maxDimensionX = 0;
 	for (int i = 0; i < _maxDimensionY; i++){
-		if (_mapTemplate[i].size() > _maxDimensionX) _maxDimensionX = _mapTemplate[i].size();
+		if (_mapTemplate[i].size() > (unsigned)_maxDimensionX) _maxDimensionX = _mapTemplate[i].size();
 	}
 	}
 
@@ -75,53 +75,60 @@ void Map::drawMap()
 
 			case 'x': drawWall(i, j);		break;
 			case 'E': drawEntry(i, j);		break;
-			case '.': drawStuff1(i, j);		break;
+			case '.': drawFloor(i, j);		break;
 
-			default: drawFloor(i, j);
+			default: drawEmpty(i, j);
 			}
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 	setMapLayer();
 }
+////////////////////
+//Draw map texture//
+////////////////////
 
+//Wall//
 void Map::drawWall(int y, int x)
 {
 	sf::RectangleShape tile;
-	std::cout << "1";
+	//std::cout << "1";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	tile.setFillColor(sf::Color::Blue);
 	_mapTexture.draw(tile);
 }
 
+//Floor//
 void Map::drawFloor(int y, int x)
 {
 	sf::RectangleShape tile;
-	std::cout << "0";
-	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
-	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
-	tile.setFillColor(sf::Color::Green);
-	_mapTexture.draw(tile);
-}
-
-void Map::drawStuff1(int y, int x)
-{
-	sf::RectangleShape tile;
-	std::cout << "2";
+	//std::cout << "0";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	tile.setFillColor(sf::Color::Yellow);
 	_mapTexture.draw(tile);
 }
 
+//Entry/Exit. In short: doorway! Or long, lol.//
 void Map::drawEntry(int y, int x)
 {
 	sf::RectangleShape tile;
-	std::cout << "E";
+	//std::cout << "E";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	tile.setFillColor(sf::Color::Color(122,100,23,255));
+	_mapTexture.draw(tile);
+}
+
+//Empty space//
+void Map::drawEmpty(int y, int x)
+{
+	sf::RectangleShape tile;
+	//std::cout << "2";
+	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
+	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
+	tile.setFillColor(sf::Color::Transparent);
 	_mapTexture.draw(tile);
 }
 

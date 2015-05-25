@@ -23,9 +23,12 @@ public:
 	void drawMap();
 	void drawWall(int y, int x);
 	void drawFloor(int y, int x);
-	void drawStuff1(int y, int x);
 	void drawEntry(int y, int x);
 
+	void drawEmpty(int y, int x);
+
+
+	//Debug?//
 	void printConsoleMap();
 
 

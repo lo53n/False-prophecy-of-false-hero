@@ -1,5 +1,26 @@
 [-----]
 
+2015-05-25
+
+What is done?
+
+
+	- not much again. Progressing to next map is done, need optimalization. 
+
+	- Maps can have irregular shapes. Kinda cool it was done previously, just didn't noticed it.
+
+	- one cool map design.
+
+	- run some tests for map size. It appears it can be build to max size of 512x512 tiles, each 32x32px. And I can go for more, but is it nessessary?
+
+TODO?
+
+	- map optimalization. 
+
+	- fast reload of resources
+
+[-----]
+
 2015-05-24
 
 
@@ -18,7 +39,7 @@ TODO?
 
 	- also new enemies would be fine
 
-	- again, some collision would be cool. Not anything much yet...
+	- again, some collision would be cool. But not much yet to collide with...
 
 	- and again, some nice textures, for Christ's sake. Not everything, but something like wall and floor texture would be REALLY nice, you lazy f*ck.
 
