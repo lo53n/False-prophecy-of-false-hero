@@ -1,5 +1,23 @@
 [-----]
 
+2015-05-26
+
+What is done?
+
+
+	- changing some pointers to smart pointers, specifically map ones
+
+	- preparation to traversing from one map to another and backwards (if they exist and are linked together)
+
+	
+TODO?
+
+	- make map traversing
+
+	- think of some map memory optimalization: maybe relaying more on processing than memory would be cool
+
+[-----]
+
 2015-05-25
 
 What is done?

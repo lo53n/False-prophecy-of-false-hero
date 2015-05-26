@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <memory>
 
 #include <SFML\Graphics.hpp>
 
@@ -12,14 +13,33 @@ class Map : public sf::Drawable{
 
 public:
 	Map();
-	Map(std::vector<std::vector<char>> mapTemplate);
+	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID);
 	~Map();
 
-	void setMap(std::vector<std::vector<char>> mapTemplate);
-	void setMapLayer();
 
+
+	///////////
+	//Getters//
+	///////////
+
+	unsigned int getMapId();
 	std::vector<std::vector<char>>& getMap();
 
+	///////////
+	//Setters//
+	///////////
+
+	void setMap(std::vector<std::vector<char>> mapTemplate);
+
+
+	/////////////////////
+	//Map drawing stuff//
+	/////////////////////
+
+	//clear whole map to release a lot of memory//
+	void clearMap();
+
+	//and now to building texture tile by tile//
 	void drawMap();
 	void drawWall(int y, int x);
 	void drawFloor(int y, int x);
@@ -27,9 +47,19 @@ public:
 
 	void drawEmpty(int y, int x);
 
+	void setMapLayer();
+
+	//////////////////
+	//Map traversing//
+	//////////////////
+	//clock-wise//
+	enum MAPEXIT{ NORTH, EAST, SOUTH, WEST };
+
+	void setMapExitPoint(int exitDirection, std::shared_ptr<Map> previousMap);
 
 	//Debug?//
 	void printConsoleMap();
+
 
 
 
@@ -39,11 +69,22 @@ private:
 	sf::RenderTexture _mapTexture;
 	sf::Sprite _mapSprite;
 
+	unsigned int _mapIdentifier; //Map identifying number
+
 	//////////////////
 	//Map Dimensions//
 	//////////////////
 	int _maxDimensionX;
 	int _maxDimensionY;
+
+	//////////////////
+	//Map traversing//
+	//////////////////
+	//clock-wise//
+	std::shared_ptr<Map> _northExit;
+	std::shared_ptr<Map> _eastExit;
+	std::shared_ptr<Map> _southExit;
+	std::shared_ptr<Map> _westExit;
 
 
 	/////////////////

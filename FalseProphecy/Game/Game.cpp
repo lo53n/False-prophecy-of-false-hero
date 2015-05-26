@@ -23,11 +23,13 @@ void Game::run(){
 	_currentMapNumber = 0;
 	
 
-	_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
+	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 
-	_newMap->drawMap();
-	_maps.push_back(_newMap);
-	_currentMap = _maps[0];
+	//_newMap->drawMap();
+	//_maps.push_back(_newMap);
+	//_currentMap = _maps[0];
+
+	generateNewMap();
 
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
@@ -180,7 +182,6 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 			else if (key == sf::Keyboard::Left)
 				_player.movePlayer(Player::LEFT);
 
-
 		_gameView.setCenter(_player.getPlayerPositionOnMap()); //center view on player
 		_window.setView(_gameView); //refresh the view
 	}
@@ -248,11 +249,20 @@ bool Game::checkMovement(int direction)
 //could use some checking if map exist when coming back. Also, some optimalization?//
 void Game::generateNewMap()
 {
-	_currentMapNumber++;
-	if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
-	_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
+	unsigned int mapID = _maps.size();
+	if(_maps.size() > 0) _currentMap->clearMap();
+	_currentMapNumber = rand()%_mapsHolder->getMapCount();
+	//if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
+	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
+	_newMap = createMapSharedPointer(mapID);
 	_newMap->drawMap();
 	_maps.push_back(_newMap);
 	_currentMap = _maps[_maps.size() - 1];
-	std::cout << _currentMapNumber << " Another! " << _maps.size() << std::endl;
+	std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
+}
+
+std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
+{
+	std::shared_ptr<Map> ptr(std::make_shared<Map>(_mapsHolder->getMapFromHolder(_currentMapNumber), mapID));
+	return ptr;
 }

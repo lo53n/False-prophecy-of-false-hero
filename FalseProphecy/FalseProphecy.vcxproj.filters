@@ -15,9 +15,6 @@
     <Filter Include="Resource Files\Map">
       <UniqueIdentifier>{174e937a-073c-441b-8ffd-d21f8fa00eb0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Game">
-      <UniqueIdentifier>{02321e4d-4ecf-4076-8b5e-046896ee4c53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Game">
       <UniqueIdentifier>{70da3cd8-ded0-45e5-9031-0cde210ff750}</UniqueIdentifier>
     </Filter>
@@ -32,6 +29,12 @@
     </Filter>
     <Filter Include="Resource Files\Player">
       <UniqueIdentifier>{4e4593ab-4d0d-40e0-b526-fd0218064eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Game">
+      <UniqueIdentifier>{02321e4d-4ecf-4076-8b5e-046896ee4c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\----Data----">
+      <UniqueIdentifier>{5bebaf90-9a09-4132-a7d4-84b275fa4d6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +94,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
-    <Text Include="data\map.txt" />
+    <Text Include="data\map.txt">
+      <Filter>Resource Files\----Data----</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Z:\False-prophecy-of-false-hero\README.md" />
   </ItemGroup>
 </Project>

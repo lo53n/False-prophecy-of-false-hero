@@ -27,11 +27,16 @@ private:
 	//////////////////////
 	//Maps related stuff//
 	//////////////////////
-	std::vector<Map*> _maps;
+	//std::vector<Map*> _maps;
+	std::vector<std::shared_ptr<Map>> _maps;
 
 	MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
-	Map *_newMap;
-	Map *_currentMap;
+	//Map *_newMap;
+	//Map *_currentMap;
+
+	std::shared_ptr<Map> _newMap;
+	std::shared_ptr<Map> _currentMap;
+
 
 	int _currentMapNumber;
 
@@ -65,6 +70,12 @@ private:
 	//check, if player can move into specific place
 	bool checkMovement(int direction);
 
+
+	/////////////
+	//Map stuff//
+	/////////////
+	//Shared pointers stuff, it's really hard to think of something better...//
+	std::shared_ptr<Map> createMapSharedPointer(unsigned int mapID); //In reality creates new map object and shared pointer to it.//
 };
 
 

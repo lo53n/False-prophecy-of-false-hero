@@ -13,10 +13,6 @@ MapsHolder::MapsHolder()
 
 
 
-std::vector<std::vector<char>> MapsHolder::getMapFromHolder(int mapIndex)
-{
-	return _maps[mapIndex];
-}
 
 
 void MapsHolder::addToContainter(std::vector<std::vector<char>> map)
@@ -44,4 +40,9 @@ void MapsHolder::showMaps()
 int MapsHolder::getMapCount()
 {
 	return _maps.size();
+}
+
+std::vector<std::vector<char>> MapsHolder::getMapFromHolder(int mapIndex)
+{
+	return _maps[mapIndex];
 }

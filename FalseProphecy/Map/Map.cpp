@@ -7,7 +7,7 @@ Map::Map()
 
 }
 
-Map::Map(std::vector<std::vector<char>> mapTemplate) : _mapTemplate(mapTemplate)
+Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID) : _mapTemplate(mapTemplate), _mapIdentifier(mapID)
 {
 	checkMaxSizes();
 	_mapTexture.create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
@@ -15,7 +15,7 @@ Map::Map(std::vector<std::vector<char>> mapTemplate) : _mapTemplate(mapTemplate)
 }
 Map::~Map()
 {
-
+	std::cout << this << std::endl;
 }
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -36,7 +36,7 @@ void Map::checkMaxSizes()
 	for (int i = 0; i < _maxDimensionY; i++){
 		if (_mapTemplate[i].size() > (unsigned)_maxDimensionX) _maxDimensionX = _mapTemplate[i].size();
 	}
-	}
+}
 
 ///////////
 //Setters//
@@ -56,9 +56,20 @@ std::vector<std::vector<char>>& Map::getMap()
 	return _mapTemplate;
 }
 
+unsigned int Map::getMapId()
+{
+	return _mapIdentifier;
+}
+
 ///////////////
 //Map drawing//
 ///////////////
+
+void Map::clearMap()
+{
+	_mapTexture.clear();
+
+}
 
 void Map::setMapLayer()
 {
@@ -139,5 +150,27 @@ void Map::printConsoleMap()
 			std::cout << _mapTemplate[k][j];
 		}
 		std::cout << std::endl;
+	}
+}
+
+//////////////////
+//Map traversing//
+//////////////////
+
+void Map::setMapExitPoint(int mapDirection, std::shared_ptr<Map> previousMap)
+{
+	switch (mapDirection){
+	case 0:
+		_northExit = previousMap;
+		break;
+	case 1:
+		_eastExit = previousMap;
+		break;
+	case 2:
+		_southExit = previousMap;
+		break;
+	case 3:
+		_westExit = previousMap;
+		break;
 	}
 }
