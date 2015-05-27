@@ -83,11 +83,20 @@ void Map::drawMap()
 	for (int i = 0, len = _mapTemplate.size(); i < len; i++){
 		for (int j = 0, len1 = _mapTemplate[i].size(); j < len1; j++){
 			switch (_mapTemplate[i][j]){
+			//Entrances. Clockwise, where 0 is north and 3 is west//
+			case '0':
+			case '1':
+			case '2':
+			case '3': drawEntry(i, j);		break;
 
+			//Walls, as in name.//
 			case 'x': drawWall(i, j);		break;
-			case 'E': drawEntry(i, j);		break;
+
+			//Floor, as in name.//
 			case '.': drawFloor(i, j);		break;
 
+			//Whatever happened, will be fully transparent. Unexpected tiles and spacebars will be treated as those.
+			//Note that spacebar will be treated as obstacle.
 			default: drawEmpty(i, j);
 			}
 		}
@@ -173,4 +182,45 @@ void Map::setMapExitPoint(int mapDirection, std::shared_ptr<Map> previousMap)
 		_westExit = previousMap;
 		break;
 	}
+}
+
+bool Map::checkMapExitPoint(int exit)
+{
+	switch (exit){
+	case 0:
+		if(_northExit == nullptr) return true;
+		else false;
+		break;
+	case 1:
+		if (_eastExit == nullptr) return true;
+		else false;
+		break;
+	case 2:
+		if (_southExit == nullptr) return true;
+		else false;
+		break;
+	case 3:
+		if (_westExit == nullptr) return true;
+		else false;
+		break;
+	}
+}
+
+std::shared_ptr<Map> Map::moveToMap(int exitTile)
+{
+	switch (exitTile){
+	case 0:
+		return _northExit;
+		break;
+	case 1:
+		return _eastExit;
+		break;
+	case 2:
+		return _southExit;
+		break;
+	case 3:
+		return _westExit;
+		break;
+	}
+
 }

@@ -41,6 +41,14 @@ private:
 	int _currentMapNumber;
 
 	void generateNewMap();
+	void generateNewMap(int exitTile);
+
+	//////////////////
+	//Map traversing//
+	//////////////////
+
+	void moveToMap(int exitTile);
+
 
 	////////////////////////
 	//Player related stuff//

@@ -224,9 +224,24 @@ bool Game::checkMovement(int direction)
 			throw _currentMap->getMap()[_player.getPlayerPositionOnGrid().y][_player.getPlayerPositionOnGrid().x];
 	}
 	catch(char currentTile){
-		if (currentTile == 'E'){
-			//std::cout << "Wyjœcie" << std::endl;
-			generateNewMap();
+		//This one is for map traversing//
+		if (currentTile == '0' || currentTile == '1' || currentTile == '2' || currentTile == '3'){
+			std::cout << "Wyjœcie" << std::endl;
+			int exitTile;
+			//Set for easier map traversing//
+			switch (currentTile){
+			case '0': exitTile = 0; break;
+			case '1': exitTile = 1; break;
+			case '2': exitTile = 2; break;
+			case '3': exitTile = 3; break;
+			}
+
+			if (_currentMap->checkMapExitPoint(exitTile)){
+				generateNewMap(exitTile);
+
+				bool tits;
+			}
+			else moveToMap(exitTile);
 			_player.setPlayerPositionOnGrid(sf::Vector2i(3, 2));
 		}
 		return false;
@@ -237,6 +252,18 @@ bool Game::checkMovement(int direction)
 
 	//if we get here, that mean there was any obstacle
 	return false;
+}
+
+
+//////////////////
+//Map traversing//
+//////////////////
+
+void Game::moveToMap(int exitTile){
+	
+	std::shared_ptr<Map> ptr(_currentMap->moveToMap(exitTile));
+	_currentMap = ptr;
+	_currentMap->drawMap();
 }
 
 
@@ -260,6 +287,27 @@ void Game::generateNewMap()
 	_currentMap = _maps[_maps.size() - 1];
 	std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
 }
+
+void Game::generateNewMap(int exitTile)
+{
+	unsigned int mapID = _maps.size();
+	if (_maps.size() > 0) _currentMap->clearMap();
+	_currentMapNumber = rand() % _mapsHolder->getMapCount();
+
+	_newMap = createMapSharedPointer(mapID);
+	_newMap->drawMap();
+	_maps.push_back(_newMap);
+
+	std::shared_ptr<Map> transferCurrentMap = _currentMap;
+	std::shared_ptr<Map> transferNextMap = _maps[_maps.size() - 1];
+
+	_currentMap->setMapExitPoint(exitTile, transferNextMap);
+	transferNextMap->setMapExitPoint((exitTile - 2) % 4, transferCurrentMap);
+
+	_currentMap = _maps[_maps.size() - 1];
+	std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
+}
+
 
 std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
 {

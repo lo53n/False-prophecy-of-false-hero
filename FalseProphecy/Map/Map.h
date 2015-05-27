@@ -52,10 +52,14 @@ public:
 	//////////////////
 	//Map traversing//
 	//////////////////
-	//clock-wise//
+	//clock-wise, where NORHT is 0//
 	enum MAPEXIT{ NORTH, EAST, SOUTH, WEST };
 
 	void setMapExitPoint(int exitDirection, std::shared_ptr<Map> previousMap);
+	std::shared_ptr<Map> moveToMap(int exitTile);
+
+	//true means there is no pairing//
+	bool checkMapExitPoint(int exit);
 
 	//Debug?//
 	void printConsoleMap();

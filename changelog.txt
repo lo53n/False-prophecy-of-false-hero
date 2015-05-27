@@ -1,5 +1,21 @@
 [-----]
 
+2015-05-27
+
+What is done?
+
+
+	- map traversing, but I feel it's not really complete
+
+	- some minor changes within maps parsing
+
+
+TODO?
+
+	- more work on map traversing. I want to tidy this up (especially spawn player at specific entrance spot).
+
+[-----]
+
 2015-05-26
 
 What is done?
