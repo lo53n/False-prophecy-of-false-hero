@@ -1,4 +1,6 @@
 #include <iostream>
+#include <unordered_map>
+#include <ctime>
 
 #include "Game/Game.h"
 #include "Map\MapBuilderPattern.h"
@@ -6,10 +8,17 @@
 
 int main()
 {
-
+	srand((unsigned int)time(0));
 	Game game;
 	game.run();
-	
+
+	std::unordered_map<int, int> map;
+	map[1] = 99999;
+	if (map[9] == NULL)
+		std::cout << map[1] << std::endl;
+	for (auto kv : map) {
+		std::cout << kv.first << " "<< kv.second << std::endl;
+	}
 
 
 	/*MapsHolder *mapsHolder_ = &MapsHolder::getMapsHolder();

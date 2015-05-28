@@ -9,7 +9,8 @@ Map::Map()
 
 Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID) : _mapTemplate(mapTemplate), _mapIdentifier(mapID)
 {
-	checkMaxSizes();
+	checkMaxSizes(); 
+	findAllExitPoints();
 	_mapTexture.create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
 	_mapTexture.clear();
 }
@@ -61,6 +62,18 @@ unsigned int Map::getMapId()
 	return _mapIdentifier;
 }
 
+sf::Vector2i Map::getNewPosition(unsigned int previousMapID)
+{
+	for (auto keyValue : _mapExits){
+		if (keyValue.second->getMapId() == previousMapID)
+			return keyValue.first;
+	}
+}
+std::unordered_map<sf::Vector2i, std::shared_ptr<Map>>& Map::getMapExitPoints()
+{
+	return _mapExits;
+}
+
 ///////////////
 //Map drawing//
 ///////////////
@@ -84,10 +97,7 @@ void Map::drawMap()
 		for (int j = 0, len1 = _mapTemplate[i].size(); j < len1; j++){
 			switch (_mapTemplate[i][j]){
 			//Entrances. Clockwise, where 0 is north and 3 is west//
-			case '0':
-			case '1':
-			case '2':
-			case '3': drawEntry(i, j);		break;
+			case 'E': drawEntry(i, j);		break;
 
 			//Walls, as in name.//
 			case 'x': drawWall(i, j);		break;
@@ -166,6 +176,45 @@ void Map::printConsoleMap()
 //Map traversing//
 //////////////////
 
+void Map::findAllExitPoints()
+{
+	for (int i = 0, len = _mapTemplate.size(); i < len; i++)
+	{
+		for (int j = 0, len2 = _mapTemplate[i].size(); j < len2; j++)
+		{
+			if (_mapTemplate[i][j] == 'E'){
+				sf::Vector2i exitPoint(i, j);
+				_exitPoints.push_back(exitPoint);
+				_notPairedExitPoints.push_back(exitPoint);
+			}
+		}
+	}
+	for (int i = 0, len = _exitPoints.size(); i < len; i++){
+		std::cout << "Exit point found at: (y, x): "<<_exitPoints[i].x << " " << _exitPoints[i].y << std::endl;
+	}
+}
+
+void Map::pairMapAndExitPoint(std::shared_ptr<Map> previousMap)
+{
+	int number = rand() % _notPairedExitPoints.size();
+	//sf::Vector2f* ptr = _notPairedExitPoints[number];
+	//_pairedExitPoints.insert(std::pair<int, sf::Vector2f*>(_pairedExitPoints.size() + 1 ,*_notPairedExitPoints[number]));
+	_mapExits[_notPairedExitPoints[number]] = previousMap;
+	_notPairedExitPoints.erase(_notPairedExitPoints.begin() + number);
+}
+
+void Map::pairMapAndExitPoint(std::shared_ptr<Map> destinationMap, sf::Vector2i exitPoint)
+{
+	for (int i = 0, len = _notPairedExitPoints.size(); i < len; i++)
+	{
+		if (exitPoint == _notPairedExitPoints[i]){
+			_mapExits[exitPoint] = destinationMap;
+			_notPairedExitPoints.erase(_notPairedExitPoints.begin() + i);
+			break;
+		}
+	}
+}
+
 void Map::setMapExitPoint(int mapDirection, std::shared_ptr<Map> previousMap)
 {
 	switch (mapDirection){
@@ -206,21 +255,30 @@ bool Map::checkMapExitPoint(int exit)
 	}
 }
 
-std::shared_ptr<Map> Map::moveToMap(int exitTile)
-{
-	switch (exitTile){
-	case 0:
-		return _northExit;
-		break;
-	case 1:
-		return _eastExit;
-		break;
-	case 2:
-		return _southExit;
-		break;
-	case 3:
-		return _westExit;
-		break;
-	}
+//std::shared_ptr<Map> Map::moveToMap(int exitTile)
+//{
+//	switch (exitTile){
+//	case 0:
+//		return _northExit;
+//		break;
+//	case 1:
+//		return _eastExit;
+//		break;
+//	case 2:
+//		return _southExit;
+//		break;
+//	case 3:
+//		return _westExit;
+//		break;
+//	}
+//
+//}
 
+
+std::shared_ptr<Map> Map::moveToMap(unsigned int previousMapID)
+{
+	for (auto keyValue : _mapExits){
+		if (keyValue.second->getMapId() == previousMapID)
+		return keyValue.second;
+	}
 }

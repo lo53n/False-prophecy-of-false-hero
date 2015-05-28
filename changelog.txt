@@ -1,5 +1,21 @@
 [-----]
 
+2015-05-28
+
+What is done?
+
+
+	- as usual, changes to map.
+
+	- map traversing completed! Yay! Hail for infinite map and twisted dungeon!
+
+
+TODO?
+
+	- optimalize map stuff to reserve less memory.
+
+[-----]
+
 2015-05-27
 
 What is done?

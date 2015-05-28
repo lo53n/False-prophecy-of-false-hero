@@ -30,7 +30,6 @@ void Game::run(){
 	//_currentMap = _maps[0];
 
 	generateNewMap();
-
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	const sf::Time timePerFrame = sf::seconds(1.0f/60.0f); //set to 60fps
@@ -225,25 +224,46 @@ bool Game::checkMovement(int direction)
 	}
 	catch(char currentTile){
 		//This one is for map traversing//
-		if (currentTile == '0' || currentTile == '1' || currentTile == '2' || currentTile == '3'){
-			std::cout << "Wyjœcie" << std::endl;
-			int exitTile;
-			//Set for easier map traversing//
-			switch (currentTile){
-			case '0': exitTile = 0; break;
-			case '1': exitTile = 1; break;
-			case '2': exitTile = 2; break;
-			case '3': exitTile = 3; break;
-			}
+		//if (currentTile == '0' || currentTile == '1' || currentTile == '2' || currentTile == '3'){
+		//	std::cout << "Wyjœcie" << std::endl;
+		//	int exitTile;
+		//	//Set for easier map traversing//
+		//	switch (currentTile){
+		//	case '0': exitTile = 0; break;
+		//	case '1': exitTile = 1; break;
+		//	case '2': exitTile = 2; break;
+		//	case '3': exitTile = 3; break;
+		//	}
 
-			if (_currentMap->checkMapExitPoint(exitTile)){
-				generateNewMap(exitTile);
+		//	if (_currentMap->checkMapExitPoint(exitTile)){
+		//		generateNewMap(exitTile);
 
-				bool tits;
+		//		bool tits;
+		//	}
+		//	else moveToMap(exitTile);
+		//	_player.setPlayerPositionOnGrid(sf::Vector2i(3, 2));
+		//}
+		sf::Vector2i currentPosition((int)_player.getPlayerPositionOnGrid().y, (int)_player.getPlayerPositionOnGrid().x);
+		unsigned int previousMap = _currentMap->getMapId();
+
+		if (_currentMap->getMapExitPoints()[currentPosition] == NULL)
+			generateNewMap(currentPosition);
+		else {
+			unsigned int targetMap;
+			for (auto keyValue : _currentMap->getMapExitPoints())
+			{
+				if (keyValue.first == currentPosition){
+					targetMap = keyValue.second->getMapId();
+					break;
+				}
 			}
-			else moveToMap(exitTile);
-			_player.setPlayerPositionOnGrid(sf::Vector2i(3, 2));
+			_currentMap = _currentMap->moveToMap(targetMap);
+			_currentMap->drawMap();
 		}
+
+
+		std::cout << _currentMap->getMapId() << std::endl;
+		_player.setPlayerPositionOnGrid(sf::Vector2i(_currentMap->getNewPosition(previousMap).y, _currentMap->getNewPosition(previousMap).x));
 		return false;
 	}
 	//We check now tiles
@@ -282,6 +302,7 @@ void Game::generateNewMap()
 	//if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
 	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 	_newMap = createMapSharedPointer(mapID);
+	_newMap->findAllExitPoints();
 	_newMap->drawMap();
 	_maps.push_back(_newMap);
 	_currentMap = _maps[_maps.size() - 1];
@@ -306,6 +327,29 @@ void Game::generateNewMap(int exitTile)
 
 	_currentMap = _maps[_maps.size() - 1];
 	std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
+}
+
+
+void Game::generateNewMap(sf::Vector2i currentPos)
+{
+
+	unsigned int mapID = _maps.size();
+	if (_maps.size() > 0) _currentMap->clearMap();
+	_currentMapNumber = rand() % _mapsHolder->getMapCount();
+
+	_newMap = createMapSharedPointer(mapID);
+	_newMap->drawMap();
+	_maps.push_back(_newMap);
+
+	std::shared_ptr<Map> transferCurrentMap = _currentMap;
+	std::shared_ptr<Map> transferNextMap = _newMap;
+
+	_currentMap->pairMapAndExitPoint(transferNextMap, currentPos);
+	transferNextMap->pairMapAndExitPoint(transferCurrentMap);
+
+	_currentMap = _maps[_maps.size() - 1];
+	std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
+
 }
 
 

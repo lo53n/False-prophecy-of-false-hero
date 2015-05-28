@@ -42,6 +42,7 @@ private:
 
 	void generateNewMap();
 	void generateNewMap(int exitTile);
+	void generateNewMap(sf::Vector2i currentPos);
 
 	//////////////////
 	//Map traversing//

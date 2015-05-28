@@ -22,20 +22,30 @@ public:
 	////////////
 	//Movement//
 	////////////
+
+	//Move player to specific tile.
+	//@param int direction - 0 for north, 1 for east, 2 for south, 3 for west.
 	void movePlayer(int direction);
 
 
 	///////////
 	//Getters//
 	///////////
-	sf::Vector2f& getPlayerPositionOnMap();		//get player position on map
-	sf::Vector2i& getPlayerPositionOnGrid();//get player position in px
+
+	//get player position on map
+	sf::Vector2f& getPlayerPositionOnMap();		
+	//get player position in px
+	sf::Vector2i& getPlayerPositionOnGrid();
 
 	///////////
 	//Setters//
 	///////////
-	void setPlayerPositionOnMap(sf::Vector2f newPositionOnMap);		//set player position in px
-	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);	//set player position on map
+
+	//set player position in px
+	void setPlayerPositionOnMap(sf::Vector2f newPositionOnMap);		
+	//set player position on map
+	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);	
+
 private:
 	sf::Sprite _playerSprite;
 	sf::RenderTexture _playerTexture;

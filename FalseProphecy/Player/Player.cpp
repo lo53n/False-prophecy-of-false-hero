@@ -31,6 +31,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 ///////////
 //Getters//
 ///////////
+
 sf::Vector2f& Player::getPlayerPositionOnMap()
 {
 	return _positionOnMap;
@@ -43,6 +44,7 @@ sf::Vector2i& Player::getPlayerPositionOnGrid()
 ///////////
 //Setters//
 ///////////
+
 void Player::setPlayerPositionOnMap(sf::Vector2f newPositionOnMap)
 {
 	_positionOnMap = newPositionOnMap;
@@ -59,6 +61,7 @@ void Player::setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid)
 ///////////////////
 //Player movement//
 ///////////////////
+
 void Player::movePlayer(int direction)
 {
 	sf::Vector2i movement;
@@ -81,6 +84,6 @@ void Player::movePlayer(int direction)
 	_positionOnGrid += movement;
 	_positionOnMap += (sf::Vector2f)(movement * (int)__PLAYER_HEIGHT__);
 	_playerSprite.setPosition(_positionOnMap);
-	std::cout << "My position on grid: " << _positionOnGrid.x << " " << _positionOnGrid.y << std::endl;
-	std::cout << "My position on map: " << _positionOnMap.x << " " << _positionOnMap.y << std::endl;
+	//std::cout << "My position on grid: " << _positionOnGrid.x << " " << _positionOnGrid.y << std::endl;
+	//std::cout << "My position on map: " << _positionOnMap.x << " " << _positionOnMap.y << std::endl;
 }
