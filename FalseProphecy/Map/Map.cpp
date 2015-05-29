@@ -11,8 +11,6 @@ Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID) : _mapT
 {
 	checkMaxSizes(); 
 	findAllExitPoints();
-	_mapTexture.create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
-	_mapTexture.clear();
 }
 Map::~Map()
 {
@@ -25,6 +23,12 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(_mapSprite);
 
 }
+
+void Map::clearMap()
+{
+	//STOP USING RENDER TEXTURE IN EVERY MAP. Figure way out, moron.
+}
+
 
 ///////////////////////////
 //Check Map Max Dimension//
@@ -78,88 +82,83 @@ std::unordered_map<sf::Vector2i, std::shared_ptr<Map>>& Map::getMapExitPoints()
 //Map drawing//
 ///////////////
 
-void Map::clearMap()
+void Map::setMapLayer(sf::RenderTexture& mapRenderTexture)
 {
-	_mapTexture.clear();
-
+	mapRenderTexture.display();
+	_mapSprite.setTexture(mapRenderTexture.getTexture(), true);
 }
 
-void Map::setMapLayer()
+void Map::drawMap(sf::RenderTexture& mapRenderTexture)
 {
-	_mapTexture.display();
-	_mapSprite.setTexture(_mapTexture.getTexture());
-}
-
-void Map::drawMap()
-{
-	_mapTexture.clear();
+	mapRenderTexture.create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
+	mapRenderTexture.clear();
 	for (int i = 0, len = _mapTemplate.size(); i < len; i++){
 		for (int j = 0, len1 = _mapTemplate[i].size(); j < len1; j++){
 			switch (_mapTemplate[i][j]){
-			//Entrances. Clockwise, where 0 is north and 3 is west//
-			case 'E': drawEntry(i, j);		break;
+			//Entrances/exits, call them as you please.//
+			case 'E': drawEntry(mapRenderTexture, i, j);		break;
 
 			//Walls, as in name.//
-			case 'x': drawWall(i, j);		break;
+			case 'x': drawWall(mapRenderTexture, i, j);		break;
 
 			//Floor, as in name.//
-			case '.': drawFloor(i, j);		break;
+			case '.': drawFloor(mapRenderTexture, i, j);		break;
 
 			//Whatever happened, will be fully transparent. Unexpected tiles and spacebars will be treated as those.
 			//Note that spacebar will be treated as obstacle.
-			default: drawEmpty(i, j);
+			default: drawEmpty(mapRenderTexture, i, j);
 			}
 		}
 		//std::cout << std::endl;
 	}
-	setMapLayer();
+	setMapLayer(mapRenderTexture);
 }
 ////////////////////
 //Draw map texture//
 ////////////////////
 
 //Wall//
-void Map::drawWall(int y, int x)
+void Map::drawWall(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
 	sf::RectangleShape tile;
 	//std::cout << "1";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	tile.setFillColor(sf::Color::Blue);
-	_mapTexture.draw(tile);
+	mapRenderTexture.draw(tile);
 }
 
 //Floor//
-void Map::drawFloor(int y, int x)
+void Map::drawFloor(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
 	sf::RectangleShape tile;
 	//std::cout << "0";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	tile.setFillColor(sf::Color::Yellow);
-	_mapTexture.draw(tile);
+	mapRenderTexture.draw(tile);
 }
 
 //Entry/Exit. In short: doorway! Or long, lol.//
-void Map::drawEntry(int y, int x)
+void Map::drawEntry(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
 	sf::RectangleShape tile;
 	//std::cout << "E";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	tile.setFillColor(sf::Color::Color(122,100,23,255));
-	_mapTexture.draw(tile);
+	mapRenderTexture.draw(tile);
 }
 
 //Empty space//
-void Map::drawEmpty(int y, int x)
+void Map::drawEmpty(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
 	sf::RectangleShape tile;
 	//std::cout << "2";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	tile.setFillColor(sf::Color::Transparent);
-	_mapTexture.draw(tile);
+	mapRenderTexture.draw(tile);
 }
 
 void Map::printConsoleMap()
@@ -189,16 +188,11 @@ void Map::findAllExitPoints()
 			}
 		}
 	}
-	for (int i = 0, len = _exitPoints.size(); i < len; i++){
-		std::cout << "Exit point found at: (y, x): "<<_exitPoints[i].x << " " << _exitPoints[i].y << std::endl;
-	}
 }
 
 void Map::pairMapAndExitPoint(std::shared_ptr<Map> previousMap)
 {
 	int number = rand() % _notPairedExitPoints.size();
-	//sf::Vector2f* ptr = _notPairedExitPoints[number];
-	//_pairedExitPoints.insert(std::pair<int, sf::Vector2f*>(_pairedExitPoints.size() + 1 ,*_notPairedExitPoints[number]));
 	_mapExits[_notPairedExitPoints[number]] = previousMap;
 	_notPairedExitPoints.erase(_notPairedExitPoints.begin() + number);
 }
@@ -214,66 +208,6 @@ void Map::pairMapAndExitPoint(std::shared_ptr<Map> destinationMap, sf::Vector2i 
 		}
 	}
 }
-
-void Map::setMapExitPoint(int mapDirection, std::shared_ptr<Map> previousMap)
-{
-	switch (mapDirection){
-	case 0:
-		_northExit = previousMap;
-		break;
-	case 1:
-		_eastExit = previousMap;
-		break;
-	case 2:
-		_southExit = previousMap;
-		break;
-	case 3:
-		_westExit = previousMap;
-		break;
-	}
-}
-
-bool Map::checkMapExitPoint(int exit)
-{
-	switch (exit){
-	case 0:
-		if(_northExit == nullptr) return true;
-		else false;
-		break;
-	case 1:
-		if (_eastExit == nullptr) return true;
-		else false;
-		break;
-	case 2:
-		if (_southExit == nullptr) return true;
-		else false;
-		break;
-	case 3:
-		if (_westExit == nullptr) return true;
-		else false;
-		break;
-	}
-}
-
-//std::shared_ptr<Map> Map::moveToMap(int exitTile)
-//{
-//	switch (exitTile){
-//	case 0:
-//		return _northExit;
-//		break;
-//	case 1:
-//		return _eastExit;
-//		break;
-//	case 2:
-//		return _southExit;
-//		break;
-//	case 3:
-//		return _westExit;
-//		break;
-//	}
-//
-//}
-
 
 std::shared_ptr<Map> Map::moveToMap(unsigned int previousMapID)
 {

@@ -29,6 +29,8 @@ private:
 	//////////////////////
 	//std::vector<Map*> _maps;
 	std::vector<std::shared_ptr<Map>> _maps;
+	
+	sf::RenderTexture _mapTexture;
 
 	MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
 	//Map *_newMap;

@@ -1,5 +1,21 @@
 [-----]
 
+2015-05-29
+
+What is done?
+
+	
+	- map optimalization: from 430MBs of memory @ 500 maps down to 32MBs. Freaking RenderTextures, man.
+
+	- not much besides it. Some minor changes and tidying up code.
+
+
+TODO?
+
+	- same goals as before.
+
+[-----]
+
 2015-05-28
 
 What is done?

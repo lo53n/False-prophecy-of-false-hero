@@ -224,25 +224,6 @@ bool Game::checkMovement(int direction)
 	}
 	catch(char currentTile){
 		//This one is for map traversing//
-		//if (currentTile == '0' || currentTile == '1' || currentTile == '2' || currentTile == '3'){
-		//	std::cout << "Wyjœcie" << std::endl;
-		//	int exitTile;
-		//	//Set for easier map traversing//
-		//	switch (currentTile){
-		//	case '0': exitTile = 0; break;
-		//	case '1': exitTile = 1; break;
-		//	case '2': exitTile = 2; break;
-		//	case '3': exitTile = 3; break;
-		//	}
-
-		//	if (_currentMap->checkMapExitPoint(exitTile)){
-		//		generateNewMap(exitTile);
-
-		//		bool tits;
-		//	}
-		//	else moveToMap(exitTile);
-		//	_player.setPlayerPositionOnGrid(sf::Vector2i(3, 2));
-		//}
 		sf::Vector2i currentPosition((int)_player.getPlayerPositionOnGrid().y, (int)_player.getPlayerPositionOnGrid().x);
 		unsigned int previousMap = _currentMap->getMapId();
 
@@ -258,7 +239,7 @@ bool Game::checkMovement(int direction)
 				}
 			}
 			_currentMap = _currentMap->moveToMap(targetMap);
-			_currentMap->drawMap();
+			_currentMap->drawMap(_mapTexture);
 		}
 
 
@@ -283,7 +264,7 @@ void Game::moveToMap(int exitTile){
 	
 	std::shared_ptr<Map> ptr(_currentMap->moveToMap(exitTile));
 	_currentMap = ptr;
-	_currentMap->drawMap();
+	_currentMap->drawMap(_mapTexture);
 }
 
 
@@ -294,51 +275,32 @@ void Game::moveToMap(int exitTile){
 //Generate next map//
 //TODO:
 //could use some checking if map exist when coming back. Also, some optimalization?//
+
+//Debugging/testing map generator. Enter to generate new.
 void Game::generateNewMap()
 {
 	unsigned int mapID = _maps.size();
-	if(_maps.size() > 0) _currentMap->clearMap();
-	_currentMapNumber = rand()%_mapsHolder->getMapCount();
+	_currentMapNumber = rand() % _mapsHolder->getMapCount();
+	if (_maps.size() > 0) _currentMap->clearMap();
 	//if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
 	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 	_newMap = createMapSharedPointer(mapID);
 	_newMap->findAllExitPoints();
-	_newMap->drawMap();
+	_newMap->drawMap(_mapTexture);
 	_maps.push_back(_newMap);
 	_currentMap = _maps[_maps.size() - 1];
 	std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
 }
-
-void Game::generateNewMap(int exitTile)
-{
-	unsigned int mapID = _maps.size();
-	if (_maps.size() > 0) _currentMap->clearMap();
-	_currentMapNumber = rand() % _mapsHolder->getMapCount();
-
-	_newMap = createMapSharedPointer(mapID);
-	_newMap->drawMap();
-	_maps.push_back(_newMap);
-
-	std::shared_ptr<Map> transferCurrentMap = _currentMap;
-	std::shared_ptr<Map> transferNextMap = _maps[_maps.size() - 1];
-
-	_currentMap->setMapExitPoint(exitTile, transferNextMap);
-	transferNextMap->setMapExitPoint((exitTile - 2) % 4, transferCurrentMap);
-
-	_currentMap = _maps[_maps.size() - 1];
-	std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
-}
-
 
 void Game::generateNewMap(sf::Vector2i currentPos)
 {
 
 	unsigned int mapID = _maps.size();
-	if (_maps.size() > 0) _currentMap->clearMap();
 	_currentMapNumber = rand() % _mapsHolder->getMapCount();
+	if (_maps.size() > 0) _currentMap->clearMap();
 
 	_newMap = createMapSharedPointer(mapID);
-	_newMap->drawMap();
+	_newMap->drawMap(_mapTexture);
 	_maps.push_back(_newMap);
 
 	std::shared_ptr<Map> transferCurrentMap = _currentMap;
