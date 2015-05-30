@@ -1,7 +1,7 @@
   xxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxx
    xxxxxxxxxxx.x..x.x.x.x..x.x..x..x.x...x....x.x.x
      x..............................................x
-  xE.............................................x
+  xx.............................................x
   x...xxxxxxxx...................................x
   x..............................................x
  xxxxxxxxxxx................xxxxxxxxxxxxxxxxxxxxx
@@ -16,7 +16,7 @@ x............................................E
 xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
 x..............................................x
 xxxxxxxxxx.....................................x
-x................................................E
+x................................................x
 x..............................................x
 xxxxxxxxxxx................xxxxxxxxxxxxxxxxxxxxx
 x..............................................x
@@ -24,7 +24,7 @@ xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
 x..............................................x
 xxxxxxxxxx.....................................x
 x..............................................x
-xxxxExxxxxxxxxxxxxxExxxxxxxxxxx.xxxxExxxxxxxxxxx
+xxxxExxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxx
 xx    xxx                      .
                                E
 [---]
@@ -71,3 +71,20 @@ E..............................................E
 x...............sdfdss.........................x
 x..............................................x
 xxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxx
+[---]
+xxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxx
+x................x............x............x...........x...........x......x
+E......................xxx........x..............xxx.........xxx..........E
+xxxxxx...........x.....xxx........x..............x.x.........x...x....x...x
+xxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[---]
+xxxxxxxxxExxxxxx
+x...........x..E
+E..............x
+xxxxxxxxxxxxxxxx
+[---]
+xxxxxxxxxxxxxxxx
+x..............x
+x..............x
+xxxxxx.........x
+     xExxxxxxxxx

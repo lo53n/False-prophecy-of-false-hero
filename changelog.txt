@@ -1,5 +1,17 @@
 [-----]
 
+2015-05-30
+
+What is done?
+
+	
+	- map traversion is complete. Now game won't connect maps when one of them doesn't have any free exit points.
+
+	- also. Code got a little tidier.
+
+
+[-----]
+
 2015-05-29
 
 What is done?

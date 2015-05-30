@@ -20,7 +20,6 @@ int main()
 		std::cout << kv.first << " "<< kv.second << std::endl;
 	}
 
-
 	/*MapsHolder *mapsHolder_ = &MapsHolder::getMapsHolder();
 	MapLoader mapLoader;
 	mapLoader.loadFromFile();

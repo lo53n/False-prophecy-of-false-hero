@@ -27,14 +27,12 @@ private:
 	//////////////////////
 	//Maps related stuff//
 	//////////////////////
-	//std::vector<Map*> _maps;
 	std::vector<std::shared_ptr<Map>> _maps;
+	std::vector<std::shared_ptr<Map>> _mapsWithAvaiableExits;
 	
 	sf::RenderTexture _mapTexture;
 
 	MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
-	//Map *_newMap;
-	//Map *_currentMap;
 
 	std::shared_ptr<Map> _newMap;
 	std::shared_ptr<Map> _currentMap;
@@ -43,14 +41,16 @@ private:
 	int _currentMapNumber;
 
 	void generateNewMap();
-	void generateNewMap(int exitTile);
 	void generateNewMap(sf::Vector2i currentPos);
+
+	void checkForExistingFreeExits(std::shared_ptr<Map> mapToCheck);
 
 	//////////////////
 	//Map traversing//
 	//////////////////
 
-	void moveToMap(int exitTile);
+	bool handleMapTraverse();
+	void moveToMap(int mapNumber, bool needPair);
 
 
 	////////////////////////
@@ -86,10 +86,14 @@ private:
 	//Map stuff//
 	/////////////
 	//Shared pointers stuff, it's really hard to think of something better...//
-	std::shared_ptr<Map> createMapSharedPointer(unsigned int mapID); //In reality creates new map object and shared pointer to it.//
+
+	//In reality creates new map object and shared pointer to it.//
+	std::shared_ptr<Map> createMapSharedPointer(unsigned int mapID); 
+
+
+
+
 };
-
-
 
 
 #endif //!GAME_GAME

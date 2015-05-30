@@ -73,9 +73,20 @@ sf::Vector2i Map::getNewPosition(unsigned int previousMapID)
 			return keyValue.first;
 	}
 }
+
+std::vector<sf::Vector2i> Map::getExitPoints()
+{
+	return _exitPoints;
+}
+
 std::unordered_map<sf::Vector2i, std::shared_ptr<Map>>& Map::getMapExitPoints()
 {
 	return _mapExits;
+}
+
+unsigned int Map::getNumberOfFreeExits()
+{
+	return _notPairedExitPoints.size();
 }
 
 ///////////////

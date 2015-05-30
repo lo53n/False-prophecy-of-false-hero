@@ -51,14 +51,22 @@ public:
 	//Get map vectors as map[y_dimension][x_dimenstion]
 	//@return std::vector<std::vector<char>>& map
 	std::vector<std::vector<char>>& getMap();
-
-	//Get map exit points vector
+	
+	//Get exit points vector
 	//@return std::vector<sf::Vector2i>& _mapExitPoints
+	std::vector<sf::Vector2i> getExitPoints();
+
+	//Get map of exit points
+	//@return std::unordered_map<sf::Vector2i, std::shared_ptr<Map>>& _mapExits
 	std::unordered_map<sf::Vector2i, std::shared_ptr<Map>>& getMapExitPoints();
 
 	//Get exit point, at which you appear after moving to next map
 	//@return sf::Vector2i newPosition
 	sf::Vector2i getNewPosition(unsigned int previousMapID);
+
+	//Get number of free exits.
+	//@return: unsigned int
+	unsigned int getNumberOfFreeExits();
 
 
 	///////////
