@@ -1,5 +1,31 @@
 [-----]
 
+2015-06-24
+
+After a long, long break, time to get back to work. Also, new goals.
+
+What is done?
+
+	- partial weapon loader. ATM able to load successfully one weapon.
+
+	- a lot of extra enums and structs to make my life easier.
+
+
+TODO?
+	
+	- items loader. Big thing.
+
+	- enemies loader. Another big thing.
+
+	- serialization. Need to break down on paper first, but I have general idea how-to this one.
+
+	- items correction when non-crucial data is incomplete
+
+	- items deletion when crucial data is incomplete
+
+
+[-----]
+
 2015-05-30
 
 What is done?

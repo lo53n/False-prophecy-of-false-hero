@@ -88,3 +88,26 @@ x..............x
 x..............x
 xxxxxx.........x
      xExxxxxxxxx
+[---]
+xxxxxxxxxxxxxxxxxx
+x..........x.....E
+xxxxxx........xxxx
+xxxxxxExxxxxxxxxxx
+[---]
+xxxxExxxxxxxxxxxxx
+x......x.....x...E
+x................x
+xxxxxExxxxxxxxExxx
+[---]
+xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+E....................x.....E
+xxxxxxxxxxxxxxx..xx......xxx
+              xExxxxxxExxx
+[---]
+xxxxxxxEx
+E.......E
+xxxxExxxx
+[---]
+xxxExxx
+E.....E
+xxxExxx

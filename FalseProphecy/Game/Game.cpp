@@ -224,8 +224,11 @@ bool Game::checkMovement(int direction)
 			throw _currentMap->getMap()[_player.getPlayerPositionOnGrid().y][_player.getPlayerPositionOnGrid().x];
 	}
 	catch(char currentTile){
-		switch (currentTile)
-			case 'E': return handleMapTraverse();
+		switch (currentTile){
+		case 'E': return handleMapTraverse();
+
+		default: return false;
+		}
 	}
 	//We check now tiles
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
@@ -249,7 +252,7 @@ bool Game::handleMapTraverse()
 
 	//Check for existing maps. If not, create new or pair with new.
 	if (_currentMap->getMapExitPoints()[currentPosition] == NULL){
-		if (_mapsWithAvaiableExits.size() < 15 || rand() % 100 > 33)
+		if (_mapsWithAvaiableExits.size() < 15 || rand() % 100 > 50)
 			generateNewMap(currentPosition);
 		else{
 			int randomMap = rand() % _mapsWithAvaiableExits.size();

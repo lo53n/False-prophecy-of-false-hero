@@ -3,22 +3,30 @@
 #include <ctime>
 
 #include "Game/Game.h"
-#include "Map\MapBuilderPattern.h"
-#include "Map\NormalBuilder.h"
+#include "Map/MapBuilderPattern.h"
+#include "Map/NormalBuilder.h"
+#include "Items/ItemsLoader.h"
 
 int main()
 {
 	srand((unsigned int)time(0));
-	Game game;
-	game.run();
+	//Game game;
+	//game.run();
 
-	std::unordered_map<int, int> map;
-	map[1] = 99999;
-	if (map[9] == NULL)
-		std::cout << map[1] << std::endl;
-	for (auto kv : map) {
-		std::cout << kv.first << " "<< kv.second << std::endl;
-	}
+	//std::unordered_map<int, int> map;
+	//map[1] = 99999;
+	//if (map[9] == NULL)
+	//	std::cout << map[1] << std::endl;
+	//for (auto kv : map) {
+	//	std::cout << kv.first << " "<< kv.second << std::endl;
+	//}
+	//std::vector<std::string> weaponvector;
+
+	ItemsLoader itemsloader;
+	itemsloader.loadResources();
+
+
+
 
 	/*MapsHolder *mapsHolder_ = &MapsHolder::getMapsHolder();
 	MapLoader mapLoader;

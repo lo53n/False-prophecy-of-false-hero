@@ -36,6 +36,30 @@
     <Filter Include="Resource Files\----Data----">
       <UniqueIdentifier>{5bebaf90-9a09-4132-a7d4-84b275fa4d6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Items">
+      <UniqueIdentifier>{1bbf6800-89b7-467d-9be4-b1f9a6feb174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Items\Weapons">
+      <UniqueIdentifier>{f4dabffc-59b8-4880-91b3-accfa1c4ecd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Items\Armors">
+      <UniqueIdentifier>{1badf4fb-433c-4824-9d81-7b0efda48f72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Items\Consumables">
+      <UniqueIdentifier>{12f855c7-b773-410a-ac3e-740dcf9daf13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Items">
+      <UniqueIdentifier>{2caf42f1-1f2a-4dba-99c0-ccb94c577d23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Items\Armors">
+      <UniqueIdentifier>{39c17b56-3d8d-4a66-86e1-914cdbaad165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Items\Consumables">
+      <UniqueIdentifier>{548c5660-fad8-4a27-ac3b-fbef83b2e0f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Items\Weapons">
+      <UniqueIdentifier>{83509db6-57be-465b-aef2-847aa453bc13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,6 +89,12 @@
     <ClCompile Include="Player\Player.cpp">
       <Filter>Resource Files\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Items\ItemsLoader.cpp">
+      <Filter>Resource Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Weapons\WeaponsLoader.cpp">
+      <Filter>Resource Files\Items\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map\MapBuilderPattern.h">
@@ -91,14 +121,44 @@
     <ClInclude Include="Player\Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\ItemsLoader.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Weapons\WeaponsLoader.h">
+      <Filter>Header Files\Items\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="StructsEnums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
     <Text Include="data\map.txt">
       <Filter>Resource Files\----Data----</Filter>
     </Text>
+    <Text Include="data\weapons.txt">
+      <Filter>Resource Files\----Data----</Filter>
+    </Text>
+    <Text Include="data\armors.txt">
+      <Filter>Resource Files\----Data----</Filter>
+    </Text>
+    <Text Include="data\consumables.txt">
+      <Filter>Resource Files\----Data----</Filter>
+    </Text>
+    <Text Include="data\enemies.txt">
+      <Filter>Resource Files\----Data----</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="False prophecy of false hero.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

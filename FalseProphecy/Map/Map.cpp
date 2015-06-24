@@ -204,6 +204,7 @@ void Map::findAllExitPoints()
 void Map::pairMapAndExitPoint(std::shared_ptr<Map> previousMap)
 {
 	int number = rand() % _notPairedExitPoints.size();
+	std::cout << number << std::endl;
 	_mapExits[_notPairedExitPoints[number]] = previousMap;
 	_notPairedExitPoints.erase(_notPairedExitPoints.begin() + number);
 }
