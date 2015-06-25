@@ -12,8 +12,6 @@ public:
 	void loadWeapons();
 
 private:
-	std::vector<std::string> weapons;
-
 };
 
 

@@ -41,6 +41,7 @@ struct Weapon_struct{
 	int primary_multiplier_value;
 	int secondary_multiplier;
 	int secondary_multiplier_value;
+	bool isMagic;
 	int speed;
 	int min_dmg;
 	int max_dmg;

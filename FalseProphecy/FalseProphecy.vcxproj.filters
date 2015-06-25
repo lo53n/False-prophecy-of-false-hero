@@ -95,6 +95,9 @@
     <ClCompile Include="Items\Weapons\WeaponsLoader.cpp">
       <Filter>Resource Files\Items\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Items\ItemsHolder.cpp">
+      <Filter>Resource Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map\MapBuilderPattern.h">
@@ -121,9 +124,6 @@
     <ClInclude Include="Player\Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Items\ItemsLoader.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
@@ -132,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="StructsEnums.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\ItemsHolder.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,10 +158,5 @@
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="False prophecy of false hero.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

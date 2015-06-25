@@ -1,4 +1,21 @@
 [-----]
+2015-06-25
+
+Weapon loading is partialy done. Weapon stats doesn't need to be in particular order, tags are all that matters. Now time to work on weapon corrector.
+
+What is done?
+
+	- loading multiple weapons.
+
+	- correcting one property.
+
+	- WeaponHolder to hold all that loaded and corrected data.
+
+TODO?
+
+	- integrate everything into Game module.
+
+[-----]
 
 2015-06-24
 

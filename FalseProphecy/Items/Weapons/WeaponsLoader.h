@@ -9,6 +9,7 @@
 
 
 #include "../../StructsEnums.h"
+#include "../ItemsHolder.h"
 
 class WeaponsLoader{
 
@@ -23,6 +24,10 @@ public:
 	~WeaponsLoader();
 
 private:
+
+	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
+
+
 	enum TAGVALUE{
 		NAME,
 		HANDLE,
@@ -43,16 +48,32 @@ private:
 		WIL_REQ,
 	};
 
-	//std::vector<std::string> weaponvector;
-	std::vector<std::string> output;
+	//current loaded weapon
+	Weapon_struct _currentData;
 
-	Weapon_struct currentData;
+	//points of current weapon, if too low, don't bother with correction
+	int _points;
+
+	//Magic Numbers
+	int __UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ = 1000;
+
+	int __BASE_PRIMARY_ONEHANDED_MULTIPLIER__ = 50;
+	int __BASE_SECONDARY_ONEHANDED_MULTIPLIER__ = 25;
+
+	int __BASE_PRIMARY_TWOHANDED_MULTIPLIER__ = 100;
+	int __BASE_SECONDARY_TWOHANDED_MULTIPLIER__ = 50;
 
 private:
 	void parseLine(std::string stringLine);
 	void parseTag(std::vector<std::string> &output);
 	int checkTag(std::string tag);
+
 	void prepareStruct();
+
+	void saveStruct();
+
+	bool checkStructCorrectness();
+	bool correctStruct(int tag);
 
 	void showStruct();
 

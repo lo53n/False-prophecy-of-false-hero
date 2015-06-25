@@ -21,9 +21,17 @@ int main()
 	//	std::cout << kv.first << " "<< kv.second << std::endl;
 	//}
 	//std::vector<std::string> weaponvector;
-
+	sf::Clock clock;
+	sf::Time time;
 	ItemsLoader itemsloader;
+	ItemsHolder *holder = &ItemsHolder::getItemsHolder();
+	system("pause"); 
+	clock.restart();
 	itemsloader.loadResources();
+	time = clock.restart();
+	system("pause");
+	std::cout << holder->getWeaponsCount() << std::endl;
+	std::cout << time.asMilliseconds() << std::endl;
 
 
 
