@@ -12,9 +12,9 @@ WeaponsLoader::~WeaponsLoader()
 void WeaponsLoader::prepareStruct()
 {
 	_currentData.name = "";
-	_currentData.size = 0;
-	_currentData.type = 0;
-	_currentData.weapon_handle = 0;
+	_currentData.size = -1;
+	_currentData.type = -1;
+	_currentData.weapon_handle = -1;
 
 	_currentData.isMagic = false;
 	_currentData.primary_multiplier = -1;
@@ -22,10 +22,10 @@ void WeaponsLoader::prepareStruct()
 	_currentData.secondary_multiplier = -1;
 	_currentData.secondary_multiplier_value = -1;
 
-	_currentData.speed = 0;
+	_currentData.speed = -1;
 
-	_currentData.min_dmg = 0;
-	_currentData.max_dmg = 0;
+	_currentData.min_dmg = -1;
+	_currentData.max_dmg = -1;
 
 	_currentData.str_req = 0;
 	_currentData.end_req = 0;
@@ -90,6 +90,7 @@ void WeaponsLoader::loadFromFile()
 		if (stringLine.size() > 6) parseLine(stringLine);
 		if (stringLine == "[---]") saveStruct();
 	}
+	_itemsHolder->adjustContainer(ItemsHolder::CONTAINER::WEAPONS);
 }
 
 
@@ -314,7 +315,20 @@ int WeaponsLoader::checkTag(std::string tag)
 bool WeaponsLoader::checkStructCorrectness()
 {
 	bool isSuccessful = true;
+
+	//At first, let's check for abnormalities beyond repair//
 	if (_currentData.name == "") return false;
+
+	if (
+		   (_currentData.size == -1 && _currentData.type == -1) 
+		|| (_currentData.type == -1 && _currentData.weapon_handle == -1) 
+		|| (_currentData.size == -1 && _currentData.weapon_handle == -1)
+		) return false;
+
+	if (_currentData.speed == -1) return false;
+	if (_currentData.min_dmg == -1 || _currentData.max_dmg == -1) return false;
+
+	//Now time to fix stuff//
 	if (_currentData.primary_multiplier == -1)
 		isSuccessful = correctStruct(TAGVALUE::PRIMARY_MULTIPLIER);
 		if (!isSuccessful) return false;

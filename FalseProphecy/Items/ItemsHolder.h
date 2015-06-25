@@ -17,7 +17,13 @@ public:
 	int getWeaponsCount();
 	int getTotalItemsCount();
 
+	void adjustContainer(int container);
 
+	enum CONTAINER{
+		WEAPONS,
+		ARMORS,
+		CONSUMABLES
+	};
 
 
 private:
@@ -30,6 +36,7 @@ private:
 private:
 	static ItemsHolder *_itemsHolder;
 	std::vector<Weapon_struct> _weaponsData;
+	std::vector<Armor_struct> _armorsData;
 
 
 

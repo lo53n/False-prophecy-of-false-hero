@@ -19,7 +19,7 @@
 [[PRIMARY_MULTIPLIER_VALUE::11111]]
 [[SPEED::12]]
 [[MIN_DMG::88]]
-[[MAX_DMG::99]]
+[[MAX_DMG::ffff]]
 [[STR_REQ::20]]
 [[END_REQ::0]]
 [---]
