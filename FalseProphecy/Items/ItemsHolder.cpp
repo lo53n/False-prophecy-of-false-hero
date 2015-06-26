@@ -6,7 +6,6 @@ ItemsHolder::ItemsHolder()
 	//_armorsData.reserve(100000);
 }
 
-
 ItemsHolder& ItemsHolder::getItemsHolder()
 {
 	static ItemsHolder instance;

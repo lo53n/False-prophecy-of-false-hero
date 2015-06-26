@@ -12,8 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Items\Item.cpp" />
     <ClCompile Include="Items\ItemsHolder.cpp" />
     <ClCompile Include="Items\ItemsLoader.cpp" />
+    <ClCompile Include="Items\Weapons\Weapon.cpp" />
     <ClCompile Include="Items\Weapons\WeaponsLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Map.cpp" />
@@ -26,8 +28,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Items\Item.h" />
     <ClInclude Include="Items\ItemsHolder.h" />
     <ClInclude Include="Items\ItemsLoader.h" />
+    <ClInclude Include="Items\Weapons\Weapon.h" />
     <ClInclude Include="Items\Weapons\WeaponsLoader.h" />
     <ClInclude Include="Map\Map.h" />
     <ClInclude Include="Map\LandBuilderPattern.h" />
@@ -47,7 +51,6 @@
     <Text Include="data\weapons.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -80,7 +83,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <NuGetPackageImportStamp>82fc21cf</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>29dbc6b3</NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,13 +118,5 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\boost.1.58.0.0\build\native\boost.targets" Condition="Exists('..\packages\boost.1.58.0.0\build\native\boost.targets')" />
-  </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\boost.1.58.0.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.58.0.0\build\native\boost.targets'))" />
-  </Target>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

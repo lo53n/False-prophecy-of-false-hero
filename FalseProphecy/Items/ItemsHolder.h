@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "../StructsEnums.h"
+#include "Weapons/WeaponsLoader.h"
 
 
 class ItemsHolder{
@@ -26,6 +27,8 @@ public:
 	};
 
 
+	std::vector<Weapon_struct> _weaponsData;
+
 private:
 	ItemsHolder();
 	ItemsHolder(ItemsHolder const&);
@@ -35,7 +38,6 @@ private:
 
 private:
 	static ItemsHolder *_itemsHolder;
-	std::vector<Weapon_struct> _weaponsData;
 	std::vector<Armor_struct> _armorsData;
 
 

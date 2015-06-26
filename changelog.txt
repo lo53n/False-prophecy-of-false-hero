@@ -1,4 +1,12 @@
 [-----]
+2015-06-26
+
+What is done?
+
+	- nothing much. Tried to work on items.
+
+
+[-----]
 2015-06-25
 
 Weapon loading is partialy done. Weapon stats doesn't need to be in particular order, tags are all that matters. Now time to work on weapon corrector.

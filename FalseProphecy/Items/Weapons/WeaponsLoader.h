@@ -7,6 +7,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <stdexcept>
+
 
 #include "../../StructsEnums.h"
 #include "../ItemsHolder.h"
@@ -30,6 +32,7 @@ private:
 
 	enum TAGVALUE{
 		NAME,
+		IMG,
 		HANDLE,
 		SIZE,
 		TYPE,
@@ -50,9 +53,6 @@ private:
 
 	//current loaded weapon
 	Weapon_struct _currentData;
-
-	//points of current weapon, if too low, don't bother with correction
-	int _points;
 
 	//Magic Numbers
 	int __UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ = 1000;

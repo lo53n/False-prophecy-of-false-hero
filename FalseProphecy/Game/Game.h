@@ -8,7 +8,8 @@
 #include "../Map/MapLoader.h"
 #include "../Map/Map.h"
 #include "../Player/Player.h"
-
+#include "../Items/ItemsLoader.h"
+#include "../Items/Weapons/Weapon.h"
 
 class Game {
 public:
@@ -23,6 +24,11 @@ private:
 	sf::RenderWindow _window;
 	sf::View _gameView;
 
+	///////////////////////
+	//Items related stuff//
+	///////////////////////
+
+	std::vector<std::shared_ptr<Item>> _itemList;
 
 	//////////////////////
 	//Maps related stuff//
@@ -32,7 +38,11 @@ private:
 	
 	sf::RenderTexture _mapTexture;
 
+	/////////////////////////
+	//Stuff holders/loaders//
+	/////////////////////////
 	MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
+	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
 
 	std::shared_ptr<Map> _newMap;
 	std::shared_ptr<Map> _currentMap;

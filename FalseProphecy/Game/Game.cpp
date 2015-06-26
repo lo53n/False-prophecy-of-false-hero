@@ -4,6 +4,15 @@ Game::Game()
 	: _window(sf::VideoMode(800, 640), "SFML Application")
 	, _gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 640.0f))
 {
+
+	MapLoader mapLoader;
+	mapLoader.loadFromFile(); //Load maps from file
+
+	ItemsLoader itemsloader;
+	itemsloader.loadResources(); //Load items from file
+
+//	_itemsHolder->loadResources();
+
 	_player.setPlayerPositionOnGrid(sf::Vector2i(5, 5));
 
 	_gameView.setCenter(_player.getPlayerPositionOnMap());
@@ -15,14 +24,12 @@ Game::Game()
 /////////////
 
 void Game::run(){
-
-	MapLoader mapLoader;
-	mapLoader.loadFromFile(); //Load maps from file
-
-
+	
 	_currentMapNumber = 0;
 	
+	std::shared_ptr<Item> asd(std::make_shared<Item>());
 
+	_itemList.push_back(asd);
 	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 
 	//_newMap->drawMap();
@@ -360,9 +367,9 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 {
 
 	unsigned int mapID = _maps.size();
-	//_currentMapNumber = rand() % _mapsHolder->getMapCount();
+	_currentMapNumber = rand() % _mapsHolder->getMapCount();
 
-	_currentMapNumber = 0;
+	//_currentMapNumber = 0;
 	if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
 
 	if (_maps.size() > 0) _currentMap->clearMap();

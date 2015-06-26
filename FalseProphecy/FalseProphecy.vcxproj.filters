@@ -89,14 +89,20 @@
     <ClCompile Include="Player\Player.cpp">
       <Filter>Resource Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Items\ItemsLoader.cpp">
-      <Filter>Resource Files\Items</Filter>
-    </ClCompile>
     <ClCompile Include="Items\Weapons\WeaponsLoader.cpp">
       <Filter>Resource Files\Items\Weapons</Filter>
     </ClCompile>
     <ClCompile Include="Items\ItemsHolder.cpp">
       <Filter>Resource Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\ItemsLoader.cpp">
+      <Filter>Resource Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Item.cpp">
+      <Filter>Resource Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Weapons\Weapon.cpp">
+      <Filter>Resource Files\Items\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,9 +130,6 @@
     <ClInclude Include="Player\Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Items\ItemsLoader.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
     <ClInclude Include="Items\Weapons\WeaponsLoader.h">
       <Filter>Header Files\Items\Weapons</Filter>
     </ClInclude>
@@ -135,6 +138,15 @@
     </ClInclude>
     <ClInclude Include="Items\ItemsHolder.h">
       <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\ItemsLoader.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Item.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Weapons\Weapon.h">
+      <Filter>Header Files\Items\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +169,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

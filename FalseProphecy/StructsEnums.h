@@ -34,6 +34,7 @@ enum WEAPON_HANDLE{
 
 struct Weapon_struct{
 	std::string name;
+	std::string img_path;
 	int size;
 	int type;
 	int weapon_handle;

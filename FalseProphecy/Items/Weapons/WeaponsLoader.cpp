@@ -34,13 +34,13 @@ void WeaponsLoader::prepareStruct()
 	_currentData.int_req = 0;
 	_currentData.wil_req = 0;
 
-	_points = 0;
 }
 
 void WeaponsLoader::showStruct()
 {
 
 	std::cout << "Name: " << _currentData.name << std::endl;
+	std::cout << "Img: " << _currentData.img_path << std::endl;
 	std::cout << "Size: " << _currentData.size << std::endl;
 	std::cout << "Type: " << _currentData.type << std::endl;
 	std::cout << "Handle: " << _currentData.weapon_handle << std::endl;
@@ -72,7 +72,8 @@ void WeaponsLoader::saveStruct()
 {
 	bool isSuccessful = checkStructCorrectness();
 	//showStruct();
-	if (isSuccessful) _itemsHolder->addToWeaponContainter(_currentData);
+	if (isSuccessful)
+		_itemsHolder->addToWeaponContainter(_currentData);
 	prepareStruct();
 }
 
@@ -130,11 +131,14 @@ void WeaponsLoader::parseTag(std::vector<std::string> &output)
 	
 	//parse name
 	case TAGVALUE::NAME:
-		//std::cout << output[1] << std::endl;
 		_currentData.name = output[1];
-		//system("pause");
 		break;
 	
+	//parse texture location
+	case TAGVALUE::IMG:
+		_currentData.img_path = "data\\img\\weapon\\" + output[1];
+		break;
+
 	//parse weapon handle
 	case TAGVALUE::HANDLE:
 		if (output[1] == "ONEHANDED")
@@ -197,7 +201,12 @@ void WeaponsLoader::parseTag(std::vector<std::string> &output)
 	
 	//parse weapon damage primary multiplier value
 	case TAGVALUE::PRIMARY_MULTIPLIER_VALUE:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.primary_multiplier_value = value;
 		break;
 	//parse weapon damage secondary multiplier
@@ -229,57 +238,107 @@ void WeaponsLoader::parseTag(std::vector<std::string> &output)
 
 	//parse weapon damage secondary multiplier value
 	case TAGVALUE::SECONDARY_MULTIPLIER_VALUE:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.secondary_multiplier_value = value;
 		break;
 
 	//parse weapon speed
 	case TAGVALUE::SPEED:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.speed = value;
 		break;
 
 	//parse weapon min - max dmg
 
 	case TAGVALUE::MIN_DMG:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.min_dmg = value;
 		break;
 
 	case TAGVALUE::MAX_DMG:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.max_dmg = value;
 		break;
 
 	//parse weapon requirement
 
 	case TAGVALUE::STR_REQ:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.str_req = value;
 		break;
 
 	case TAGVALUE::END_REQ:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.end_req = value;
 		break;
 
 	case TAGVALUE::AGI_REQ:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.agi_req = value;
 		break;
 
 	case TAGVALUE::DEX_REQ:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.dex_req = value;
 		break;
 
 	case TAGVALUE::INT_REQ:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.int_req = value;
 		break;
 
 	case TAGVALUE::WIL_REQ:
-		value = std::stoi(output[1]);
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
 		_currentData.wil_req = value;
 		break;
 
@@ -291,6 +350,7 @@ void WeaponsLoader::parseTag(std::vector<std::string> &output)
 int WeaponsLoader::checkTag(std::string tag)
 {
 	if (tag == "NAME") return TAGVALUE::NAME;
+	if (tag == "IMG") return TAGVALUE::IMG;
 	else if (tag == "HANDLE") return TAGVALUE::HANDLE;
 	else if (tag == "SIZE") return TAGVALUE::SIZE;
 	else if (tag == "TYPE") return TAGVALUE::TYPE;

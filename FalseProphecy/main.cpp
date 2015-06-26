@@ -5,13 +5,12 @@
 #include "Game/Game.h"
 #include "Map/MapBuilderPattern.h"
 #include "Map/NormalBuilder.h"
-#include "Items/ItemsLoader.h"
 
 int main()
 {
 	srand((unsigned int)time(0));
-	//Game game;
-	//game.run();
+	Game game;
+	game.run();
 
 	//std::unordered_map<int, int> map;
 	//map[1] = 99999;
@@ -21,19 +20,41 @@ int main()
 	//	std::cout << kv.first << " "<< kv.second << std::endl;
 	//}
 	//std::vector<std::string> weaponvector;
-	sf::Clock clock;
-	sf::Time time;
-	ItemsLoader itemsloader;
-	ItemsHolder *holder = &ItemsHolder::getItemsHolder();
-	system("pause"); 
-	clock.restart();
-	itemsloader.loadResources();
-	time = clock.restart();
-	system("pause");
-	std::cout << holder->getWeaponsCount() << std::endl;
-	std::cout << time.asMilliseconds() << std::endl;
+
+	//std::string __DEFAULT_AXE_IMAGE__ = "data\\img\\weapon\\axedefault.png";
+	//std::string __DEFAULT_SWORD_IMAGE__ = "data\\img\\weapon\\sworddefault.png";
+
+	//sf::Clock clock;
+	//sf::Time time;
+	//ItemsHolder *holder = &ItemsHolder::getItemsHolder();
+	//ItemsLoader itemsloader;
+	//system("pause"); 
+	//clock.restart();
+	//itemsloader.loadResources();
+	//time = clock.restart();
+	//system("pause");
+	//std::cout << holder->getWeaponsCount() << std::endl;
+	//std::cout << time.asMilliseconds() << std::endl;
 
 
+	//sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+	//sf::Texture text, tile1;
+	//std::cout << holder->_weaponsData[0].img_path << std::endl;
+	//if (!text.loadFromFile(holder->_weaponsData[0 ].img_path))
+	//	text.loadFromFile(__DEFAULT_SWORD_IMAGE__);
+	//sf::RectangleShape shape, tile;
+	//tile1.loadFromFile("data/img/etc/backtile.png");
+	//tile.setTexture(&tile1);
+	//tile.setPosition(10, 10);
+	//tile.setSize(sf::Vector2f(32.f, 32.f));
+	//shape.setTexture(&text);
+	//shape.setSize(sf::Vector2f(32.f, 32.f));
+	//shape.setPosition(10, 10);
+
+	//window.clear();
+	//window.draw(tile);
+	//window.draw(shape);
+	//window.display();
 
 
 	/*MapsHolder *mapsHolder_ = &MapsHolder::getMapsHolder();
