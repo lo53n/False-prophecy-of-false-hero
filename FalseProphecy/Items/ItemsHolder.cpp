@@ -2,8 +2,6 @@
 
 ItemsHolder::ItemsHolder()
 {
-	_weaponsData.reserve(100000);
-	//_armorsData.reserve(100000);
 }
 
 ItemsHolder& ItemsHolder::getItemsHolder()
@@ -36,4 +34,9 @@ void ItemsHolder::addToWeaponContainter(Weapon_struct data)
 int ItemsHolder::getWeaponsCount()
 {
 	return _weaponsData.size();
+}
+
+void ItemsHolder::setWeaponData(std::vector<Weapon_struct> externalData)
+{
+	_weaponsData = externalData;
 }

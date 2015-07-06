@@ -4,7 +4,9 @@ Game::Game()
 	: _window(sf::VideoMode(800, 640), "SFML Application")
 	, _gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 640.0f))
 {
-
+	///////////////////////
+	//Load game resources//
+	///////////////////////
 	MapLoader mapLoader;
 	mapLoader.loadFromFile(); //Load maps from file
 
@@ -27,9 +29,10 @@ void Game::run(){
 	
 	_currentMapNumber = 0;
 	
-	std::shared_ptr<Item> asd(std::make_shared<Item>());
-
+	std::shared_ptr<Item> asd(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
 	_itemList.push_back(asd);
+
+
 	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 
 	//_newMap->drawMap();
@@ -95,6 +98,8 @@ void Game::draw()
 	//for (int i = 0, len = _maps.size(); i < len; i++) _window.draw(*_maps[i]);
 	_window.draw(*_currentMap);
 	_window.draw(_player);
+	for (auto item : _itemList)
+		_window.draw(*item);
 	_window.display();
 }
 

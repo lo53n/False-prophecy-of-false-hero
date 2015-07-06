@@ -1,3 +1,15 @@
+2015-07-06/07
+
+Hardware is still faulty, it needs repairs, so thats why I have so long breaks.
+
+What is done?
+	
+	- had some fun with weapons class. Should be working for now.
+
+TODO?
+
+	- Do same things for armors and consumables. Thats a lot of work...
+
 [-----]
 2015-06-26
 

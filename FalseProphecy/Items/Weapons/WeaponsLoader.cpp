@@ -73,7 +73,7 @@ void WeaponsLoader::saveStruct()
 	bool isSuccessful = checkStructCorrectness();
 	//showStruct();
 	if (isSuccessful)
-		_itemsHolder->addToWeaponContainter(_currentData);
+		_weaponsData.push_back(_currentData);
 	prepareStruct();
 }
 
@@ -83,6 +83,8 @@ void WeaponsLoader::loadFromFile()
 	std::fstream weaponsFile;
 	weaponsFile.open("data/weapons.txt");
 
+	_weaponsData.reserve(100000);
+
 	std::string stringLine;
 	while (!weaponsFile.eof()){
 		getline(weaponsFile, stringLine);
@@ -91,7 +93,9 @@ void WeaponsLoader::loadFromFile()
 		if (stringLine.size() > 6) parseLine(stringLine);
 		if (stringLine == "[---]") saveStruct();
 	}
-	_itemsHolder->adjustContainer(ItemsHolder::CONTAINER::WEAPONS);
+	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
+	_weaponsData.shrink_to_fit();
+	_itemsHolder->setWeaponData(_weaponsData);
 }
 
 

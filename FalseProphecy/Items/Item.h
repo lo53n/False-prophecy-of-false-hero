@@ -16,14 +16,13 @@ public:
 
 	void setItemTexture();
 
-	void setName();
-	std::string getName();
+	
+
+	Item();
+	~Item();
 
 
-
-private:
-
-	std::string name;
+public:
 
 	bool _isItemVisible = false;
 	bool _isBackgroundVisible = false;
@@ -33,6 +32,18 @@ private:
 
 	sf::RectangleShape _itemShape;
 	sf::RectangleShape _backgroundShape;
+
+	////////////////////////
+	//Public Magic Numbers//
+	////////////////////////
+
+	std::string __TILE_IMAGE__ = "data\\img\\etc\\backtile.png";
+
+private:
+
+
+	int _itemType;
+
 
 
 

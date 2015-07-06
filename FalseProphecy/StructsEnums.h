@@ -3,6 +3,12 @@
 
 #include <string>
 
+enum ITEM_TYPE{
+	WEAPON,
+	ARMOR,
+	CONSUMABLE
+};
+
 enum HERO_STATS_NAMES{
 	STRENGTH,
 	ENDURANCE,

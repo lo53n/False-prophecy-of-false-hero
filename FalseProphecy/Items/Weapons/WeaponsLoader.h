@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 
+
 #include <stdexcept>
 
 
@@ -20,14 +21,14 @@ public:
 
 	void loadFromFile();
 
-
+	std::vector<Weapon_struct>& getWeaponsData();
 
 	WeaponsLoader();
 	~WeaponsLoader();
 
 private:
 
-	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
+	std::vector<Weapon_struct> _weaponsData;
 
 
 	enum TAGVALUE{

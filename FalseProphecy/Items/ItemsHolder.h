@@ -18,6 +18,8 @@ public:
 	int getWeaponsCount();
 	int getTotalItemsCount();
 
+	void setWeaponData(std::vector<Weapon_struct>);
+
 	void adjustContainer(int container);
 
 	enum CONTAINER{
