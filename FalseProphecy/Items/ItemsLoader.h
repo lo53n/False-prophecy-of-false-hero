@@ -4,12 +4,14 @@
 
 
 #include "Weapons\WeaponsLoader.h"
+#include "Armours\ArmoursLoader.h"
 
 class ItemsLoader {
 
 public:
 	void loadResources();
 	void loadWeapons();
+	void loadArmours();
 
 private:
 };

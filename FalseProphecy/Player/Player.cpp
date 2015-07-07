@@ -14,7 +14,6 @@ Player::Player()
 
 	_playerSprite.setTexture(_playerTexture.getTexture());
 
-	std::cout <<"ENUM: "<< Player::DOWN << std::endl;
 }
 Player::~Player()
 {

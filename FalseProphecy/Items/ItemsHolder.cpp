@@ -15,7 +15,7 @@ void ItemsHolder::adjustContainer(int container)
 	switch (container){
 	case CONTAINER::WEAPONS: _weaponsData.shrink_to_fit();
 		break;
-	case CONTAINER::ARMORS: _armorsData.shrink_to_fit();
+	case CONTAINER::ARMOURS: _armoursData.shrink_to_fit();
 		break;
 
 	}
@@ -36,7 +36,12 @@ int ItemsHolder::getWeaponsCount()
 	return _weaponsData.size();
 }
 
-void ItemsHolder::setWeaponData(std::vector<Weapon_struct> externalData)
+void ItemsHolder::setData(std::vector<Weapon_struct> externalData)
 {
 	_weaponsData = externalData;
+}
+
+void ItemsHolder::setData(std::vector<Armour_struct> externalData)
+{
+	_armoursData = externalData;
 }

@@ -5,7 +5,7 @@
 
 enum ITEM_TYPE{
 	WEAPON,
-	ARMOR,
+	ARMOUR,
 	CONSUMABLE
 };
 
@@ -55,16 +55,16 @@ struct Weapon_struct{
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;
 };
 
-enum ARMOR_TYPE{
+enum ARMOUR_TYPE{
 	HELMET,
 	GAUNTLET,
-	BODY,
+	TORSO,
 	GREAVES,
 	BOOTS,
 	SHIELD
 };
 
-enum ARMOR_CLASS{
+enum ARMOUR_CLASS{
 	CLOTH,
 	LEATHER,
 	MAIL,
@@ -72,10 +72,12 @@ enum ARMOR_CLASS{
 	PLATE
 };
 
-struct Armor_struct{
+struct Armour_struct{
 	std::string name;
+	std::string img_path;
 	int type;
-	int armor_class;
+	int armour_class;
+	bool isMagic;
 	int defence;
 	int speed;
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;

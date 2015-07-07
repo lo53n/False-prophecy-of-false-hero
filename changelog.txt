@@ -1,3 +1,22 @@
+[-----]
+2015-07-07
+
+What is done?
+
+	- completed weapon loader.
+
+	- completed armour loader, but not tested thoroughly.
+
+	- figured way to draw user interface.
+
+TODO?
+
+	- test armour loader.
+
+	- complete consumable loader and move with next work, maybe inventory?
+
+
+[-----]
 2015-07-06/07
 
 Hardware is still faulty, it needs repairs, so thats why I have so long breaks.

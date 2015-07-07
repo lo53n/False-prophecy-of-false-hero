@@ -2,7 +2,7 @@
 
 WeaponsLoader::WeaponsLoader()
 {
-
+	_weaponsData.reserve(100000);
 }
 WeaponsLoader::~WeaponsLoader()
 {
@@ -34,6 +34,7 @@ void WeaponsLoader::prepareStruct()
 	_currentData.int_req = 0;
 	_currentData.wil_req = 0;
 
+	_weaponCount++;
 }
 
 void WeaponsLoader::showStruct()
@@ -74,6 +75,7 @@ void WeaponsLoader::saveStruct()
 	//showStruct();
 	if (isSuccessful)
 		_weaponsData.push_back(_currentData);
+	else std::cout << "Unable to load weapon No. " << _weaponCount << std::endl;
 	prepareStruct();
 }
 
@@ -83,7 +85,6 @@ void WeaponsLoader::loadFromFile()
 	std::fstream weaponsFile;
 	weaponsFile.open("data/weapons.txt");
 
-	_weaponsData.reserve(100000);
 
 	std::string stringLine;
 	while (!weaponsFile.eof()){
@@ -95,7 +96,7 @@ void WeaponsLoader::loadFromFile()
 	}
 	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
 	_weaponsData.shrink_to_fit();
-	_itemsHolder->setWeaponData(_weaponsData);
+	_itemsHolder->setData(_weaponsData);
 }
 
 
@@ -376,6 +377,9 @@ int WeaponsLoader::checkTag(std::string tag)
 	return -1;
 }
 
+/////////////////////
+//Correctness Check//
+/////////////////////
 bool WeaponsLoader::checkStructCorrectness()
 {
 	bool isSuccessful = true;
@@ -383,22 +387,35 @@ bool WeaponsLoader::checkStructCorrectness()
 	//At first, let's check for abnormalities beyond repair//
 	if (_currentData.name == "") return false;
 
-	if (
-		   (_currentData.size == -1 && _currentData.type == -1) 
-		|| (_currentData.type == -1 && _currentData.weapon_handle == -1) 
-		|| (_currentData.size == -1 && _currentData.weapon_handle == -1)
-		) return false;
+	if (_currentData.size == -1 && _currentData.weapon_handle == -1) return false;
 
 	if (_currentData.speed == -1) return false;
 	if (_currentData.min_dmg == -1 || _currentData.max_dmg == -1) return false;
 
-	//Now time to fix stuff//
-	if (_currentData.primary_multiplier == -1)
+	//Now time to fix stuff. If unfixable, then sorry, but I don't really see no options as for now to fail.//
+	if (_currentData.type == -1){
+		isSuccessful = correctStruct(TAGVALUE::TYPE);
+		if (!isSuccessful) return false;
+	}
+	if (_currentData.size == -1){
+		isSuccessful = correctStruct(TAGVALUE::SIZE);
+		if (!isSuccessful) return false;
+	}
+	if (_currentData.weapon_handle == -1){
+		isSuccessful = correctStruct(TAGVALUE::HANDLE);
+		if (!isSuccessful) return false;
+	}
+	if (_currentData.primary_multiplier == -1){
 		isSuccessful = correctStruct(TAGVALUE::PRIMARY_MULTIPLIER);
 		if (!isSuccessful) return false;
+	}
 
 	return isSuccessful;
 }
+
+//////////////////////////
+//Correct data if needed//
+//////////////////////////
 
 bool WeaponsLoader::correctStruct(int tag)
 {
@@ -406,8 +423,9 @@ bool WeaponsLoader::correctStruct(int tag)
 
 	switch (tag){
 
-	//fix weapon multipliers
+		//fix weapon multipliers
 	case TAGVALUE::PRIMARY_MULTIPLIER:
+		//std::cout << "Correcting weapon scheme No. " << _weaponCount << " primary multipliers." << std::endl;
 		//check for weapon handle
 		switch (_currentData.weapon_handle){
 		case WEAPON_HANDLE::ONEHANDED:
@@ -561,8 +579,50 @@ bool WeaponsLoader::correctStruct(int tag)
 		}
 		break;
 
+		case TAGVALUE::SIZE:
+			//std::cout << "Correcting weapon scheme No. " << _weaponCount << " weapon size." << std::endl;
+			int newSize;
 
+			switch (_currentData.weapon_handle){
+			case WEAPON_HANDLE::ONEHANDED:
+				newSize = rand() % 3;
+				if (newSize == 2) _currentData.size = WEAPON_SIZE::MEDIUM;
+				else _currentData.size = WEAPON_SIZE::SMALL;
+				break;
+			case WEAPON_HANDLE::TWOHANDED:
+				newSize = rand() % 3;
+				if (newSize == 2) _currentData.size = WEAPON_SIZE::MEDIUM;
+				else _currentData.size = WEAPON_SIZE::LARGE;
+				break;
+			}
+			break;
 
+		case TAGVALUE::HANDLE:
+			//std::cout << "Correcting weapon scheme No. " << _weaponCount << " weapon handle." << std::endl;
+			int newHandle;
+
+			switch (_currentData.size){
+			case WEAPON_SIZE::SMALL:
+				_currentData.weapon_handle = WEAPON_HANDLE::ONEHANDED;
+				break;
+			case WEAPON_SIZE::MEDIUM:
+				newHandle = rand() % 2;
+				if (newHandle == 0) _currentData.weapon_handle = WEAPON_HANDLE::ONEHANDED;
+				else _currentData.weapon_handle = WEAPON_HANDLE::TWOHANDED;
+				break;
+			case WEAPON_SIZE::LARGE:
+				_currentData.weapon_handle = WEAPON_HANDLE::TWOHANDED;
+				break;
+			}
+			break;
+
+		case TAGVALUE::TYPE:
+			//std::cout << "Correcting weapon scheme No. " << _weaponCount << " weapon type." << std::endl;
+			int newType;
+			newType = rand() % 4;
+			_currentData.type = newType;
+			break;
 	}
+	//showStruct();
 	return isSuccess;
 }

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Items\Armours\ArmoursLoader.cpp" />
     <ClCompile Include="Items\Item.cpp" />
     <ClCompile Include="Items\ItemsHolder.cpp" />
     <ClCompile Include="Items\ItemsLoader.cpp" />
@@ -28,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Items\Armours\ArmoursLoader.h" />
     <ClInclude Include="Items\Item.h" />
     <ClInclude Include="Items\ItemsHolder.h" />
     <ClInclude Include="Items\ItemsLoader.h" />
@@ -44,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
-    <Text Include="data\armors.txt" />
+    <Text Include="data\armours.txt" />
     <Text Include="data\consumables.txt" />
     <Text Include="data\enemies.txt" />
     <Text Include="data\map.txt" />

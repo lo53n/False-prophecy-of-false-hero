@@ -16,7 +16,7 @@ public:
 
 	void setItemTexture();
 
-	
+	void setImagesPosition(sf::Vector2f newPosition);
 
 	Item();
 	~Item();

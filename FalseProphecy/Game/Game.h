@@ -24,6 +24,7 @@ private:
 	sf::RenderWindow _window;
 	sf::View _gameView;
 
+
 	///////////////////////
 	//Items related stuff//
 	///////////////////////

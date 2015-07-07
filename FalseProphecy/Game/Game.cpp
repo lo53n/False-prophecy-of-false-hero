@@ -4,6 +4,7 @@ Game::Game()
 	: _window(sf::VideoMode(800, 640), "SFML Application")
 	, _gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 640.0f))
 {
+
 	///////////////////////
 	//Load game resources//
 	///////////////////////
@@ -15,9 +16,10 @@ Game::Game()
 
 //	_itemsHolder->loadResources();
 
-	_player.setPlayerPositionOnGrid(sf::Vector2i(5, 5));
+	//_player.setPlayerPositionOnGrid(sf::Vector2i(5, 5));
 
 	_gameView.setCenter(_player.getPlayerPositionOnMap());
+
 	_window.setView(_gameView);
 }
 
@@ -95,11 +97,22 @@ void Game::update()
 void Game::draw()
 {
 	_window.clear();
+
+	/////////////
+	//draw game//
+	/////////////
+
+	_window.setView(_gameView);
 	//for (int i = 0, len = _maps.size(); i < len; i++) _window.draw(*_maps[i]);
 	_window.draw(*_currentMap);
 	_window.draw(_player);
 	for (auto item : _itemList)
 		_window.draw(*item);
+
+	//////////////////
+	//draw interface//
+	//////////////////
+	_window.setView(_window.getDefaultView());
 	_window.display();
 }
 
@@ -123,9 +136,16 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	//Some cheats!//
 	////////////////
 	//No clip - if true, collisions does not apply//
-	if (key == sf::Keyboard::Numpad0 && isPressed)
+	if (key == sf::Keyboard::Numpad0 && isPressed){
 		if (noClip) noClip = false;
 		else noClip = true;
+	}
+
+	////////////////////
+	//Some fast debugs//
+	////////////////////
+	if (key == sf::Keyboard::Period && isPressed) _itemList[0]->setImagesPosition(sf::Vector2f(32.f, 32.f));
+
 
 	////////////////
 	//Map Movement//
@@ -297,7 +317,7 @@ bool Game::handleMapTraverse()
 			checkForExistingFreeExits(_currentMap);
 			checkForExistingFreeExits(_newMap);
 
-			std::cout << "BOOM! TIED WITH OTHER MAP WITH ID's: old " << _currentMap->getMapId() << ", new " << _newMap->getMapId() << std::endl;
+			//std::cout << "BOOM! TIED WITH OTHER MAP WITH ID's: old " << _currentMap->getMapId() << ", new " << _newMap->getMapId() << std::endl;
 			_currentMap = _newMap;
 			_currentMap->drawMap(_mapTexture);
 		}
@@ -365,7 +385,7 @@ void Game::generateNewMap()
 	_gameView.setCenter(_player.getPlayerPositionOnMap()); //center view on player
 	_window.setView(_gameView); //refresh the view
 
-	std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
+	//std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
 }
 
 void Game::generateNewMap(sf::Vector2i currentPos)
@@ -394,11 +414,11 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 	checkForExistingFreeExits(_currentMap);
 	checkForExistingFreeExits(_newMap);
 
-	std::cout << "Old map exits left: " << _currentMap->getNumberOfFreeExits();
+	//std::cout << "Old map exits left: " << _currentMap->getNumberOfFreeExits();
 	_currentMap = _maps[_maps.size() - 1];
-	std::cout << " New map exits left: " << _currentMap->getNumberOfFreeExits() << std::endl;
+	//std::cout << " New map exits left: " << _currentMap->getNumberOfFreeExits() << std::endl;
 
-	std::cout << _currentMapNumber << " Another! " << _maps.size() << " >> Map No_" << _currentMap->getMapId() << " <<" << std::endl;
+	//std::cout << _currentMapNumber << " Another! " << _maps.size() << " >> Map No_" << _currentMap->getMapId() << " <<" << std::endl;
 
 }
 

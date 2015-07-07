@@ -23,15 +23,11 @@ Weapon::Weapon(Weapon_struct stats) : _stats(stats)
 			_itemTexture.loadFromFile(__DEFAULT_SPEAR_IMAGE__);
 			break;
 	}
-	std::cout << _stats.img_path << std::endl;
 	_itemShape.setSize(sf::Vector2f(32.f, 32.f));
-	_itemShape.setPosition(10.f, 10.f);
 	_itemShape.setTexture(&_itemTexture);
 
 
 }
-
-
 
 Weapon::~Weapon()
 {

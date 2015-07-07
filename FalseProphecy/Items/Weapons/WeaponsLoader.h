@@ -54,6 +54,7 @@ private:
 
 	//current loaded weapon
 	Weapon_struct _currentData;
+	int _weaponCount = 0;
 
 	//Magic Numbers
 	int __UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ = 1000;

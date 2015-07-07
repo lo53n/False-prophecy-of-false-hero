@@ -51,14 +51,14 @@
     <Filter Include="Resource Files\Items">
       <UniqueIdentifier>{2caf42f1-1f2a-4dba-99c0-ccb94c577d23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Items\Armors">
-      <UniqueIdentifier>{39c17b56-3d8d-4a66-86e1-914cdbaad165}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Items\Consumables">
       <UniqueIdentifier>{548c5660-fad8-4a27-ac3b-fbef83b2e0f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Items\Weapons">
       <UniqueIdentifier>{83509db6-57be-465b-aef2-847aa453bc13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Items\Armours">
+      <UniqueIdentifier>{39c17b56-3d8d-4a66-86e1-914cdbaad165}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +104,9 @@
     <ClCompile Include="Items\Weapons\Weapon.cpp">
       <Filter>Resource Files\Items\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Items\Armours\ArmoursLoader.cpp">
+      <Filter>Resource Files\Items\Armours</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map\MapBuilderPattern.h">
@@ -148,6 +151,9 @@
     <ClInclude Include="Items\Weapons\Weapon.h">
       <Filter>Header Files\Items\Weapons</Filter>
     </ClInclude>
+    <ClInclude Include="Items\Armours\ArmoursLoader.h">
+      <Filter>Header Files\Items\Armors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
@@ -157,13 +163,13 @@
     <Text Include="data\weapons.txt">
       <Filter>Resource Files\----Data----</Filter>
     </Text>
-    <Text Include="data\armors.txt">
-      <Filter>Resource Files\----Data----</Filter>
-    </Text>
     <Text Include="data\consumables.txt">
       <Filter>Resource Files\----Data----</Filter>
     </Text>
     <Text Include="data\enemies.txt">
+      <Filter>Resource Files\----Data----</Filter>
+    </Text>
+    <Text Include="data\armours.txt">
       <Filter>Resource Files\----Data----</Filter>
     </Text>
   </ItemGroup>

@@ -14,7 +14,6 @@ Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID) : _mapT
 }
 Map::~Map()
 {
-	std::cout << this << std::endl;
 }
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
