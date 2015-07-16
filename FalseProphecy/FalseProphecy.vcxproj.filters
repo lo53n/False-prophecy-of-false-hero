@@ -60,6 +60,18 @@
     <Filter Include="Resource Files\Items\Armours">
       <UniqueIdentifier>{39c17b56-3d8d-4a66-86e1-914cdbaad165}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Interface">
+      <UniqueIdentifier>{3f518d5e-28aa-48f9-be8e-30068fc58344}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Interface">
+      <UniqueIdentifier>{5a09ee24-e096-4e65-9e59-8f52c2ef971e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\----Data----\Resources">
+      <UniqueIdentifier>{3bab353e-8e56-44e4-a056-f69ba52adb58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\----Data----">
+      <UniqueIdentifier>{9f76e049-59bf-409e-b033-083020da10b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,6 +119,12 @@
     <ClCompile Include="Items\Armours\ArmoursLoader.cpp">
       <Filter>Resource Files\Items\Armours</Filter>
     </ClCompile>
+    <ClCompile Include="Interface\GameWindowInterface.cpp">
+      <Filter>Resource Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadFromResource.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map\MapBuilderPattern.h">
@@ -136,9 +154,6 @@
     <ClInclude Include="Items\Weapons\WeaponsLoader.h">
       <Filter>Header Files\Items\Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="StructsEnums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Items\ItemsHolder.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
@@ -153,6 +168,18 @@
     </ClInclude>
     <ClInclude Include="Items\Armours\ArmoursLoader.h">
       <Filter>Header Files\Items\Armors</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\GameWindowInterface.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadFromResource.h">
+      <Filter>Header Files\----Data----</Filter>
+    </ClInclude>
+    <ClInclude Include="StructsEnums.h">
+      <Filter>Header Files\----Data----</Filter>
+    </ClInclude>
+    <ClInclude Include="UIResource.h">
+      <Filter>Header Files\----Data----</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,5 +202,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="UIResource.rc">
+      <Filter>Resource Files\----Data----\Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -3,8 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <cstdlib>
-
 #include "../Map/MapLoader.h"
 #include "../Map/Map.h"
 #include "../Player/Player.h"
@@ -51,18 +49,6 @@ private:
 
 	int _currentMapNumber;
 
-	void generateNewMap();
-	void generateNewMap(sf::Vector2i currentPos);
-
-	void checkForExistingFreeExits(std::shared_ptr<Map> mapToCheck);
-
-	//////////////////
-	//Map traversing//
-	//////////////////
-
-	bool handleMapTraverse();
-	void moveToMap(int mapNumber, bool needPair);
-
 
 	////////////////////////
 	//Player related stuff//
@@ -81,12 +67,18 @@ private:
 	const float __CAMERA_MOVE_LENGTH__ = 32.0f;
 
 private:
+	//////////////////
+	//Game main loop//
+	//////////////////
 	void processEvents();
 	void update();
 	void draw();
 
-
+	///////////////////////
+	//Handle player input//
+	///////////////////////
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+
 
 
 	//check, if player can move into specific place
@@ -102,7 +94,17 @@ private:
 	std::shared_ptr<Map> createMapSharedPointer(unsigned int mapID); 
 
 
+	void generateNewMap();
+	void generateNewMap(sf::Vector2i currentPos);
 
+	void checkForExistingFreeExits(std::shared_ptr<Map> mapToCheck);
+
+	//////////////////
+	//Map traversing//
+	//////////////////
+
+	bool handleMapTraverse();
+	void moveToMap(int mapNumber, bool needPair);
 
 };
 

@@ -1,4 +1,13 @@
 [-----]
+2015-07-17
+
+Fooling around with Visual Studio resources and learning how to load them to SFML 2.0
+
+What is done?
+
+	- little bit of basic game interface.
+
+[-----]
 2015-07-07
 
 What is done?
