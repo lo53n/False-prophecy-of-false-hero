@@ -15,6 +15,7 @@
     <ClCompile Include="Interface\GameWindowInterface.cpp" />
     <ClCompile Include="Interface\InventoryWindow.cpp" />
     <ClCompile Include="Interface\StatusWindow.cpp" />
+    <ClCompile Include="Items\Armours\Armour.cpp" />
     <ClCompile Include="Items\Armours\ArmoursLoader.cpp" />
     <ClCompile Include="Items\Item.cpp" />
     <ClCompile Include="Items\ItemsHolder.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="Interface\GameWindowInterface.h" />
     <ClInclude Include="Interface\InventoryWindow.h" />
     <ClInclude Include="Interface\StatusWindow.h" />
+    <ClInclude Include="Items\Armours\Armour.h" />
     <ClInclude Include="Items\Armours\ArmoursLoader.h" />
     <ClInclude Include="Items\Item.h" />
     <ClInclude Include="Items\ItemsHolder.h" />

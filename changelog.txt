@@ -9,6 +9,8 @@ What is done?
 
 	- moving around on inventory screen (specifically on backpack part)
 
+	- some work on armour
+
 [-----]
 2015-07-17
 

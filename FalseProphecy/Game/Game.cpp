@@ -4,6 +4,7 @@ Game::Game()
 	: _window(sf::VideoMode(800, 640), "SFML Application")
 	, _gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 640.0f))
 	, _interfaceView(sf::FloatRect(0.f, 0.f, 800.f, 640.f))
+	, _player(std::make_shared<Player>())
 {
 
 	///////////////////////
@@ -17,13 +18,23 @@ Game::Game()
 
 //	_itemsHolder->loadResources();
 
-	//_player.setPlayerPositionOnGrid(sf::Vector2i(5, 5));
+	//_player->setPlayerPositionOnGrid(sf::Vector2i(5, 5));
 
-	_gameView.setCenter(_player.getPlayerPositionOnMap());
+
+	/////////////
+	//Set views//
+	/////////////
+	_gameView.setCenter(_player->getPlayerPositionOnMap());
 
 	_window.setView(_gameView);
 
 	_gameWindowInterface.setGameWindowInterfaceSizeByResize(sf::Vector2f((float)_window.getSize().x, (float)_window.getSize().y));
+
+	//////////////////////////////////
+	//Set player on inventory window//
+	//////////////////////////////////
+
+	_inventoryWindow.setPlayer(_player);
 }
 
 /////////////
@@ -34,9 +45,14 @@ void Game::run(){
 	
 	_currentMapNumber = 0;
 	
-	std::shared_ptr<Item> asd(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
-	_itemList.push_back(asd);
-
+	for (int i = 0; i < 11; i++){
+		std::shared_ptr<Item> asd(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
+		_player->putItemInBackpack(asd);
+	}
+	for (int i = 0; i < 11; i++){
+		std::shared_ptr<Item> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
+		_player->putItemInBackpack(asd);
+	}
 
 	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 
@@ -117,7 +133,7 @@ void Game::draw()
 	_window.setView(_gameView);
 	//for (int i = 0, len = _maps.size(); i < len; i++) _window.draw(*_maps[i]);
 	_window.draw(*_currentMap);
-	_window.draw(_player);
+	_window.draw(*_player);
 	for (auto item : _itemList)
 		_window.draw(*item);
 
@@ -166,7 +182,10 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	/////////////////////////////////
 	if (key == sf::Keyboard::I && isPressed) {
 		if (_isInventoryWindowOpen) _isInventoryWindowOpen = false;
-		else _isInventoryWindowOpen = true;
+		else {
+			_isInventoryWindowOpen = true;
+			_inventoryWindow.putItemsOnTiles();
+		}
 		_isStatusWindowOpen = false;
 	}
 	if (key == sf::Keyboard::C && isPressed) {
@@ -196,7 +215,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		else if (key == sf::Keyboard::Numpad9)
 			_gameView.move(__CAMERA_MOVE_LENGTH__, -__CAMERA_MOVE_LENGTH__); //right-up
 		else if (key == sf::Keyboard::Numpad5)
-			_gameView.setCenter(_player.getPlayerPositionOnMap()); //center
+			_gameView.setCenter(_player->getPlayerPositionOnMap()); //center
 
 		_window.setView(_gameView); //refresh view
 	}
@@ -213,38 +232,38 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 				//Move one step up//
 				case sf::Keyboard::Up:
 					if (checkMovement(Player::UP))
-						_player.movePlayer(Player::UP);
+						_player->movePlayer(Player::UP);
 					break;
 
 					//Move one step right//
 				case sf::Keyboard::Right:
 					if (checkMovement(Player::RIGHT))
-						_player.movePlayer(Player::RIGHT);
+						_player->movePlayer(Player::RIGHT);
 					break;
 
 					//Move one step down//
 				case sf::Keyboard::Down:
 					if (checkMovement(Player::DOWN))
-						_player.movePlayer(Player::DOWN);
+						_player->movePlayer(Player::DOWN);
 					break;
 
 					//Move one step left//
 				case sf::Keyboard::Left:
 					if (checkMovement(Player::LEFT))
-						_player.movePlayer(Player::LEFT);
+						_player->movePlayer(Player::LEFT);
 			}
 
 			if (noClip)//No Clip cheat!//
 				if (key == sf::Keyboard::Up)
-					_player.movePlayer(Player::UP);
+					_player->movePlayer(Player::UP);
 				else if (key == sf::Keyboard::Right)
-					_player.movePlayer(Player::RIGHT);
+					_player->movePlayer(Player::RIGHT);
 				else if (key == sf::Keyboard::Down)
-					_player.movePlayer(Player::DOWN);
+					_player->movePlayer(Player::DOWN);
 				else if (key == sf::Keyboard::Left)
-					_player.movePlayer(Player::LEFT);
+					_player->movePlayer(Player::LEFT);
 
-				_gameView.setCenter(_player.getPlayerPositionOnMap()); //center view on player
+				_gameView.setCenter(_player->getPlayerPositionOnMap()); //center view on player
 				_window.setView(_gameView); //refresh the view
 		}
 	}
@@ -270,16 +289,16 @@ bool Game::checkMovement(int direction)
 		switch (direction){
 			//We must give opposite vectors to achieve our goal of checking desired tile
 		case 0: //UP
-			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, 1);
+			checkForPosition = _player->getPlayerPositionOnGrid() - sf::Vector2i(0, 1);
 			break;
 		case 1: //RIGHT
-			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(-1, 0);
+			checkForPosition = _player->getPlayerPositionOnGrid() - sf::Vector2i(-1, 0);
 			break;
 		case 2: //DOWN
-			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(0, -1);
+			checkForPosition = _player->getPlayerPositionOnGrid() - sf::Vector2i(0, -1);
 			break;
 		case 3: //LEFT
-			checkForPosition = _player.getPlayerPositionOnGrid() - sf::Vector2i(1, 0);
+			checkForPosition = _player->getPlayerPositionOnGrid() - sf::Vector2i(1, 0);
 			break;
 		}
 		//Check if you don't go out-of-bound. If this is the case, it can be the exit
@@ -291,7 +310,7 @@ bool Game::checkMovement(int direction)
 			|| _currentMap->getMap()[checkForPosition.y][checkForPosition.x] == ' '
 			)
 
-			throw _currentMap->getMap()[_player.getPlayerPositionOnGrid().y][_player.getPlayerPositionOnGrid().x];
+			throw _currentMap->getMap()[_player->getPlayerPositionOnGrid().y][_player->getPlayerPositionOnGrid().x];
 	}
 	catch(char currentTile){
 		switch (currentTile){
@@ -317,7 +336,7 @@ bool Game::handleMapTraverse()
 {
 
 	//This one is for map traversing//
-	sf::Vector2i currentPosition((int)_player.getPlayerPositionOnGrid().y, (int)_player.getPlayerPositionOnGrid().x);
+	sf::Vector2i currentPosition((int)_player->getPlayerPositionOnGrid().y, (int)_player->getPlayerPositionOnGrid().x);
 	unsigned int previousMap = _currentMap->getMapId();
 
 	//Check for existing maps. If not, create new or pair with new.
@@ -374,7 +393,7 @@ bool Game::handleMapTraverse()
 	}
 
 
-	_player.setPlayerPositionOnGrid(sf::Vector2i(_currentMap->getNewPosition(previousMap).y, _currentMap->getNewPosition(previousMap).x));
+	_player->setPlayerPositionOnGrid(sf::Vector2i(_currentMap->getNewPosition(previousMap).y, _currentMap->getNewPosition(previousMap).x));
 	return false;
 }
 
@@ -418,9 +437,9 @@ void Game::generateNewMap()
 	_currentMap = _maps[_maps.size() - 1];
 
 	sf::Vector2i position = _currentMap->getExitPoints()[rand() % _currentMap->getExitPoints().size()];
-	_player.setPlayerPositionOnGrid(sf::Vector2i(position.y, position.x));
+	_player->setPlayerPositionOnGrid(sf::Vector2i(position.y, position.x));
 
-	_gameView.setCenter(_player.getPlayerPositionOnMap()); //center view on player
+	_gameView.setCenter(_player->getPlayerPositionOnMap()); //center view on player
 	_window.setView(_gameView); //refresh the view
 
 	//std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;

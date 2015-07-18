@@ -72,6 +72,9 @@
     <Filter Include="Header Files\----Data----">
       <UniqueIdentifier>{9f76e049-59bf-409e-b033-083020da10b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\----Data----\Resources\Interfaces">
+      <UniqueIdentifier>{8f5b12ee-c8ca-41e3-95d0-e60225659c04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="Interface\InventoryWindow.cpp">
       <Filter>Resource Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Armours\Armour.cpp">
+      <Filter>Resource Files\Items\Armours</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +199,9 @@
     <ClInclude Include="Interface\StatusWindow.h">
       <Filter>Header Files\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="Items\Armours\Armour.h">
+      <Filter>Header Files\Items\Armors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
@@ -216,16 +225,18 @@
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="UIResource.rc">
-      <Filter>Resource Files\----Data----\Resources</Filter>
-    </ResourceCompile>
+    <Font Include="Resources\arial.ttf">
+      <Filter>Resource Files\----Data----\Resources\Interfaces</Filter>
+    </Font>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\backtile.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\----Data----\Resources\Interfaces</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="Resources\arial.ttf" />
+    <ResourceCompile Include="UIResource.rc">
+      <Filter>Resource Files\----Data----\Resources\Interfaces</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

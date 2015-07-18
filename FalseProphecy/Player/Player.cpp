@@ -39,7 +39,10 @@ sf::Vector2i& Player::getPlayerPositionOnGrid()
 {
 	return _positionOnGrid;
 }
-
+std::vector<std::shared_ptr<Item>>& Player::getPlayerBackpack()
+{
+	return _backpack;
+}
 ///////////
 //Setters//
 ///////////
@@ -85,4 +88,13 @@ void Player::movePlayer(int direction)
 	_playerSprite.setPosition(_positionOnMap);
 	//std::cout << "My position on grid: " << _positionOnGrid.x << " " << _positionOnGrid.y << std::endl;
 	//std::cout << "My position on map: " << _positionOnMap.x << " " << _positionOnMap.y << std::endl;
+}
+
+//////////////////
+//Item managment//
+//////////////////
+
+void Player::putItemInBackpack(std::shared_ptr<Item> item)
+{
+	_backpack.push_back(item);
 }

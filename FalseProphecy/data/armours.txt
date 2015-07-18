@@ -1,6 +1,6 @@
 
 [[NAME::Leathero Petlo]]
-[[IMG::armor1.png]]
+[[IMG::chainmail.png]]
 [[TYPE::TORSO]]
 [[CLASS::HEAVY]]
 [[SPEED::20]]

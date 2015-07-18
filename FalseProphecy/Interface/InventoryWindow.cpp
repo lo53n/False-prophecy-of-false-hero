@@ -24,9 +24,6 @@ InventoryWindow::InventoryWindow()
 			tile.setPosition(__FIRST_TILE_POSITION_X__ + 35.f * j, __FIRST_TILE_POSITION_Y__ + 35.f * i);
 			tile.setTexture(&_backtileTexture);
 
-
-
-
 			tileRow.push_back(tile);
 		}
 		_inventoryTiles.push_back(tileRow);
@@ -46,6 +43,29 @@ InventoryWindow::~InventoryWindow()
 
 }
 
+
+void InventoryWindow::setPlayer(std::shared_ptr<Player> player)
+{
+	_player = player;
+}
+
+void InventoryWindow::putItemsOnTiles()
+{
+	sf::Vector2f newPosition;
+	int itemNumber = _player->getPlayerBackpack().size();
+
+	for (int currentItem = 0, columns = 0, rows = 0; currentItem < itemNumber; currentItem++){
+		newPosition = sf::Vector2f(__FIRST_TILE_POSITION_X__ + 35.f * columns, __FIRST_TILE_POSITION_Y__ + 35.f * rows);
+		_player->getPlayerBackpack()[currentItem]->setImagesPosition(newPosition);
+		columns++;
+		if (columns == __MAX_TILE_COLUMN_INV__){
+			rows++;
+			columns = 0;
+		}
+	}
+}
+
+
 void InventoryWindow::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(_inventoryWindow);
@@ -54,7 +74,7 @@ void InventoryWindow::draw(sf::RenderTarget& target, sf::RenderStates states) co
 	for (auto tileRow : _inventoryTiles) 
 		for(auto tile : tileRow) 
 			target.draw(tile);
-
+	for (auto item : _player->getPlayerBackpack()) target.draw(*item);
 	target.draw(_highlight);
 }
 

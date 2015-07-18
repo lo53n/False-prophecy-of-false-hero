@@ -3,12 +3,18 @@
 
 #include <vector>
 #include <iostream>
+#include <memory>
+
 
 #include <SFML\Graphics.hpp>
+
+#include "../Items/Item.h"
 
 class Player : public sf::Drawable{
 
 public:
+	std::string name;
+
 	Player();
 	~Player();
 
@@ -37,6 +43,10 @@ public:
 	//get player position in px
 	sf::Vector2i& getPlayerPositionOnGrid();
 
+
+	//get player's backpack
+	std::vector<std::shared_ptr<Item>>& getPlayerBackpack();
+
 	///////////
 	//Setters//
 	///////////
@@ -44,7 +54,13 @@ public:
 	//set player position in px
 	void setPlayerPositionOnMap(sf::Vector2f newPositionOnMap);		
 	//set player position on map
-	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);	
+	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);
+
+	/////////////
+	//Inventory//
+	/////////////
+
+	void putItemInBackpack(std::shared_ptr<Item> item);
 
 private:
 	sf::Sprite _playerSprite;
@@ -52,6 +68,14 @@ private:
 	
 	sf::Vector2f _positionOnMap;	//Position in px
 	sf::Vector2i _positionOnGrid;	//Position on map
+
+
+	/////////////
+	//Equipment//
+	/////////////
+
+	std::vector<std::shared_ptr<Item>> _backpack;
+
 
 
 	/////////////////

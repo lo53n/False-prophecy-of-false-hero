@@ -8,6 +8,7 @@
 #include "../Player/Player.h"
 #include "../Items/ItemsLoader.h"
 #include "../Items/Weapons/Weapon.h"
+#include "../Items/Armours/Armour.h"
 #include "../Interface/GameWindowInterface.h"
 #include "../Interface/InventoryWindow.h"
 #include "../Interface/StatusWindow.h"
@@ -72,7 +73,7 @@ private:
 	////////////////////////
 	//Player related stuff//
 	////////////////////////
-	Player _player;
+	std::shared_ptr<Player> _player;
 
 	///////////////
 	//Some cheats//

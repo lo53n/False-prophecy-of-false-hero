@@ -33,9 +33,18 @@ private:
 	sf::RectangleShape _staminaBar;
 
 
+	sf::RectangleShape _inventoryIconBackground;
+	sf::RectangleShape _statusIconBackground;
+	sf::RectangleShape _menuIconBackground;
+
+	sf::Texture _inventoryIconTexture;
+	sf::Texture _statusIconTexture;
+	sf::Texture _menuIconTexture;
+
 	sf::RectangleShape _inventoryIcon;
 	sf::RectangleShape _statusIcon;
 	sf::RectangleShape _menuIcon;
+
 	sf::Text _inventoryText;
 	sf::Text _statusText;
 	sf::Text _menuText;

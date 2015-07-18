@@ -6,6 +6,7 @@
 
 #include "../LoadFromResource.h"
 #include "../UIResource.h"
+#include "../Player/Player.h"
 
 class InventoryWindow : public sf::Drawable{
 
@@ -13,8 +14,14 @@ public:
 
 	void highlightNextItem(int direction);
 
+	void putItemsOnTiles();
+
+	void setPlayer(std::shared_ptr<Player> player);
+
 	InventoryWindow();
 	~InventoryWindow();
+
+	std::shared_ptr<Player> _player;
 
 private:
 
@@ -23,6 +30,7 @@ private:
 	std::vector<std::vector<sf::RectangleShape>> _inventoryTiles;
 
 	sf::Texture _backtileTexture;
+
 
 	///////////////////
 	//highlight stuff//
