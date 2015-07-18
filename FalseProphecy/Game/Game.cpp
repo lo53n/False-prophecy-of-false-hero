@@ -3,6 +3,7 @@
 Game::Game()
 	: _window(sf::VideoMode(800, 640), "SFML Application")
 	, _gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 640.0f))
+	, _interfaceView(sf::FloatRect(0.f, 0.f, 800.f, 640.f))
 {
 
 	///////////////////////
@@ -21,6 +22,8 @@ Game::Game()
 	_gameView.setCenter(_player.getPlayerPositionOnMap());
 
 	_window.setView(_gameView);
+
+	_gameWindowInterface.setGameWindowInterfaceSizeByResize(sf::Vector2f((float)_window.getSize().x, (float)_window.getSize().y));
 }
 
 /////////////
@@ -66,6 +69,8 @@ void Game::run(){
 
 void Game::processEvents()
 {
+	sf::Vector2i coords;
+	sf::Vector2f visible;
 	sf::Event event;
 	while (_window.pollEvent(event))
 	{
@@ -81,9 +86,16 @@ void Game::processEvents()
 			_window.close();
 			break;
 		case sf::Event::Resized:
-			sf::Vector2f visible((float)event.size.width, (float)event.size.height);
+			visible = sf::Vector2f((float)event.size.width, (float)event.size.height);
 			_gameView.setSize(visible);
+			_interfaceView.setSize(visible);
+			_interfaceView.setCenter(visible.x/2, visible.y/2);
+			_gameWindowInterface.setGameWindowInterfaceSizeByResize(visible);
 			_window.setView(_gameView);
+			break;
+		case::sf::Event::MouseButtonPressed:
+			coords = sf::Mouse::getPosition(_window);
+			std::cout << coords.x << " " << coords.y << std::endl;
 			break;
 		}
 	}
@@ -112,7 +124,10 @@ void Game::draw()
 	//////////////////
 	//draw interface//
 	//////////////////
-	_window.setView(_window.getDefaultView());
+	_window.setView(_interfaceView);
+	_window.draw(_gameWindowInterface);
+	if (_isInventoryWindowOpen) _window.draw(_inventoryWindow);
+	if (_isStatusWindowOpen) _window.draw(_statusWindow);
 	_window.display();
 }
 
@@ -146,6 +161,19 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	////////////////////
 	if (key == sf::Keyboard::Period && isPressed) _itemList[0]->setImagesPosition(sf::Vector2f(32.f, 32.f));
 
+	/////////////////////////////////
+	//Switch interfaces and windows//
+	/////////////////////////////////
+	if (key == sf::Keyboard::I && isPressed) {
+		if (_isInventoryWindowOpen) _isInventoryWindowOpen = false;
+		else _isInventoryWindowOpen = true;
+		_isStatusWindowOpen = false;
+	}
+	if (key == sf::Keyboard::C && isPressed) {
+		if (_isStatusWindowOpen) _isStatusWindowOpen = false;
+		else _isStatusWindowOpen = true;
+		_isInventoryWindowOpen = false;
+	}
 
 	////////////////
 	//Map Movement//
@@ -172,53 +200,63 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 		_window.setView(_gameView); //refresh view
 	}
-	///////////////////
-	//Player Movement//
-	///////////////////
-	if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
-		bool canMove = false; //for collision
-		sf::Vector2i checkForPosition;
-		if (!noClip) //No Clip cheat!//
-		switch (key){
-			//Move one step up//
-		case sf::Keyboard::Up:
-			if (checkMovement(Player::UP))
-				_player.movePlayer(Player::UP);
-			break;
 
-			//Move one step right//
-		case sf::Keyboard::Right:
-			if (checkMovement(Player::RIGHT))
-				_player.movePlayer(Player::RIGHT);
-			break;
+	if (!_isInventoryWindowOpen && !_isStatusWindowOpen){
+		///////////////////
+		//Player Movement//
+		///////////////////
+		if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
+			bool canMove = false; //for collision
+			sf::Vector2i checkForPosition;
+			if (!noClip) //No Clip cheat!//
+				switch (key){
+				//Move one step up//
+				case sf::Keyboard::Up:
+					if (checkMovement(Player::UP))
+						_player.movePlayer(Player::UP);
+					break;
 
-			//Move one step down//
-		case sf::Keyboard::Down:
-			if (checkMovement(Player::DOWN))
-				_player.movePlayer(Player::DOWN);
-			break;
+					//Move one step right//
+				case sf::Keyboard::Right:
+					if (checkMovement(Player::RIGHT))
+						_player.movePlayer(Player::RIGHT);
+					break;
 
-			//Move one step left//
-		case sf::Keyboard::Left:
-			if (checkMovement(Player::LEFT))
-				_player.movePlayer(Player::LEFT);
+					//Move one step down//
+				case sf::Keyboard::Down:
+					if (checkMovement(Player::DOWN))
+						_player.movePlayer(Player::DOWN);
+					break;
+
+					//Move one step left//
+				case sf::Keyboard::Left:
+					if (checkMovement(Player::LEFT))
+						_player.movePlayer(Player::LEFT);
+			}
+
+			if (noClip)//No Clip cheat!//
+				if (key == sf::Keyboard::Up)
+					_player.movePlayer(Player::UP);
+				else if (key == sf::Keyboard::Right)
+					_player.movePlayer(Player::RIGHT);
+				else if (key == sf::Keyboard::Down)
+					_player.movePlayer(Player::DOWN);
+				else if (key == sf::Keyboard::Left)
+					_player.movePlayer(Player::LEFT);
+
+				_gameView.setCenter(_player.getPlayerPositionOnMap()); //center view on player
+				_window.setView(_gameView); //refresh the view
 		}
-
-		if (noClip)//No Clip cheat!//
-			if (key == sf::Keyboard::Up)
-				_player.movePlayer(Player::UP);
-			else if (key == sf::Keyboard::Right)
-				_player.movePlayer(Player::RIGHT);
-			else if (key == sf::Keyboard::Down)
-				_player.movePlayer(Player::DOWN);
-			else if (key == sf::Keyboard::Left)
-				_player.movePlayer(Player::LEFT);
-
-		_gameView.setCenter(_player.getPlayerPositionOnMap()); //center view on player
-		_window.setView(_gameView); //refresh the view
 	}
-
-
+	else{
+		//////////////////////////
+		//Interface manipulation//
+		//////////////////////////
+		if (_isInventoryWindowOpen && !_isStatusWindowOpen && isPressed){
+			_inventoryWindow.highlightNextItem(key);
+			
+		}
+	}
 	//TODO: Debug Menu
 }
 

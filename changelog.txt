@@ -1,4 +1,15 @@
 [-----]
+2015-07-18
+
+Didn't do much, too tired and too busy to do it. 
+
+What is done?
+
+	- 10-30% of inventory screen and status screen, needs more work and "prettyfying"
+
+	- moving around on inventory screen (specifically on backpack part)
+
+[-----]
 2015-07-17
 
 Fooling around with Visual Studio resources and learning how to load them to SFML 2.0

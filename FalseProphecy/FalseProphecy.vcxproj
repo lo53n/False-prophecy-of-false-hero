@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Interface\GameWindowInterface.cpp" />
+    <ClCompile Include="Interface\InventoryWindow.cpp" />
+    <ClCompile Include="Interface\StatusWindow.cpp" />
     <ClCompile Include="Items\Armours\ArmoursLoader.cpp" />
     <ClCompile Include="Items\Item.cpp" />
     <ClCompile Include="Items\ItemsHolder.cpp" />
@@ -32,6 +34,8 @@
   <ItemGroup>
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Interface\GameWindowInterface.h" />
+    <ClInclude Include="Interface\InventoryWindow.h" />
+    <ClInclude Include="Interface\StatusWindow.h" />
     <ClInclude Include="Items\Armours\ArmoursLoader.h" />
     <ClInclude Include="Items\Item.h" />
     <ClInclude Include="Items\ItemsHolder.h" />
@@ -62,6 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="UIResource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\backtile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\arial.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BD41A94C-FAC9-49DC-9D40-9167D3604BDE}</ProjectGuid>

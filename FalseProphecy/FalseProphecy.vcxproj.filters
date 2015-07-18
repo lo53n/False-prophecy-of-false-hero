@@ -125,6 +125,12 @@
     <ClCompile Include="LoadFromResource.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Interface\StatusWindow.cpp">
+      <Filter>Resource Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\InventoryWindow.cpp">
+      <Filter>Resource Files\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map\MapBuilderPattern.h">
@@ -181,6 +187,12 @@
     <ClInclude Include="UIResource.h">
       <Filter>Header Files\----Data----</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\InventoryWindow.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\StatusWindow.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
@@ -207,5 +219,13 @@
     <ResourceCompile Include="UIResource.rc">
       <Filter>Resource Files\----Data----\Resources</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\backtile.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\arial.ttf" />
   </ItemGroup>
 </Project>

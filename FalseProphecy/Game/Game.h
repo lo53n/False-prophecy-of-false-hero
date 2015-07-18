@@ -8,6 +8,9 @@
 #include "../Player/Player.h"
 #include "../Items/ItemsLoader.h"
 #include "../Items/Weapons/Weapon.h"
+#include "../Interface/GameWindowInterface.h"
+#include "../Interface/InventoryWindow.h"
+#include "../Interface/StatusWindow.h"
 
 class Game {
 public:
@@ -21,7 +24,23 @@ private:
 	///////////////
 	sf::RenderWindow _window;
 	sf::View _gameView;
+	sf::View _interfaceView;
 
+	/////////////////////////////
+	//Some bool to check events//
+	/////////////////////////////
+	bool _isPlaying = true;
+	bool _isStatusWindowOpen = false;
+	bool _isInventoryWindowOpen = false;
+
+
+	///////////////////////
+	//Interfaces and menu//
+	///////////////////////
+
+	GameWindowInterface _gameWindowInterface;
+	InventoryWindow _inventoryWindow;
+	StatusWindow _statusWindow;
 
 	///////////////////////
 	//Items related stuff//

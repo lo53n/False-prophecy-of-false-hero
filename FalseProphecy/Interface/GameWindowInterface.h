@@ -16,7 +16,7 @@ class GameWindowInterface : public sf::Drawable{
 public:
 
 
-
+	void setGameWindowInterfaceSizeByResize(sf::Vector2f newSize);
 
 	GameWindowInterface();
 	~GameWindowInterface();
@@ -46,6 +46,9 @@ private:
 	/////////////////
 
 	const std::string __FONT_NAME__ = "ARIALFONT";
+	const float __UPPER_INTERFACE_HEIGHT__ = 90.f;
+	const float __ICON_PLACEMENT_Y__ = 23.f;
+	const float __TEXT_PLACEMENT_Y__ = 58.f;
 
 private:
 

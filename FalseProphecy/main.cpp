@@ -2,22 +2,21 @@
 #include <unordered_map>
 #include <ctime>
 
-//#include "Game/Game.h"
+#include "Game/Game.h"
 //#include "Map/MapBuilderPattern.h"
 //#include "Map/NormalBuilder.h"
 
 #include "LoadFromResource.h"
 #include "UIResource.h"
 
-#include "Interface\GameWindowInterface.h"
 
 #include "SFML/Graphics.hpp"
 
 int main()
 {
 	srand((unsigned int)time(0));
-	//Game game;
-	//game.run();
+	Game game;
+	game.run();
 
 	//std::unordered_map<int, int> map;
 	//map[1] = 99999;
@@ -90,9 +89,7 @@ int main()
 	text.setFont(font);
 	text.setPosition(100.f, 100.f);
 	text.setString("asdasda");
-	*/
 
-	GameWindowInterface GWI;
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
 
@@ -110,6 +107,7 @@ int main()
 		// window.draw(text);
 		window.display();
 	}
+	*/
 	
 	system("pause");
 	return 0;
