@@ -57,10 +57,8 @@ struct Weapon_struct{
 
 enum ARMOUR_TYPE{
 	HELMET,
-	GAUNTLET,
 	TORSO,
 	GREAVES,
-	BOOTS,
 	SHIELD
 };
 

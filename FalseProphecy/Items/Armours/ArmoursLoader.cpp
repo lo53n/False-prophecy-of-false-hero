@@ -165,14 +165,10 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 	case TAGVALUE::TYPE:
 		if (output[1] == "HELMET")
 			_currentData.type = ARMOUR_TYPE::HELMET;
-		else if (output[1] == "GAUNTLET")
-			_currentData.type = ARMOUR_TYPE::GAUNTLET;
 		else if (output[1] == "TORSO")
 			_currentData.type = ARMOUR_TYPE::TORSO;
 		else if (output[1] == "GREAVES")
 			_currentData.type = ARMOUR_TYPE::GREAVES;
-		else if (output[1] == "BOOTS")
-			_currentData.type = ARMOUR_TYPE::BOOTS;
 		else if (output[1] == "SHIELD")
 			_currentData.type = ARMOUR_TYPE::SHIELD;
 		else _currentData.type = -1;

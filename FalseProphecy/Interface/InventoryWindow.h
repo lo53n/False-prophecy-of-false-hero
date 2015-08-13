@@ -18,6 +18,8 @@ public:
 
 	void setPlayer(std::shared_ptr<Player> player);
 
+	void resizeByGameWindow(sf::Vector2f center);
+
 	InventoryWindow();
 	~InventoryWindow();
 
@@ -28,6 +30,13 @@ private:
 	sf::RectangleShape _inventoryWindow;
 	sf::RectangleShape _characterWindow;
 	std::vector<std::vector<sf::RectangleShape>> _inventoryTiles;
+
+
+	sf::RectangleShape _mainHandTile;
+	sf::RectangleShape _offHandTile;
+	sf::RectangleShape _helmetTile;
+	sf::RectangleShape _torsoTile;
+	sf::RectangleShape _legsTile;
 
 	sf::Texture _backtileTexture;
 
@@ -48,8 +57,12 @@ private:
 
 	float __FIRST_TILE_POSITION_X__ = 330.f;
 	float __FIRST_TILE_POSITION_Y__ = 110.f;
+
+	float __TILE_SPAN_SIZE_X__ = 15.f;
+	float __TILE_SPAN_SIZE_Y__ = 15.f;
 private:
 
+	void setInventoryWindowTiles();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

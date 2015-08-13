@@ -21,6 +21,12 @@ Game::Game()
 	//_player->setPlayerPositionOnGrid(sf::Vector2i(5, 5));
 
 
+	//////////////////////////////////
+	//Set player on inventory window//
+	//////////////////////////////////
+
+	_inventoryWindow.setPlayer(_player);
+
 	/////////////
 	//Set views//
 	/////////////
@@ -30,11 +36,8 @@ Game::Game()
 
 	_gameWindowInterface.setGameWindowInterfaceSizeByResize(sf::Vector2f((float)_window.getSize().x, (float)_window.getSize().y));
 
-	//////////////////////////////////
-	//Set player on inventory window//
-	//////////////////////////////////
+	_inventoryWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 
-	_inventoryWindow.setPlayer(_player);
 }
 
 /////////////
@@ -107,6 +110,7 @@ void Game::processEvents()
 			_interfaceView.setSize(visible);
 			_interfaceView.setCenter(visible.x/2, visible.y/2);
 			_gameWindowInterface.setGameWindowInterfaceSizeByResize(visible);
+			_inventoryWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 			_window.setView(_gameView);
 			break;
 		case::sf::Event::MouseButtonPressed:

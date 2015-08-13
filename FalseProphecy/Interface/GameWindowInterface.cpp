@@ -67,6 +67,12 @@ GameWindowInterface::GameWindowInterface()
 	_menuIconBackground.setOutlineThickness(3.f);
 	_menuIconBackground.setOutlineColor(sf::Color(90, 90, 30, 50));
 
+	_menuIconTexture.loadFromImage(LoadImageFromResource("MENU_ICON"));
+
+	_menuIcon.setPosition(upperSize.x - 40, __ICON_PLACEMENT_Y__);
+	_menuIcon.setSize(sf::Vector2f(32.f, 32.f));
+	_menuIcon.setTexture(&_menuIconTexture);
+
 
 
 	_font = LoadFontFromResource("Arialfont");
@@ -115,7 +121,7 @@ void GameWindowInterface::draw(sf::RenderTarget& target, sf::RenderStates states
 
 	target.draw(_inventoryIcon);
 	target.draw(_statusIcon);
-	//target.draw(_menuIcon);
+	target.draw(_menuIcon);
 
 	target.draw(_inventoryText);
 	target.draw(_statusText);
@@ -135,7 +141,7 @@ void GameWindowInterface::setGameWindowInterfaceSizeByResize(sf::Vector2f newSiz
 
 	_inventoryIcon.setPosition(upperSize.x - 120, __ICON_PLACEMENT_Y__);
 	_statusIcon.setPosition(upperSize.x - 80, __ICON_PLACEMENT_Y__);
-	//_menuIcon.setPosition(upperSize.x - 40, __ICON_PLACEMENT_Y__);
+	_menuIcon.setPosition(upperSize.x - 40, __ICON_PLACEMENT_Y__);
 
 	_inventoryText.setPosition(upperSize.x - 110, __TEXT_PLACEMENT_Y__);
 	_statusText.setPosition(upperSize.x - 73, __TEXT_PLACEMENT_Y__);

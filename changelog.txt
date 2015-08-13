@@ -1,4 +1,9 @@
 [-----]
+2015-08-14
+
+Little work on Inventory Window and small update on armour types.
+
+[-----]
 2015-07-18
 
 Didn't do much, too tired and too busy to do it. 
