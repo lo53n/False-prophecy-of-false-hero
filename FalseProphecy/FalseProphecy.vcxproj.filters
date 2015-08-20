@@ -75,6 +75,12 @@
     <Filter Include="Resource Files\----Data----\Resources\Interfaces">
       <UniqueIdentifier>{8f5b12ee-c8ca-41e3-95d0-e60225659c04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Enemy">
+      <UniqueIdentifier>{0286a30a-a81c-4863-8de3-fb5470a372a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Enemy">
+      <UniqueIdentifier>{17a26496-1b7d-43e5-8f20-a25f2c57c34c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -136,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="Items\Armours\Armour.cpp">
       <Filter>Resource Files\Items\Armours</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\Enemy.cpp">
+      <Filter>Resource Files\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="Items\Armours\Armour.h">
       <Filter>Header Files\Items\Armors</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\Enemy.h">
+      <Filter>Header Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

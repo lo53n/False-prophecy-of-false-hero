@@ -1,4 +1,18 @@
 [-----]
+2015-08-21
+
+Ditched for now interface, I got bored of it. Took care of enemies and killing them and respawning.
+
+What is done?
+
+	- spawn enemies and make them targetable
+
+	- enemies can be killed and respawned after xx turns
+
+	- under enemy corpse texture isn't breaking (took me a while to figure it out, since I was rewriting actual map template to simplify things) - this sounds ridiculous, but after killing peon there would remain black hole of missing tile.
+
+
+[-----]
 2015-08-14
 
 Little work on Inventory Window and small update on armour types.

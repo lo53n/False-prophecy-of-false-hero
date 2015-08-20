@@ -20,6 +20,9 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 
 	target.draw(_mapSprite);
+	for (auto enemy : _enemies){
+		target.draw(*enemy);
+	}
 
 }
 
@@ -100,6 +103,7 @@ void Map::setMapLayer(sf::RenderTexture& mapRenderTexture)
 
 void Map::drawMap(sf::RenderTexture& mapRenderTexture)
 {
+	takeEnemiesFromMap();
 	mapRenderTexture.create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
 	mapRenderTexture.clear();
 	for (int i = 0, len = _mapTemplate.size(); i < len; i++){
@@ -122,6 +126,7 @@ void Map::drawMap(sf::RenderTexture& mapRenderTexture)
 		//std::cout << std::endl;
 	}
 	setMapLayer(mapRenderTexture);
+	putEnemiesOnMap();
 }
 ////////////////////
 //Draw map texture//
@@ -225,5 +230,69 @@ std::shared_ptr<Map> Map::moveToMap(unsigned int previousMapID)
 	for (auto keyValue : _mapExits){
 		if (keyValue.second->getMapId() == previousMapID)
 		return keyValue.second;
+	}
+}
+
+
+///////////////
+//Map enemies//
+///////////////
+
+void Map::increaseRespawnCounter()
+{
+	_respawn_counter++;
+	if (__MAPS_TILL_RESPAWN__ == _respawn_counter){
+		resurrectAndReinforceEnemies();
+		_respawn_counter = 0;
+	}
+}
+
+void Map::resurrectAndReinforceEnemies()
+{
+	for (auto enemy : _enemies){
+		enemy->resurrectAndReinforce();
+		changeMapTile(__ENEMY_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
+		printConsoleMap();
+	}
+}
+
+
+std::shared_ptr<Enemy> Map::getEnemyAtPosition(int posx, int posy)
+{
+	for (auto enemy : _enemies){
+		if (enemy->getEnemyPositionOnGrid() == sf::Vector2i(posx, posy)){
+			return enemy;
+		}
+	}
+}
+
+///////////////////////
+//Move around entites//
+///////////////////////
+
+void Map::changeMapTile(char newTile, int x, int y)
+{
+	_mapTemplate[y][x] = newTile;
+}
+
+
+
+///////////////////////////////
+//Setting enemies on load map//
+///////////////////////////////
+
+void Map::putEnemiesOnMap()
+{
+	for (auto enemy : _enemies){
+		if (enemy->checkIfAlive()){
+			changeMapTile(__ENEMY_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
+		}
+	}
+}
+
+void Map::takeEnemiesFromMap()
+{
+	for (auto enemy : _enemies){
+		changeMapTile(enemy->getTileUnderneathEnemy(), enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
 	}
 }

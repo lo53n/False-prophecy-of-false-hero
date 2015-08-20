@@ -231,7 +231,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
 			bool canMove = false; //for collision
 			sf::Vector2i checkForPosition;
-			if (!noClip) //No Clip cheat!//
+			if (!noClip) //No Clip cheat off!//
 				switch (key){
 				//Move one step up//
 				case sf::Keyboard::Up:
@@ -257,7 +257,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 						_player->movePlayer(Player::LEFT);
 			}
 
-			if (noClip)//No Clip cheat!//
+			if (noClip)//No Clip cheat on!//
 				if (key == sf::Keyboard::Up)
 					_player->movePlayer(Player::UP);
 				else if (key == sf::Keyboard::Right)
@@ -319,13 +319,29 @@ bool Game::checkMovement(int direction)
 	catch(char currentTile){
 		switch (currentTile){
 		case 'E': return handleMapTraverse();
-
 		default: return false;
 		}
 	}
 	//We check now tiles
+	//Is it enemy?
+	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] == __ENEMY_ON_MAP__){
+		for (auto enemy : _currentMap->_enemies){
+			if (enemy->getEnemyPositionOnGrid() == checkForPosition){
+				std::cout << "boom, enemy!" << std::endl;
+				_currentMap->changeMapTile(__ENEMY_CORPSE_ON_MAP__, checkForPosition.x, checkForPosition.y);
+				heroAttacksEnemy(checkForPosition);
+				_currentMap->printConsoleMap();
+			}
+		}
+
+		return false;
+	}
+
+
+	//Is it wall?
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
 		return true;
+
 
 	//if we get here, that mean there was any obstacle
 	return false;
@@ -401,6 +417,7 @@ bool Game::handleMapTraverse()
 	return false;
 }
 
+///OBSOLETE!?
 void Game::moveToMap(int mapNumber, bool needPair)
 {
 	if (!needPair){
@@ -451,6 +468,8 @@ void Game::generateNewMap()
 
 void Game::generateNewMap(sf::Vector2i currentPos)
 {
+	//First, strip enemies from map
+
 
 	unsigned int mapID = _maps.size();
 	_currentMapNumber = rand() % _mapsHolder->getMapCount();
@@ -481,6 +500,30 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 
 	//std::cout << _currentMapNumber << " Another! " << _maps.size() << " >> Map No_" << _currentMap->getMapId() << " <<" << std::endl;
 
+	//Generate enemies!
+	int tiley = 0; 
+	for (auto row : _currentMap->getMap()){
+		int tilex = 0;
+		for (auto tile : row){
+			if (tile == '.'){
+				int chance = rand() % 100;
+				if (chance > 90){
+					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(sf::Vector2i(tilex, tiley), tile));
+					_currentMap->_enemies.push_back(enemy);
+					_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
+				}
+			}
+			tilex++;
+		}
+		tiley++;
+	}
+	_currentMap->printConsoleMap();
+
+
+	for (auto map : _maps){
+		map->increaseRespawnCounter();
+	}
+
 }
 
 
@@ -501,4 +544,18 @@ std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
 {
 	std::shared_ptr<Map> ptr(std::make_shared<Map>(_mapsHolder->getMapFromHolder(_currentMapNumber), mapID));
 	return ptr;
+}
+
+//////////////////////////
+//Player and Enemy stuff//
+//////////////////////////
+
+void Game::heroAttacksEnemy(sf::Vector2i position)
+{
+	std::shared_ptr<Enemy> enemy = _currentMap->getEnemyAtPosition(position.x, position.y);
+	enemy->killEnemy();
+	/*if (!enemy->checkIfAlive()){
+		_currentMap->changeMapTile(enemy->getTileUnderneathEnemy(), position.x, position.y);
+
+	}*/
 }

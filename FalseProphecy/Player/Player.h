@@ -38,9 +38,9 @@ public:
 	//Getters//
 	///////////
 
-	//get player position on map
+	//get player position on map (px)
 	sf::Vector2f& getPlayerPositionOnMap();		
-	//get player position in px
+	//get player position on map (x,y)
 	sf::Vector2i& getPlayerPositionOnGrid();
 
 
@@ -51,9 +51,9 @@ public:
 	//Setters//
 	///////////
 
-	//set player position in px
+	//set player position on map (px)
 	void setPlayerPositionOnMap(sf::Vector2f newPositionOnMap);		
-	//set player position on map
+	//set player position on map (x,y)
 	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);
 
 	/////////////
@@ -63,8 +63,8 @@ public:
 	void putItemInBackpack(std::shared_ptr<Item> item);
 
 private:
-	sf::Sprite _playerSprite;
-	sf::RenderTexture _playerTexture;
+	sf::Texture _playerTexture;
+	sf::RectangleShape _playerShape;
 	
 	sf::Vector2f _positionOnMap;	//Position in px
 	sf::Vector2i _positionOnGrid;	//Position on map

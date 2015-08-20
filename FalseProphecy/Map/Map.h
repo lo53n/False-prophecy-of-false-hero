@@ -9,6 +9,7 @@
 #include <SFML\Graphics.hpp>
 
 #include "MapsHolder.h"
+#include "../Enemy/Enemy.h"
 
 namespace std
 {
@@ -39,6 +40,9 @@ public:
 	~Map();
 
 	void clearMap();
+
+
+	std::vector<std::shared_ptr<Enemy>> _enemies;
 
 	///////////
 	//Getters//
@@ -73,6 +77,7 @@ public:
 	//Setters//
 	///////////
 
+	//Set maap template
 	void setMap(std::vector<std::vector<char>> mapTemplate);
 
 
@@ -106,6 +111,35 @@ public:
 	std::shared_ptr<Map> moveToMap(unsigned int previousMapID);
 
 
+
+	///////////////
+	//Map enemies//
+	///////////////
+
+	void increaseRespawnCounter();
+	void resurrectAndReinforceEnemies();
+
+	std::shared_ptr<Enemy> getEnemyAtPosition(int posx, int posy);
+
+	//////////////////////////
+	//Moving around entities//
+	//////////////////////////
+
+	void changeMapTile(char newTile, int x, int y);
+
+
+
+
+	///////////////////////////////
+	//Setting enemies on load map//
+	///////////////////////////////
+
+	void putEnemiesOnMap();
+	void takeEnemiesFromMap();
+
+
+
+
 	//Debug?//
 	void printConsoleMap();
 
@@ -135,11 +169,26 @@ private:
 	std::unordered_map<sf::Vector2i, std::shared_ptr<Map>> _mapExits;
 
 
+	///////////////
+	//Map enemies//
+	///////////////
+
+
+	int _respawn_counter = 0;
+
+
 	/////////////////
 	//Magic Numbers//
 	/////////////////
 	const float __TILE_SIZE_X__ = 32.0f; //Height of tile
 	const float __TILE_SIZE_Y__ = 32.0f; //Width of tile
+
+	int __MAPS_TILL_RESPAWN__ = 1;
+
+	//Change those also in Game.h//
+	char __ENEMY_ON_MAP__ = '8';
+	char __ENEMY_CORPSE_ON_MAP__ = '#';
+
 
 private:
 	void checkMaxSizes();

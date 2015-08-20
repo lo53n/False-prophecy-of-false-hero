@@ -2,17 +2,16 @@
 
 Player::Player()
 {
-	sf::RectangleShape player;
-	player.setSize(sf::Vector2f(__PLAYER_HEIGHT__, __PLAYER_WIDTH__));
-	player.setPosition(0.0f, 0.0f);
-	player.setFillColor(sf::Color::Red);
+	_playerShape.setSize(sf::Vector2f(__PLAYER_HEIGHT__, __PLAYER_WIDTH__));
+	_playerShape.setPosition(0.0f, 0.0f);
+	_playerShape.setFillColor(sf::Color::Red);
 
-	_playerTexture.create((unsigned int)__PLAYER_WIDTH__, (unsigned int)__PLAYER_HEIGHT__);
+	/*_playerTexture.create((unsigned int)__PLAYER_WIDTH__, (unsigned int)__PLAYER_HEIGHT__);
 	_playerTexture.clear();
 	_playerTexture.draw(player);
-	_playerTexture.display();
+	_playerTexture.display();*/
 
-	_playerSprite.setTexture(_playerTexture.getTexture());
+	//_playerSprite.setTexture(_playerTexture.getTexture());
 
 }
 Player::~Player()
@@ -23,7 +22,7 @@ Player::~Player()
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 
-	target.draw(_playerSprite);
+	target.draw(_playerShape);
 
 }
 
@@ -51,14 +50,14 @@ void Player::setPlayerPositionOnMap(sf::Vector2f newPositionOnMap)
 {
 	_positionOnMap = newPositionOnMap;
 	_positionOnGrid = (sf::Vector2i)(_positionOnMap / __PLAYER_HEIGHT__);
-	_playerSprite.setPosition(_positionOnMap);
+	_playerShape.setPosition(_positionOnMap);
 }
 
 void Player::setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid)
 {
 	_positionOnGrid = newPositionOnGrid;
 	_positionOnMap = (sf::Vector2f)(_positionOnGrid * (int)__PLAYER_HEIGHT__);
-	_playerSprite.setPosition(_positionOnMap);
+	_playerShape.setPosition(_positionOnMap);
 }
 ///////////////////
 //Player movement//
@@ -85,7 +84,7 @@ void Player::movePlayer(int direction)
 	}
 	_positionOnGrid += movement;
 	_positionOnMap += (sf::Vector2f)(movement * (int)__PLAYER_HEIGHT__);
-	_playerSprite.setPosition(_positionOnMap);
+	_playerShape.setPosition(_positionOnMap);
 	//std::cout << "My position on grid: " << _positionOnGrid.x << " " << _positionOnGrid.y << std::endl;
 	//std::cout << "My position on map: " << _positionOnMap.x << " " << _positionOnMap.y << std::endl;
 }

@@ -86,6 +86,10 @@ private:
 	/////////////////
 	const float __CAMERA_MOVE_LENGTH__ = 32.0f;
 
+	//Change those also in Map.h//
+	char __ENEMY_ON_MAP__ = '8';
+	char __ENEMY_CORPSE_ON_MAP__ = '#';
+
 private:
 	//////////////////
 	//Game main loop//
@@ -125,6 +129,24 @@ private:
 
 	bool handleMapTraverse();
 	void moveToMap(int mapNumber, bool needPair);
+
+
+	///////////////
+	//Enemy stuff//
+	///////////////
+
+
+
+	////////////////
+	//Player stuff//
+	////////////////
+
+
+	//////////////////////////
+	//Player and Enemy stuff//
+	//////////////////////////
+
+	void heroAttacksEnemy(sf::Vector2i position);
 
 };
 

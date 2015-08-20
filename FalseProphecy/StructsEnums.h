@@ -3,20 +3,15 @@
 
 #include <string>
 
+
+///////////////////////////
+//Items structs and enums//
+///////////////////////////
+
 enum ITEM_TYPE{
 	WEAPON,
 	ARMOUR,
 	CONSUMABLE
-};
-
-enum HERO_STATS_NAMES{
-	STRENGTH,
-	ENDURANCE,
-	DEXTERITY,
-	AGILITY,
-	INTELLIGENCE,
-	WILLPOWER,
-	LUCK
 };
 
 enum WEAPON_TYPE{
@@ -83,6 +78,67 @@ struct Armour_struct{
 };
 
 
+
+enum HERO_STATS_NAMES{
+	STRENGTH,
+	ENDURANCE,
+	DEXTERITY,
+	AGILITY,
+	INTELLIGENCE,
+	WILLPOWER,
+	LUCK
+};
+
+enum HERO_ABILITIES_NUMBER{
+	ONEHANDED_PROFICIENTY,
+	TWOHANDED_PROFICIENTY,
+	SHIELD_PROFICIENTY,
+	SWORD_PROFICIENTY,
+	MACE_PROFICIENTY,
+	SPEAR_PROFICIENTY,
+	AXE_PROFICIENTY,
+	DEFENCE_PROFICIENTY,
+	MAGIC_PROFICIENTY,
+	BODY_ENDURANCE,
+	PAIN_ENDURANCE,
+	DODGING_PROFICIENTY
+};
+
+struct Hero_Profile{
+
+};
+
+
+enum ENEMY_TYPE{
+	UNDEAD,
+	DEMON,
+	BEAST,
+	HUMANOID,
+	HUMAN,
+	GOLEM
+};
+
+enum ENEMY_CLASS{
+	NORMAL,
+	RARE,
+	MAGIC,
+	ELITE,
+	MINIBOSS,
+	BOSS,
+	UNIQUE
+};
+
+
+struct Enemy_Stats{
+	std::string name;
+	std::string img_path;
+	int hitpoints;
+	int attack;
+	int defence;
+	int speed;
+	int type;
+	int enemy_class;
+};
 
 #endif //!STRUCTURES_AND_ENUMS
 
