@@ -89,23 +89,45 @@ enum HERO_STATS_NAMES{
 	LUCK
 };
 
+//If no. is changed - change it in Player.cpp in abilities startup
 enum HERO_ABILITIES_NUMBER{
-	ONEHANDED_PROFICIENTY,
-	TWOHANDED_PROFICIENTY,
-	SHIELD_PROFICIENTY,
-	SWORD_PROFICIENTY,
-	MACE_PROFICIENTY,
-	SPEAR_PROFICIENTY,
-	AXE_PROFICIENTY,
-	DEFENCE_PROFICIENTY,
-	MAGIC_PROFICIENTY,
+	ONEHANDED_PROFICIENCY,
+	TWOHANDED_PROFICIENCY,
+	DUALWIELD_PROFICIENCY,
+	SHIELD_PROFICIENCY,
+	UNARMED_PROFICIENCY,
+	SWORD_PROFICIENCY,
+	MACE_PROFICIENCY,
+	SPEAR_PROFICIENCY,
+	AXE_PROFICIENCY,
+	MAGIC_PROFICIENCY,
+	DEFENCE_PROFICIENCY,
 	BODY_ENDURANCE,
 	PAIN_ENDURANCE,
-	DODGING_PROFICIENTY
+	DODGING_PROFICIENCY
 };
 
 struct Hero_Profile{
+	int max_hp, hp;
+	int attack;
+	int defence;
+	int speed;
+	int strenght;
+	int endurance;
+	int intelligence;
+	int wisdom;
+	int agility;
+	int dexterity;
+	int luck;
+};
 
+struct Ability_Proficiencies{
+	std::string name;
+	int id;
+	int level;
+	int experience;
+	int experience_needed;
+	float effectiveness;
 };
 
 
@@ -133,6 +155,7 @@ struct Enemy_Stats{
 	std::string name;
 	std::string img_path;
 	int hitpoints;
+	int max_hitpoints;
 	int attack;
 	int defence;
 	int speed;

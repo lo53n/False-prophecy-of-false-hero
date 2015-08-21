@@ -32,6 +32,8 @@ namespace std
 	};
 }
 
+class Enemy;
+
 class Map : public sf::Drawable{
 
 public:
@@ -121,6 +123,8 @@ public:
 
 	std::shared_ptr<Enemy> getEnemyAtPosition(int posx, int posy);
 
+	void killOffEnemy(int enemy_id);
+
 	//////////////////////////
 	//Moving around entities//
 	//////////////////////////
@@ -183,7 +187,7 @@ private:
 	const float __TILE_SIZE_X__ = 32.0f; //Height of tile
 	const float __TILE_SIZE_Y__ = 32.0f; //Width of tile
 
-	int __MAPS_TILL_RESPAWN__ = 1;
+	int __MAPS_TILL_RESPAWN__ = 30;
 
 	//Change those also in Game.h//
 	char __ENEMY_ON_MAP__ = '8';

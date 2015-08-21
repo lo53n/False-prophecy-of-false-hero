@@ -75,6 +75,8 @@ private:
 	////////////////////////
 	std::shared_ptr<Player> _player;
 
+	int _turns_taken = 0;
+
 	///////////////
 	//Some cheats//
 	///////////////
@@ -85,6 +87,8 @@ private:
 	//Magic numbers//
 	/////////////////
 	const float __CAMERA_MOVE_LENGTH__ = 32.0f;
+
+	int __TURNS_TO_INCREMENT_MAP_RESPAWN_TIMER__ = 50;
 
 	//Change those also in Map.h//
 	char __ENEMY_ON_MAP__ = '8';
@@ -123,6 +127,8 @@ private:
 
 	void checkForExistingFreeExits(std::shared_ptr<Map> mapToCheck);
 
+	void increaseMapsRespawnCounter(bool isOnMap);
+
 	//////////////////
 	//Map traversing//
 	//////////////////
@@ -141,6 +147,7 @@ private:
 	//Player stuff//
 	////////////////
 
+	void takeTurn();
 
 	//////////////////////////
 	//Player and Enemy stuff//

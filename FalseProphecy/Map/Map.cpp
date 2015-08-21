@@ -208,7 +208,7 @@ void Map::findAllExitPoints()
 void Map::pairMapAndExitPoint(std::shared_ptr<Map> previousMap)
 {
 	int number = rand() % _notPairedExitPoints.size();
-	std::cout << number << std::endl;
+	//std::cout << number << std::endl;
 	_mapExits[_notPairedExitPoints[number]] = previousMap;
 	_notPairedExitPoints.erase(_notPairedExitPoints.begin() + number);
 }
@@ -252,7 +252,6 @@ void Map::resurrectAndReinforceEnemies()
 	for (auto enemy : _enemies){
 		enemy->resurrectAndReinforce();
 		changeMapTile(__ENEMY_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
-		printConsoleMap();
 	}
 }
 
@@ -262,6 +261,15 @@ std::shared_ptr<Enemy> Map::getEnemyAtPosition(int posx, int posy)
 	for (auto enemy : _enemies){
 		if (enemy->getEnemyPositionOnGrid() == sf::Vector2i(posx, posy)){
 			return enemy;
+		}
+	}
+}
+
+void Map::killOffEnemy(int enemy_id)
+{
+	for (auto enemy : _enemies){
+		if (enemy->getEnemyId() == enemy_id){
+			changeMapTile(__ENEMY_CORPSE_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
 		}
 	}
 }
@@ -286,6 +294,9 @@ void Map::putEnemiesOnMap()
 	for (auto enemy : _enemies){
 		if (enemy->checkIfAlive()){
 			changeMapTile(__ENEMY_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
+		}
+		else{
+			changeMapTile(__ENEMY_CORPSE_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
 		}
 	}
 }

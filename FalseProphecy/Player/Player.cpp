@@ -13,11 +13,21 @@ Player::Player()
 
 	//_playerSprite.setTexture(_playerTexture.getTexture());
 
+
+	_stats.attack = 5;
+	//0 - 1h, 1 - 2h, 2- 2xwield
+	_heroWeaponHandle = 1;
+	//3 - shield, 4 - unarmed, 5 - sword, 6 - mace , 7 - spear, 8 - axe,
+	_heroWeaponType = 5;
+
+	presetProficiences();
 }
+
 Player::~Player()
 {
 
 }
+
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
@@ -41,6 +51,14 @@ sf::Vector2i& Player::getPlayerPositionOnGrid()
 std::vector<std::shared_ptr<Item>>& Player::getPlayerBackpack()
 {
 	return _backpack;
+}
+Hero_Profile& Player::getPlayerStats()
+{
+	return _stats;
+}
+std::vector<Ability_Proficiencies> Player::getPlayerProficiences()
+{
+	return _proficiences;
 }
 ///////////
 //Setters//
@@ -96,4 +114,134 @@ void Player::movePlayer(int direction)
 void Player::putItemInBackpack(std::shared_ptr<Item> item)
 {
 	_backpack.push_back(item);
+}
+
+
+
+///////////
+//Battle!//
+///////////
+
+int Player::calculateDamage()
+{
+	int dmg;
+	
+	dmg = _stats.attack;
+
+	if(!isUnarmed) increaseProficiency(_heroWeaponHandle, 100);
+	increaseProficiency(_heroWeaponType, 100);
+	if (isUnarmed){
+		dmg = (float)(dmg * _proficiences[HERO_ABILITIES_NUMBER::UNARMED_PROFICIENCY].effectiveness);
+	}
+	else{
+		dmg = (float)(dmg * (_proficiences[_heroWeaponHandle].effectiveness + _proficiences[_heroWeaponType].effectiveness + 1));
+	}
+	std::cout << dmg << std::endl;
+	return dmg;
+}
+
+////////////////
+//Proficiences//
+////////////////
+void Player::presetProficiences()
+{
+	for (int i = 0; i < 14; i++){
+		Ability_Proficiencies ability;
+		ability.id = i;
+		ability.level = 0;
+		ability.effectiveness = 0.f;
+
+		if (i < 2)	ability.experience_needed = __BASE_PROFICIENCY_HANDLE_EXP__;
+		else if (i > 8) ability.experience_needed = __BASE_PROFICIENCY_BODY_EXP__;
+		else ability.experience_needed = __BASE_PROFICIENCY_WEAPON_EXP__;
+
+		ability.experience = 0;
+		if (i == 0) ability.name = "Onehanded";
+		else if (i == 1) ability.name = "Twohanded";
+		else if (i == 2) ability.name = "Dualwield";
+		else if (i == 3) ability.name = "Shield";
+		else if (i == 4) ability.name = "Unarmed";
+		else if (i == 5) ability.name = "Sword";
+		else if (i == 6) ability.name = "Mace";
+		else if (i == 7) ability.name = "Spear";
+		else if (i == 8) ability.name = "Axe";
+		else if (i == 9) ability.name = "Magic";
+		else if (i == 10) ability.name = "Defence";
+		else if (i == 11) ability.name = "Body";
+		else if (i == 12) ability.name = "Pain";
+		else ability.name = "Dodge";
+
+		_proficiences.push_back(ability);
+	}
+}
+
+void Player::increaseProficiency(int id, int amount)
+{
+	_proficiences[id].experience += amount;
+	if (_proficiences[id].experience >= _proficiences[id].experience_needed){
+		_proficiences[id].level++;
+		_proficiences[id].experience -= _proficiences[id].experience_needed; 
+
+		if (id < 2)	_proficiences[id].experience_needed = (int)(__BASE_PROFICIENCY_HANDLE_EXP__ * pow(__PROFICIENCY_LVL_INCREASE__, _proficiences[id].level));
+		else if (id > 8) _proficiences[id].experience_needed = (int)(__BASE_PROFICIENCY_BODY_EXP__ * pow(__PROFICIENCY_LVL_INCREASE__, _proficiences[id].level));
+		else _proficiences[id].experience_needed = (int)(__BASE_PROFICIENCY_WEAPON_EXP__ * pow(__PROFICIENCY_LVL_INCREASE__, _proficiences[id].level));
+
+		calculateProficientyEffectivness(id);
+
+		std::cout << _proficiences[id].name << " lvl up to " << _proficiences[id].level << " eff: " << _proficiences[id].effectiveness << std::endl;
+	}
+}
+
+void Player::calculateProficientyEffectivness(int id)
+{
+	//handle
+	if (id < 3){
+		for (int i = 1; i < _proficiences[id].level; i++){
+			_proficiences[id].effectiveness += (__PROFICIENCY_HANDLE_EFFICIENCY__ * (1 + (float)(_proficiences[id].level) / 100));
+		}
+	}
+	//weapon & magic
+	if (id >= 3 && id < 10){
+		//unarmed
+		if (id == HERO_ABILITIES_NUMBER::UNARMED_PROFICIENCY){
+			for (int i = 1; i < _proficiences[id].level; i++){
+				_proficiences[id].effectiveness += (__PROFICIENCY_UNARMED_EFFICIENCY__ * (1 + (float)(_proficiences[id].level) / 100));
+			}
+		}
+		//rest
+		else{
+			for (int i = 1; i < _proficiences[id].level; i++){
+				_proficiences[id].effectiveness += (__PROFICIENCY_WEAPON_EFFICIENCY__ * (1 + (float)(_proficiences[id].level) / 100));
+			}
+		}
+	}
+	//body 
+	if (id >= 10){
+		switch (id){
+			//defence
+		case HERO_ABILITIES_NUMBER::DEFENCE_PROFICIENCY:
+			for (int i = 1; i < _proficiences[id].level; i++){
+				_proficiences[id].effectiveness += (__PROFICIENCY_DEFENCE_EFFICIENCY__ * (1 + (float)(_proficiences[id].level) / 100));
+			}
+			break;
+			//body
+		case HERO_ABILITIES_NUMBER::BODY_ENDURANCE:
+			for (int i = 1; i < _proficiences[id].level; i++){
+				_proficiences[id].effectiveness += (__PROFICIENCY_BODY_EFFICIENCY__ * (1 + (float)(_proficiences[id].level) / 100));
+			}
+			break;
+			//pain
+		case HERO_ABILITIES_NUMBER::PAIN_ENDURANCE:
+			for (int i = 1; i < _proficiences[id].level; i++){
+				_proficiences[id].effectiveness += (__PROFICIENCY_PAIN_EFFICIENCY__ * (1 + (float)(_proficiences[id].level) / 100));
+			}
+			break;
+			//dodge
+		case HERO_ABILITIES_NUMBER::DODGING_PROFICIENCY:
+			for (int i = 1; i < _proficiences[id].level; i++){
+				_proficiences[id].effectiveness += (__PROFICIENCY_DODGE_EFFICIENCY__ * (1 + (float)(_proficiences[id].level) / 100));
+			}
+			break;
+		}
+	}
 }

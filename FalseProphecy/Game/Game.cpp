@@ -229,6 +229,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		//Player Movement//
 		///////////////////
 		if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
+			takeTurn();
 			bool canMove = false; //for collision
 			sf::Vector2i checkForPosition;
 			if (!noClip) //No Clip cheat off!//
@@ -327,13 +328,12 @@ bool Game::checkMovement(int direction)
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] == __ENEMY_ON_MAP__){
 		for (auto enemy : _currentMap->_enemies){
 			if (enemy->getEnemyPositionOnGrid() == checkForPosition){
-				std::cout << "boom, enemy!" << std::endl;
-				_currentMap->changeMapTile(__ENEMY_CORPSE_ON_MAP__, checkForPosition.x, checkForPosition.y);
+				//std::cout << "boom, enemy!" << std::endl;
+				//_currentMap->changeMapTile(__ENEMY_CORPSE_ON_MAP__, checkForPosition.x, checkForPosition.y);
 				heroAttacksEnemy(checkForPosition);
-				_currentMap->printConsoleMap();
+				//_currentMap->printConsoleMap();
 			}
 		}
-
 		return false;
 	}
 
@@ -355,6 +355,9 @@ bool Game::checkMovement(int direction)
 bool Game::handleMapTraverse()
 {
 
+	//First, increace maps respawn counter
+	increaseMapsRespawnCounter(false);
+
 	//This one is for map traversing//
 	sf::Vector2i currentPosition((int)_player->getPlayerPositionOnGrid().y, (int)_player->getPlayerPositionOnGrid().x);
 	unsigned int previousMap = _currentMap->getMapId();
@@ -374,23 +377,6 @@ bool Game::handleMapTraverse()
 			_currentMap->pairMapAndExitPoint(transferNextMap, currentPosition);
 			transferNextMap->pairMapAndExitPoint(transferCurrentMap);
 
-			/*if (_currentMap->getNumberOfFreeExits() == 0){
-				int mapID = _currentMap->getMapId();
-				for (int i = 0, len = _mapsWithAvaiableExits.size(); i < len; i++)
-					if (_mapsWithAvaiableExits[i]->getMapId() == mapID){
-						_mapsWithAvaiableExits.erase(_mapsWithAvaiableExits.begin() + i);
-						std::cout << "Erased." << std::endl;
-					}
-			}
-
-			if (_newMap->getNumberOfFreeExits() == 0){
-				int newMapID = _newMap->getMapId();
-				for (int i = 0, len = _mapsWithAvaiableExits.size(); i < len; i++)
-					if (_mapsWithAvaiableExits[i]->getMapId() == newMapID){
-						_mapsWithAvaiableExits.erase(_mapsWithAvaiableExits.begin() + i);
-						std::cout << "Erased." << std::endl;
-					}
-			}*/
 			checkForExistingFreeExits(_currentMap);
 			checkForExistingFreeExits(_newMap);
 
@@ -468,32 +454,38 @@ void Game::generateNewMap()
 
 void Game::generateNewMap(sf::Vector2i currentPos)
 {
-	//First, strip enemies from map
 
-
+	//Get new map identifier based on total maps generated
 	unsigned int mapID = _maps.size();
 	_currentMapNumber = rand() % _mapsHolder->getMapCount();
+
 
 	//_currentMapNumber = 0;
 	if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
 
 	if (_maps.size() > 0) _currentMap->clearMap();
 
+
+	//Create new map and then draw it
 	_newMap = createMapSharedPointer(mapID);
 	_newMap->drawMap(_mapTexture);
 
+	//Save map
 	_maps.push_back(_newMap);
 	_mapsWithAvaiableExits.push_back(_newMap);
 
+	//Now, time pair exits
 	std::shared_ptr<Map> transferCurrentMap = _currentMap;
 	std::shared_ptr<Map> transferNextMap = _newMap;
 
 	_currentMap->pairMapAndExitPoint(transferNextMap, currentPos);
 	transferNextMap->pairMapAndExitPoint(transferCurrentMap);
 
+	//Recount exits which wasn't paired yet
 	checkForExistingFreeExits(_currentMap);
 	checkForExistingFreeExits(_newMap);
 
+	//Set latest map as current
 	//std::cout << "Old map exits left: " << _currentMap->getNumberOfFreeExits();
 	_currentMap = _maps[_maps.size() - 1];
 	//std::cout << " New map exits left: " << _currentMap->getNumberOfFreeExits() << std::endl;
@@ -501,28 +493,25 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 	//std::cout << _currentMapNumber << " Another! " << _maps.size() << " >> Map No_" << _currentMap->getMapId() << " <<" << std::endl;
 
 	//Generate enemies!
-	int tiley = 0; 
+	int tiley = 0;
+	int enemy_id = 0;
 	for (auto row : _currentMap->getMap()){
 		int tilex = 0;
 		for (auto tile : row){
 			if (tile == '.'){
 				int chance = rand() % 100;
 				if (chance > 90){
-					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(sf::Vector2i(tilex, tiley), tile));
+					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, sf::Vector2i(tilex, tiley), tile));
 					_currentMap->_enemies.push_back(enemy);
 					_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
+					enemy_id++;
 				}
 			}
 			tilex++;
 		}
 		tiley++;
 	}
-	_currentMap->printConsoleMap();
-
-
-	for (auto map : _maps){
-		map->increaseRespawnCounter();
-	}
+	//_currentMap->printConsoleMap();
 
 }
 
@@ -535,7 +524,6 @@ void Game::checkForExistingFreeExits(std::shared_ptr<Map> mapToCheck)
 			if (_mapsWithAvaiableExits[i]->getMapId() == mapID){
 				_mapsWithAvaiableExits.erase(_mapsWithAvaiableExits.begin() + i);
 				len = _mapsWithAvaiableExits.size();
-				std::cout << "Erased." << std::endl;
 			}
 	}
 }
@@ -546,6 +534,35 @@ std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
 	return ptr;
 }
 
+void Game::increaseMapsRespawnCounter(bool isInMap)
+{
+	if (isInMap){
+		for (auto map : _maps){
+			if (map == _currentMap) continue;
+			map->increaseRespawnCounter();
+		}
+	}
+	else{
+		for (auto map : _maps){
+			map->increaseRespawnCounter();
+		}
+
+	}
+}
+
+/////////////////////
+//Player only stuff//
+/////////////////////
+
+void Game::takeTurn()
+{
+	_turns_taken++;
+	if (_turns_taken == __TURNS_TO_INCREMENT_MAP_RESPAWN_TIMER__){
+		increaseMapsRespawnCounter(true);
+		_turns_taken = 0;
+	}
+}
+
 //////////////////////////
 //Player and Enemy stuff//
 //////////////////////////
@@ -553,9 +570,9 @@ std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
 void Game::heroAttacksEnemy(sf::Vector2i position)
 {
 	std::shared_ptr<Enemy> enemy = _currentMap->getEnemyAtPosition(position.x, position.y);
-	enemy->killEnemy();
-	/*if (!enemy->checkIfAlive()){
-		_currentMap->changeMapTile(enemy->getTileUnderneathEnemy(), position.x, position.y);
-
-	}*/
+	int dmg = _player->calculateDamage();
+	enemy->takeHit(dmg);
+	if (!enemy->checkIfAlive()){
+		_currentMap->killOffEnemy(enemy->getEnemyId());
+	}
 }

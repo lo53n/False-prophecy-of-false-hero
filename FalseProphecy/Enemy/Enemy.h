@@ -25,6 +25,8 @@ public:
 	sf::Vector2i& getEnemyPositionOnGrid();
 	//Get tile underneath the enemy on map
 	char getTileUnderneathEnemy();
+	//Get enemy identifier
+	int getEnemyId();
 	///////////
 	//Setters//
 	///////////
@@ -39,6 +41,9 @@ public:
 
 	char swapTileUnderneathToNextOne(char newTile);
 
+	void takeHit(int damage);
+
+
 	void killEnemy();
 	void resurrectEnemy();
 	void reinforceEnemy();
@@ -46,15 +51,17 @@ public:
 
 	bool checkIfAlive();
 
-	Enemy(sf::Vector2i positionOnGrid, char newTile);
+	Enemy(int enemy_id, sf::Vector2i positionOnGrid, char newTile);
 	~Enemy();
 
 private:
 
 
+
 	/////////
 	//Stats//
 	/////////
+	int _enemy_id;
 	Enemy_Stats _stats;
 
 	char _tile_underneath;
@@ -66,6 +73,12 @@ private:
 
 	sf::Texture _enemyTexture;
 	sf::RectangleShape _enemyShape;
+
+	sf::Texture _enemyCorpseTexture;
+	sf::RectangleShape _enemyCorpseShape;
+
+	sf::RectangleShape _hpBar;
+	sf::RectangleShape _underHpBar;
 
 	////////////////
 	//Magic Number//

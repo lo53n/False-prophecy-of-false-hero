@@ -1,13 +1,26 @@
 [-----]
 2015-08-21
 
+What is done?
+
+	- hit and kill enemies
+
+	- hp bars on enemies
+
+	- respawn system and turns
+
+	- proficiences and lv-up system for them + formulas for proficiency effectiveness and damage calculating
+
+[-----]
+2015-08-20
+
 Ditched for now interface, I got bored of it. Took care of enemies and killing them and respawning.
 
 What is done?
 
 	- spawn enemies and make them targetable
 
-	- enemies can be killed and respawned after xx turns
+	- enemies can be killed and respawned after XX turns
 
 	- under enemy corpse texture isn't breaking (took me a while to figure it out, since I was rewriting actual map template to simplify things) - this sounds ridiculous, but after killing peon there would remain black hole of missing tile.
 
