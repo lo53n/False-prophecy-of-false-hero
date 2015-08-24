@@ -2,6 +2,7 @@
 InventoryWindow::InventoryWindow()
 {
 
+	asd = "lol";
 
 	_inventoryWindow.setSize(sf::Vector2f(500.f, 378.f));
 	_inventoryWindow.setPosition(100.f, 100.f);
@@ -9,7 +10,7 @@ InventoryWindow::InventoryWindow()
 	_inventoryWindow.setOutlineThickness(2.f);
 	_inventoryWindow.setOutlineColor(sf::Color(120, 120, 120, 220));
 
-	_characterWindow.setSize(sf::Vector2f( 200.f, _inventoryWindow.getSize().y - 30.f));
+	_characterWindow.setSize(sf::Vector2f( 177.f, _inventoryWindow.getSize().y - 30.f));
 	_characterWindow.setPosition(110.f, 110.f);
 	_characterWindow.setFillColor(sf::Color(60, 90, 0, 200));
 	_characterWindow.setOutlineThickness(2.f);
@@ -37,7 +38,6 @@ InventoryWindow::InventoryWindow()
 InventoryWindow::~InventoryWindow()
 {
 
-
 }
 
 void InventoryWindow::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -50,11 +50,34 @@ void InventoryWindow::draw(sf::RenderTarget& target, sf::RenderStates states) co
 			target.draw(tile);
 	for (auto item : _player->getPlayerBackpack()) target.draw(*item);
 	target.draw(_highlight);
+
 	target.draw(_mainHandTile);
+	if (_player->getPlayerWeapon() != nullptr)
+		target.draw(*(_player->getPlayerWeapon()));
+
 	target.draw(_offHandTile);
+	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr)
+		target.draw(*(_player->getPlayerArmour(ARMOUR_TYPE::SHIELD)));
+
 	target.draw(_helmetTile);
+	if (_player->getPlayerArmour(ARMOUR_TYPE::HELMET) != nullptr)
+		target.draw(*(_player->getPlayerArmour(ARMOUR_TYPE::HELMET)));
+
 	target.draw(_torsoTile);
+	if (_player->getPlayerArmour(ARMOUR_TYPE::TORSO) != nullptr)
+		target.draw(*(_player->getPlayerArmour(ARMOUR_TYPE::TORSO)));
+
 	target.draw(_legsTile);
+	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr)
+		target.draw(*(_player->getPlayerArmour(ARMOUR_TYPE::GREAVES)));
+
+
+
+
+
+
+
+
 }
 
 void InventoryWindow::setPlayer(std::shared_ptr<Player> player)
@@ -65,20 +88,22 @@ void InventoryWindow::setPlayer(std::shared_ptr<Player> player)
 void InventoryWindow::setInventoryWindowTiles()
 {
 	sf::Vector2f position = _characterWindow.getPosition();
+	position.x += 2;
+	position.y += 2;
 
-	_mainHandTile.setPosition(position.x + 15, position.y + 100);
+	_mainHandTile.setPosition(position.x, position.y);
 	_mainHandTile.setTexture(&_backtileTexture);
 
-	_offHandTile.setPosition(position.x + _characterWindow.getSize().x - 32 - 15, position.y + 100);
+	_offHandTile.setPosition(position.x + 35, position.y);
 	_offHandTile.setTexture(&_backtileTexture);
 
-	_helmetTile.setPosition(position.x + _characterWindow.getSize().x/2  - 15, position.y + 50);
+	_helmetTile.setPosition(position.x + 70, position.y);
 	_helmetTile.setTexture(&_backtileTexture);
 
-	_torsoTile.setPosition(position.x + _characterWindow.getSize().x / 2 - 15, position.y + _characterWindow.getSize().y - 175);
+	_torsoTile.setPosition(position.x +105, position.y);
 	_torsoTile.setTexture(&_backtileTexture);
 
-	_legsTile.setPosition(position.x + _characterWindow.getSize().x / 2  - 15, position.y + _characterWindow.getSize().y - 75);
+	_legsTile.setPosition(position.x + 140, position.y);
 	_legsTile.setTexture(&_backtileTexture);
 
 	_inventoryTiles.clear();
@@ -112,6 +137,55 @@ void InventoryWindow::putItemsOnTiles()
 			columns = 0;
 		}
 	}
+
+	if(_player->getPlayerWeapon() != nullptr) 
+		_player->getPlayerWeapon()->setImagesPosition(_mainHandTile.getPosition());
+
+	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr)
+		_player->getPlayerArmour(ARMOUR_TYPE::SHIELD)->setImagesPosition(_offHandTile.getPosition());
+
+	if (_player->getPlayerArmour(ARMOUR_TYPE::HELMET) != nullptr)
+		_player->getPlayerArmour(ARMOUR_TYPE::HELMET)->setImagesPosition(_helmetTile.getPosition());
+
+	if (_player->getPlayerArmour(ARMOUR_TYPE::TORSO) != nullptr)
+		_player->getPlayerArmour(ARMOUR_TYPE::TORSO)->setImagesPosition(_torsoTile.getPosition());
+
+	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr)
+		_player->getPlayerArmour(ARMOUR_TYPE::SHIELD)->setImagesPosition(_legsTile.getPosition());
+
+
+}
+
+void InventoryWindow::handleInput(int key, bool isPressed)
+{
+	if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
+		highlightNextItem(key);
+	}
+	if (key == sf::Keyboard::Return && isPressed){
+		int item = selectItem();
+		//_player->getPlayerBackpack()[item]->getItemStats();
+		try{
+			if (_player->getPlayerBackpack().at(item) != nullptr){
+				if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::ARMOUR){
+					std::shared_ptr<Armour> item1 = (std::dynamic_pointer_cast <Armour>(_player->getPlayerBackpack()[item]));
+					_player->equipItem(item1);
+				}
+				if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::WEAPON){
+					std::shared_ptr<Weapon> item1 = (std::dynamic_pointer_cast <Weapon>(_player->getPlayerBackpack()[item]));
+					_player->equipItem(item1);
+				}
+				else{
+					_player->getPlayerBackpack()[item]->getItemStats();
+				}
+			}
+			else{
+				std::cout << "blam." << std::endl;
+			}
+		}
+		catch (std::exception e){
+		}
+		putItemsOnTiles();
+	}
 }
 
 
@@ -134,7 +208,11 @@ void InventoryWindow::highlightNextItem(int direction){
 		break;
 
 	}
+
 	_highlight.setPosition(__FIRST_TILE_POSITION_X__ + 35.f * _highlightPosition.x, __FIRST_TILE_POSITION_Y__ + 35.f * _highlightPosition.y);
+	_highlitItem = _highlightPosition.x + (_highlightPosition.y * __MAX_TILE_COLUMN_INV__);
+	std::cout << "Item No.: " << _highlitItem << std::endl;
+
 }
 
 void InventoryWindow::resizeByGameWindow(sf::Vector2f center)
@@ -153,4 +231,9 @@ void InventoryWindow::resizeByGameWindow(sf::Vector2f center)
 	setInventoryWindowTiles();
 	putItemsOnTiles();
 
+}
+
+int InventoryWindow::selectItem()
+{
+	return _highlitItem;
 }

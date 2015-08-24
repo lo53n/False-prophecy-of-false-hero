@@ -26,10 +26,21 @@ Armour::Armour(Armour_struct stats) : _stats(stats)
 	_itemShape.setSize(sf::Vector2f(32.f, 32.f));
 	_itemShape.setTexture(&_itemTexture);
 
-
+	_itemType = ITEM_TYPE::ARMOUR;
 }
 
 Armour::~Armour()
 {
 
+}
+
+
+void Armour::getItemStats()
+{
+	std::cout << _stats.name << std::endl;
+}
+
+Armour_struct Armour::getStatsStruct()
+{
+	return _stats;
 }

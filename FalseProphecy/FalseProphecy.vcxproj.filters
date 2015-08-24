@@ -146,6 +146,12 @@
     <ClCompile Include="Enemy\Enemy.cpp">
       <Filter>Resource Files\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy\EnemiesHolder.cpp">
+      <Filter>Resource Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\EnemiesLoader.cpp">
+      <Filter>Resource Files\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map\MapBuilderPattern.h">
@@ -212,6 +218,12 @@
       <Filter>Header Files\Items\Armors</Filter>
     </ClInclude>
     <ClInclude Include="Enemy\Enemy.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemiesHolder.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemiesLoader.h">
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

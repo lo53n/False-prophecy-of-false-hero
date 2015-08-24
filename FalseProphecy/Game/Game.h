@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+
+#include "../Enemy/EnemiesLoader.h"
 #include "../Map/MapLoader.h"
 #include "../Map/Map.h"
 #include "../Player/Player.h"
@@ -62,6 +64,7 @@ private:
 	/////////////////////////
 	MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
 	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
+	EnemiesHolder *_enemiesHolder = &EnemiesHolder::getEnemiesHolder();
 
 	std::shared_ptr<Map> _newMap;
 	std::shared_ptr<Map> _currentMap;

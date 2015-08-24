@@ -11,7 +11,7 @@ class Weapon : public Item{
 
 public:
 
-
+	void getItemStats();
 	Weapon_struct getStatsStruct();
 
 	Weapon();

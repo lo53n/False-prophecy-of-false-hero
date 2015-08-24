@@ -9,14 +9,17 @@
 #include <SFML\Graphics.hpp>
 
 #include "../Items/Item.h"
+
+#include "../Items/Armours/Armour.h"
+#include "../Items/Weapons/Weapon.h"
+
 #include "../StructsEnums.h"
+
+
 
 class Player : public sf::Drawable{
 
 public:
-
-
-	
 
 
 	Player();
@@ -50,6 +53,10 @@ public:
 	Hero_Profile& getPlayerStats();
 	//Get player abilities
 	std::vector<Ability_Proficiencies> getPlayerProficiences();
+	//Get player weapon
+	std::shared_ptr<Weapon> getPlayerWeapon();
+	//Get player piece of gear
+	std::shared_ptr<Armour> getPlayerArmour(int type);
 
 
 	//get player's backpack
@@ -69,6 +76,9 @@ public:
 	/////////////
 
 	void putItemInBackpack(std::shared_ptr<Item> item);
+
+	void equipItem(std::shared_ptr<Weapon> item);
+	void equipItem(std::shared_ptr<Armour> item);
 
 
 	///////////
@@ -102,9 +112,17 @@ private:
 
 	bool isUnarmed = false;
 
+
 	std::vector<std::shared_ptr<Item>> _backpack;
 	int _heroWeaponType = 0;
 	int _heroWeaponHandle = 0;
+
+	std::shared_ptr<Weapon> _mainHand;
+	std::shared_ptr<Armour> _offHand;
+
+	std::shared_ptr<Armour> _head;
+	std::shared_ptr<Armour> _torso;
+	std::shared_ptr<Armour> _legs;
 
 
 

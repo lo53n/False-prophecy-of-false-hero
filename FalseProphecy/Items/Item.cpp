@@ -28,3 +28,13 @@ void Item::setImagesPosition(sf::Vector2f newPosition)
 	_itemShape.setPosition(newPosition);
 	//_backgroundShape.setPosition(newPosition);
 }
+
+void Item::getItemStats()
+{
+	//std::cout << "lol" << std::endl;
+}
+
+int Item::getItemType()
+{
+	return _itemType;
+}

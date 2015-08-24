@@ -26,10 +26,20 @@ Weapon::Weapon(Weapon_struct stats) : _stats(stats)
 	_itemShape.setSize(sf::Vector2f(32.f, 32.f));
 	_itemShape.setTexture(&_itemTexture);
 
-
+	_itemType = ITEM_TYPE::WEAPON;
 }
 
 Weapon::~Weapon()
 {
 
+}
+
+void Weapon::getItemStats()
+{
+	std::cout << _stats.name << std::endl;
+}
+
+Weapon_struct Weapon::getStatsStruct()
+{
+	return _stats;
 }

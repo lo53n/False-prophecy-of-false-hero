@@ -1,4 +1,24 @@
 [-----]
+2015-08-24
+
+What is done?
+
+	- basic item equiping, still a lot of work to do here, especially on UI side.
+
+	- improved a little Inventory Interface
+
+[-----]
+2015-08-22
+
+What is done?
+
+	- Enemies Loader
+
+Todo?
+
+	- integrate all loaders into deriving
+
+[-----]
 2015-08-21
 
 What is done?

@@ -56,7 +56,7 @@ void ArmoursLoader::showStruct()
 void ArmoursLoader::saveStruct()
 {
 	bool isSuccessful  = checkStructCorrectness();
-	showStruct();
+	//showStruct();
 	if (isSuccessful)
 		_armoursData.push_back(_currentData);
 	else std::cout << "Unable to load armour No. " << _armourCount << std::endl;

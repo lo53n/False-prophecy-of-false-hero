@@ -51,7 +51,7 @@ public:
 
 	bool checkIfAlive();
 
-	Enemy(int enemy_id, sf::Vector2i positionOnGrid, char newTile);
+	Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGrid, char newTile);
 	~Enemy();
 
 private:

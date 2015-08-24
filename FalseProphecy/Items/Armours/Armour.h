@@ -11,7 +11,7 @@ class Armour : public Item{
 
 public:
 
-
+	void getItemStats();
 	Armour_struct getStatsStruct();
 
 	Armour();

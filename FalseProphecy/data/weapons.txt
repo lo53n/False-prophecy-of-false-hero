@@ -1,4 +1,3 @@
-
 [[NAME::Kraken Slayer]]
 [[IMG::axe.png]]
 [[TYPE::AXE]]

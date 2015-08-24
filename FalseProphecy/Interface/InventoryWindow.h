@@ -1,6 +1,7 @@
 #ifndef INTERFACE_INVENTORYWINDOW
 #define INTERFACE_INVENTORYWINDOW
 
+#include <memory>
 
 #include "SFML\Graphics.hpp"
 
@@ -8,13 +9,17 @@
 #include "../UIResource.h"
 #include "../Player/Player.h"
 
+
 class InventoryWindow : public sf::Drawable{
 
 public:
 
+	void handleInput(int key, bool isPressed);
 	void highlightNextItem(int direction);
 
 	void putItemsOnTiles();
+
+	int selectItem();
 
 	void setPlayer(std::shared_ptr<Player> player);
 
@@ -24,6 +29,8 @@ public:
 	~InventoryWindow();
 
 	std::shared_ptr<Player> _player;
+
+	std::string asd = "asd";
 
 private:
 
@@ -47,12 +54,16 @@ private:
 	sf::RectangleShape _highlight;
 	sf::Vector2i _highlightPosition;
 
+	int _highlitItem;
+
 
 
 	/////////////////
 	//Magic numbers//
 	/////////////////
+	//how many colums aka x axis
 	int __MAX_TILE_COLUMN_INV__ = 5;
+	//how many rows aka y axis
 	int __MAX_TILE_ROW_INV__ = 10;
 
 	float __FIRST_TILE_POSITION_X__ = 330.f;

@@ -1,4 +1,3 @@
-
 [[NAME::Leathero Petlo]]
 [[IMG::chainmail.png]]
 [[TYPE::TORSO]]
@@ -10,7 +9,7 @@
 [---]
 [[NAME::Leder pantsu]]
 [[IMG::armor69.png]]
-[[TYPE::GREAVES]]
+[[TYPE::TORSO]]
 [[CLASS::HEAVY]]
 [[SPEED::11]]
 [[DEFENCE::2]]

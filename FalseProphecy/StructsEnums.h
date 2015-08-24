@@ -161,6 +161,8 @@ struct Enemy_Stats{
 	int speed;
 	int type;
 	int enemy_class;
+	int experience;
+	int value;
 };
 
 #endif //!STRUCTURES_AND_ENUMS

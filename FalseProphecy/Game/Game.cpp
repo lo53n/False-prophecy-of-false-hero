@@ -16,6 +16,9 @@ Game::Game()
 	ItemsLoader itemsloader;
 	itemsloader.loadResources(); //Load items from file
 
+	EnemiesLoader enemiesLoader;
+	enemiesLoader.loadFromFile(); //Load enemies from file
+
 //	_itemsHolder->loadResources();
 
 	//_player->setPlayerPositionOnGrid(sf::Vector2i(5, 5));
@@ -56,6 +59,12 @@ void Game::run(){
 		std::shared_ptr<Item> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
 		_player->putItemInBackpack(asd);
 	}
+
+	std::shared_ptr<Armour> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
+	_player->putItemInBackpack(asd);
+	std::shared_ptr<Armour> asd1(std::make_shared<Armour>(_itemsHolder->_armoursData[1]));
+	_player->putItemInBackpack(asd1);
+
 
 	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 
@@ -157,10 +166,6 @@ void Game::draw()
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	//Show next map//
-	if (key == sf::Keyboard::Return && isPressed){
-		generateNewMap();
-	}
 	///////////////////////////////
 	//Process normal player input//
 	///////////////////////////////
@@ -271,13 +276,48 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 				_gameView.setCenter(_player->getPlayerPositionOnMap()); //center view on player
 				_window.setView(_gameView); //refresh the view
 		}
+		//Show next map//
+		if (key == sf::Keyboard::Return && isPressed){
+			generateNewMap();
+		}
 	}
 	else{
 		//////////////////////////
 		//Interface manipulation//
 		//////////////////////////
 		if (_isInventoryWindowOpen && !_isStatusWindowOpen && isPressed){
-			_inventoryWindow.highlightNextItem(key);
+
+			_inventoryWindow.handleInput(key, isPressed);
+
+			//if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
+			//	_inventoryWindow.highlightNextItem(key);
+			//}
+			//if (key == sf::Keyboard::Return && isPressed){
+			//	int item = _inventoryWindow.selectItem();
+			//	//_player->getPlayerBackpack()[item]->getItemStats();
+			//	try{
+			//		if (_player->getPlayerBackpack().at(item) != nullptr){
+			//			if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::ARMOUR){
+			//				std::shared_ptr<Armour> item1 = (std::dynamic_pointer_cast <Armour>(_player->getPlayerBackpack()[item]));
+			//				_player->equipItem(item1);
+			//			}
+			//			if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::WEAPON){
+			//				std::shared_ptr<Weapon> item1 = (std::dynamic_pointer_cast <Weapon>(_player->getPlayerBackpack()[item]));
+			//				_player->equipItem(item1);
+			//			}
+			//			else{
+			//				_player->getPlayerBackpack()[item]->getItemStats();
+			//			}
+			//		}
+			//		else{
+			//			std::cout << "blam." << std::endl;
+			//		}
+			//	}
+			//	catch (std::exception e){
+			//		std::cout << "poop" << std::endl;
+			//	}
+			//	_inventoryWindow.putItemsOnTiles();
+			//}
 			
 		}
 	}
@@ -501,7 +541,8 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 			if (tile == '.'){
 				int chance = rand() % 100;
 				if (chance > 90){
-					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, sf::Vector2i(tilex, tiley), tile));
+					Enemy_Stats enemy_template = _enemiesHolder->_enemiesData[rand()%_enemiesHolder->_enemiesData.size()];
+					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, enemy_template, sf::Vector2i(tilex, tiley), tile));
 					_currentMap->_enemies.push_back(enemy);
 					_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
 					enemy_id++;

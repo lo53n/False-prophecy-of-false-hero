@@ -8,7 +8,6 @@
 #include "SFML/Graphics.hpp"
 
 
-
 class Item : public sf::Drawable{
 
 
@@ -18,9 +17,14 @@ public:
 
 	void setImagesPosition(sf::Vector2f newPosition);
 
+	void getItemStats();
+	int getItemType();
+
 	Item();
 	~Item();
 
+
+	int _itemType;
 
 public:
 
@@ -42,7 +46,6 @@ public:
 private:
 
 
-	int _itemType;
 
 
 

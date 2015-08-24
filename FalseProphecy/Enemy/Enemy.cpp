@@ -1,7 +1,8 @@
 #include "Enemy.h"
 
-Enemy::Enemy(int enemy_id, sf::Vector2i positionOnGrid, char newTile)
+Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGrid, char newTile)
 	: _enemy_id(enemy_id),
+	_stats(enemy_template),
 	_positionOnGrid(positionOnGrid),
 	_tile_underneath(newTile)
 {
@@ -22,9 +23,10 @@ Enemy::Enemy(int enemy_id, sf::Vector2i positionOnGrid, char newTile)
 	_underHpBar.setPosition(_hpBar.getPosition());
 	_underHpBar.setFillColor(sf::Color());
 
-	_stats.max_hitpoints = 10;
-	_stats.hitpoints = 10;
-	_stats.defence = 1;
+	//_stats.max_hitpoints = 10;
+	//_stats.hitpoints = 10;
+	//_stats.defence = 1;
+	_stats.hitpoints = _stats.max_hitpoints;
 }
 
 Enemy::~Enemy()
@@ -121,8 +123,8 @@ void Enemy::takeHit(int damage)
 
 	int green, red;
 
-	green = 255 * percentage;
-	red = 255 * (1 - percentage);
+	green = (int)(255 * percentage);
+	red = (int)(255 * (1 - percentage));
 
 	_hpBar.setFillColor(sf::Color(red, green, 0, 255));
 	_hpBar.setScale(percentage, 1.f);
