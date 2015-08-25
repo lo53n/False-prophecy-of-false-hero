@@ -129,7 +129,82 @@ void Player::putItemInBackpack(std::shared_ptr<Item> item)
 	_backpack.push_back(item);
 }
 
+std::shared_ptr<Item> Player::dropSelectedItem(int itemNumber)
+{
+	std::shared_ptr<Item> temp = _backpack.at(itemNumber);
+	_backpack.erase(_backpack.begin() + itemNumber);
+	return temp;
+}
 
+void Player::equipItem(std::shared_ptr<Weapon> item)
+{
+
+	std::shared_ptr<Item> temp = nullptr;
+
+	if (_mainHand != nullptr) temp = _mainHand;
+
+	_mainHand = item;
+	std::cout << "Equipped weapon " << _mainHand->getStatsStruct().name << std::endl;
+
+	if (temp != nullptr){
+		for (int i = 0, len = _backpack.size(); i < len; i++){
+			if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
+				_backpack[i] = std::dynamic_pointer_cast<Weapon>(temp);
+				break;
+			}
+		}
+	}
+	else{
+		for (int i = 0, len = _backpack.size(); i < len; i++){
+			if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
+				_backpack.erase(_backpack.begin() + i);
+				break;
+			}
+		}
+	}
+}
+void Player::equipItem(std::shared_ptr<Armour> item)
+{
+	std::shared_ptr<Item> temp = nullptr;
+	switch (item->getStatsStruct().type){
+	case ARMOUR_TYPE::TORSO:
+		if (_torso != nullptr) temp = _torso;
+		_torso = item;
+		std::cout << "Equipped torso " << _torso->getStatsStruct().name << std::endl;
+		break;
+	case ARMOUR_TYPE::HELMET:
+		if (_head != nullptr) temp = _head;
+		_head = item;
+		std::cout << "Equipped head " << _head->getStatsStruct().name << std::endl;
+		break;
+	case ARMOUR_TYPE::GREAVES:
+		if (_legs != nullptr) temp = _legs;
+		_legs = item;
+		std::cout << "Equipped legs " << _legs->getStatsStruct().name << std::endl;
+		break;
+	case ARMOUR_TYPE::SHIELD:
+		if (_offHand != nullptr) temp = _offHand;
+		_offHand = item;
+		std::cout << "Equipped shield " << _offHand->getStatsStruct().name << std::endl;
+	}
+
+	if (temp != nullptr){
+		for (int i = 0, len = _backpack.size(); i < len; i++){
+			if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
+				_backpack[i] = std::dynamic_pointer_cast<Armour>(temp);
+				break;
+			}
+		}
+	}
+	else{
+		for (int i = 0, len = _backpack.size(); i < len; i++){
+			if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
+				_backpack.erase(_backpack.begin() + i);
+				break;
+			}
+		}
+	}
+}
 
 ///////////
 //Battle!//
@@ -257,76 +332,6 @@ void Player::calculateProficientyEffectivness(int id)
 				_proficiences[id].effectiveness += (__PROFICIENCY_DODGE_EFFICIENCY__ * (1 + (float)(_proficiences[id].level) / 100));
 			}
 			break;
-		}
-	}
-}
-
-void Player::equipItem(std::shared_ptr<Weapon> item)
-{
-
-	std::shared_ptr<Item> temp = nullptr;
-
-	if (_mainHand != nullptr) temp = _mainHand;
-
-	_mainHand = item;
-	std::cout << "Equipped weapon " << _mainHand->getStatsStruct().name << std::endl;
-
-	if (temp != nullptr){
-		for (int i = 0, len = _backpack.size(); i < len; i++){
-			if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
-				_backpack[i] = std::dynamic_pointer_cast<Weapon>(temp);
-				break;
-			}
-		}
-	}
-	else{
-		for (int i = 0, len = _backpack.size(); i < len; i++){
-			if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
-				_backpack.erase(_backpack.begin() + i);
-				break;
-			}
-		}
-	}
-}
-void Player::equipItem(std::shared_ptr<Armour> item)
-{
-	std::shared_ptr<Item> temp = nullptr;
-	switch (item->getStatsStruct().type){
-	case ARMOUR_TYPE::TORSO:
-		if (_torso != nullptr) temp = _torso;
-		_torso = item;
-		std::cout << "Equipped torso " << _torso->getStatsStruct().name << std::endl;
-		break;
-	case ARMOUR_TYPE::HELMET:
-		if (_head != nullptr) temp = _head;
-		_head = item;
-		std::cout << "Equipped head " << _head->getStatsStruct().name << std::endl;
-		break;
-	case ARMOUR_TYPE::GREAVES:
-		if (_legs != nullptr) temp = _legs;
-		_legs = item;
-		std::cout << "Equipped legs " << _legs->getStatsStruct().name << std::endl;
-		break;
-	case ARMOUR_TYPE::SHIELD:
-		if (_offHand != nullptr) temp = _offHand;
-		_offHand = item;
-		std::cout << "Equipped shield " << _offHand->getStatsStruct().name << std::endl;
-	}
-
-	if (temp != nullptr){
-		for (int i = 0, len = _backpack.size(); i < len; i++){
-			if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
-				_backpack[i] = std::dynamic_pointer_cast<Armour>(temp);
-				break;
-			}
-		}
-	}
-	else{
-		for (int i = 0, len = _backpack.size(); i < len; i++){
-			if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
-				_backpack.erase(_backpack.begin() + i);
-				break;
-			}
 		}
 	}
 }

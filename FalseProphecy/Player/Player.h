@@ -80,6 +80,7 @@ public:
 	void equipItem(std::shared_ptr<Weapon> item);
 	void equipItem(std::shared_ptr<Armour> item);
 
+	std::shared_ptr<Item> dropSelectedItem(int itemNumber);
 
 	///////////
 	//Battle!//

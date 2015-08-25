@@ -17,6 +17,8 @@ public:
 	void handleInput(int key, bool isPressed);
 	void highlightNextItem(int direction);
 
+	int getHighlitItem();
+
 	void putItemsOnTiles();
 
 	int selectItem();

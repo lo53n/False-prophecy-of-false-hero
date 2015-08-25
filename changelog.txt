@@ -1,4 +1,13 @@
 [-----]
+2015-08-25
+
+What is done?
+
+	- item drops from enemies
+
+	- drop items from inventory and picking up from ground (one by one)
+
+[-----]
 2015-08-24
 
 What is done?

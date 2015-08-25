@@ -10,6 +10,7 @@
 
 #include "MapsHolder.h"
 #include "../Enemy/Enemy.h"
+#include "../Items/Item.h"
 
 namespace std
 {
@@ -143,6 +144,16 @@ public:
 
 
 
+	//////////////////
+	//Items and drop//
+	//////////////////
+
+	void pushItemToMapStorage(sf::Vector2i position, std::shared_ptr<Item> item);
+	bool checkForItemsAtTile(sf::Vector2i position);
+
+	std::shared_ptr<Item> returnItemAtTile(sf::Vector2i position);
+
+
 
 	//Debug?//
 	void printConsoleMap();
@@ -177,8 +188,13 @@ private:
 	//Map enemies//
 	///////////////
 
-
 	int _respawn_counter = 0;
+
+	//////////////////
+	//Items and drop//
+	//////////////////
+
+	std::unordered_multimap<sf::Vector2i, std::shared_ptr<Item>> _itemsOnMap;
 
 
 	/////////////////

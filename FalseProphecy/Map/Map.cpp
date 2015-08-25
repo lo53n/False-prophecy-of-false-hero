@@ -23,6 +23,9 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	for (auto enemy : _enemies){
 		target.draw(*enemy);
 	}
+	for (auto item : _itemsOnMap){
+		target.draw(*(item.second));
+	}
 
 }
 
@@ -306,4 +309,38 @@ void Map::takeEnemiesFromMap()
 	for (auto enemy : _enemies){
 		changeMapTile(enemy->getTileUnderneathEnemy(), enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
 	}
+}
+
+//////////////////
+//Items and drop//
+//////////////////
+
+void Map::pushItemToMapStorage(sf::Vector2i position, std::shared_ptr<Item> item)
+{
+	item->setImagesPosition(sf::Vector2f(position.x * 32.f, position.y * 32.f));
+	_itemsOnMap.insert(std::pair < sf::Vector2i, std::shared_ptr<Item>>(position, item));
+}
+
+bool Map::checkForItemsAtTile(sf::Vector2i position)
+{
+	for (auto item : _itemsOnMap){
+
+		if (item.first == position){
+			return true;
+		}
+
+	}
+	
+	return false;
+}
+
+std::shared_ptr<Item> Map::returnItemAtTile(sf::Vector2i position)
+{
+	std::shared_ptr<Item> temp;
+	std::unordered_multimap<sf::Vector2i, std::shared_ptr<Item>>::iterator it = _itemsOnMap.find(position);
+	
+	temp = it->second;
+	_itemsOnMap.erase(it);
+
+	return temp;
 }

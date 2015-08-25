@@ -70,19 +70,16 @@ void InventoryWindow::draw(sf::RenderTarget& target, sf::RenderStates states) co
 	target.draw(_legsTile);
 	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr)
 		target.draw(*(_player->getPlayerArmour(ARMOUR_TYPE::GREAVES)));
-
-
-
-
-
-
-
-
 }
 
 void InventoryWindow::setPlayer(std::shared_ptr<Player> player)
 {
 	_player = player;
+}
+
+int InventoryWindow::getHighlitItem()
+{
+	return  (_highlightPosition.x + (_highlightPosition.y * __MAX_TILE_COLUMN_INV__));
 }
 
 void InventoryWindow::setInventoryWindowTiles()

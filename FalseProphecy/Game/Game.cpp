@@ -275,10 +275,14 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 				_gameView.setCenter(_player->getPlayerPositionOnMap()); //center view on player
 				_window.setView(_gameView); //refresh the view
+
 		}
 		//Show next map//
 		if (key == sf::Keyboard::Return && isPressed){
 			generateNewMap();
+		}
+		if (key == sf::Keyboard::D && isPressed){
+			checkForObjectsAtPlayerPosition();
 		}
 	}
 	else{
@@ -286,38 +290,15 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		//Interface manipulation//
 		//////////////////////////
 		if (_isInventoryWindowOpen && !_isStatusWindowOpen && isPressed){
+			if (key == sf::Keyboard::D && isPressed){
+				try{
+					heroDropsItem();
+				}
+				catch (std::exception e){
 
+				}
+			}
 			_inventoryWindow.handleInput(key, isPressed);
-
-			//if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
-			//	_inventoryWindow.highlightNextItem(key);
-			//}
-			//if (key == sf::Keyboard::Return && isPressed){
-			//	int item = _inventoryWindow.selectItem();
-			//	//_player->getPlayerBackpack()[item]->getItemStats();
-			//	try{
-			//		if (_player->getPlayerBackpack().at(item) != nullptr){
-			//			if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::ARMOUR){
-			//				std::shared_ptr<Armour> item1 = (std::dynamic_pointer_cast <Armour>(_player->getPlayerBackpack()[item]));
-			//				_player->equipItem(item1);
-			//			}
-			//			if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::WEAPON){
-			//				std::shared_ptr<Weapon> item1 = (std::dynamic_pointer_cast <Weapon>(_player->getPlayerBackpack()[item]));
-			//				_player->equipItem(item1);
-			//			}
-			//			else{
-			//				_player->getPlayerBackpack()[item]->getItemStats();
-			//			}
-			//		}
-			//		else{
-			//			std::cout << "blam." << std::endl;
-			//		}
-			//	}
-			//	catch (std::exception e){
-			//		std::cout << "poop" << std::endl;
-			//	}
-			//	_inventoryWindow.putItemsOnTiles();
-			//}
 			
 		}
 	}
@@ -372,6 +353,12 @@ bool Game::checkMovement(int direction)
 				//_currentMap->changeMapTile(__ENEMY_CORPSE_ON_MAP__, checkForPosition.x, checkForPosition.y);
 				heroAttacksEnemy(checkForPosition);
 				//_currentMap->printConsoleMap();
+
+				//if dead, then calculate loot
+				if (!enemy->checkIfAlive()){
+					generateDrop(checkForPosition);
+					std::cout << "ded" << std::endl;
+				}
 			}
 		}
 		return false;
@@ -604,6 +591,13 @@ void Game::takeTurn()
 	}
 }
 
+void Game::heroDropsItem()
+{
+	std::shared_ptr<Item> item = _player->dropSelectedItem(_inventoryWindow.getHighlitItem());
+	_currentMap->pushItemToMapStorage(_player->getPlayerPositionOnGrid(), item);
+	_inventoryWindow.putItemsOnTiles();
+}
+
 //////////////////////////
 //Player and Enemy stuff//
 //////////////////////////
@@ -615,5 +609,26 @@ void Game::heroAttacksEnemy(sf::Vector2i position)
 	enemy->takeHit(dmg);
 	if (!enemy->checkIfAlive()){
 		_currentMap->killOffEnemy(enemy->getEnemyId());
+	}
+}
+
+///////////////////////
+//Item and drop stuff//
+///////////////////////
+
+//Need better drop generator here.
+void Game::generateDrop(sf::Vector2i position)
+{
+	std::shared_ptr<Item> item(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
+	_currentMap->pushItemToMapStorage(position, item);
+	std::shared_ptr<Item> item1(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
+	_currentMap->pushItemToMapStorage(position, item1);
+	std::cout << "generated" << std::endl;
+}
+
+void Game::checkForObjectsAtPlayerPosition()
+{
+	if (_currentMap->checkForItemsAtTile(_player->getPlayerPositionOnGrid())){
+		_player->getPlayerBackpack().push_back(_currentMap->returnItemAtTile(_player->getPlayerPositionOnGrid()));
 	}
 }

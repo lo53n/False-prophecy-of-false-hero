@@ -157,6 +157,14 @@ private:
 	//////////////////////////
 
 	void heroAttacksEnemy(sf::Vector2i position);
+	void heroDropsItem();
+
+	///////////////////////
+	//Item and drop stuff//
+	///////////////////////
+
+	void generateDrop(sf::Vector2i position);
+	void checkForObjectsAtPlayerPosition();
 
 };
 
