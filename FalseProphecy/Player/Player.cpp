@@ -13,6 +13,8 @@ Player::Player()
 
 	//_playerSprite.setTexture(_playerTexture.getTexture());
 
+	_backpack.reserve(__BACKPACK_CAPACITY__);
+
 
 	_stats.attack = 5;
 	//0 - 1h, 1 - 2h, 2- 2xwield
@@ -129,11 +131,39 @@ void Player::putItemInBackpack(std::shared_ptr<Item> item)
 	_backpack.push_back(item);
 }
 
-std::shared_ptr<Item> Player::dropSelectedItem(int itemNumber)
+std::shared_ptr<Item> Player::dropSelectedItem(int itemNumber, bool inBag)
 {
-	std::shared_ptr<Item> temp = _backpack.at(itemNumber);
-	_backpack.erase(_backpack.begin() + itemNumber);
-	return temp;
+	std::shared_ptr<Item> temp;
+	if (inBag){
+		temp = _backpack.at(itemNumber);
+		_backpack.erase(_backpack.begin() + itemNumber);
+		return temp;
+	}
+	else{
+		switch (itemNumber){
+		case 0: 
+			temp = _mainHand;
+			_mainHand = nullptr;
+			break;
+		case 1:
+			temp = _offHand;
+			_offHand = nullptr;
+			break;
+		case 2:
+			temp = _head;
+			_head = nullptr;
+			break;
+		case 3:
+			temp = _torso;
+			_torso = nullptr;
+			break;
+		case 4:
+			temp = _legs;
+			_legs = nullptr;
+			break;
+		}
+		return temp;
+	}
 }
 
 void Player::equipItem(std::shared_ptr<Weapon> item)
@@ -205,6 +235,46 @@ void Player::equipItem(std::shared_ptr<Armour> item)
 		}
 	}
 }
+
+void Player::unequipItem(int slot)
+{
+
+	std::shared_ptr<Item> item = nullptr;
+
+	switch (slot){
+
+	case 0:
+		item = _mainHand;
+		_mainHand = nullptr;
+			break;
+
+	case 1:
+		item = _offHand;
+		_offHand = nullptr;
+			break;
+
+	case 2:
+		item = _head;
+		_head = nullptr;
+			break;
+
+	case 3:
+		item = _torso;
+		_torso = nullptr;
+			break;
+
+	case 4:
+		item = _legs;
+		_legs = nullptr;
+			break;
+
+	}
+
+	if(item != nullptr) putItemInBackpack(item);
+
+
+}
+
 
 ///////////
 //Battle!//

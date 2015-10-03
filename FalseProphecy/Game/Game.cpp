@@ -51,11 +51,11 @@ void Game::run(){
 	
 	_currentMapNumber = 0;
 	
-	for (int i = 0; i < 11; i++){
+	for (int i = 0; i < 29; i++){
 		std::shared_ptr<Item> asd(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
 		_player->putItemInBackpack(asd);
 	}
-	for (int i = 0; i < 11; i++){
+	for (int i = 0; i < 19; i++){
 		std::shared_ptr<Item> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
 		_player->putItemInBackpack(asd);
 	}
@@ -281,7 +281,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		if (key == sf::Keyboard::Return && isPressed){
 			generateNewMap();
 		}
-		if (key == sf::Keyboard::D && isPressed){
+		if (key == sf::Keyboard::D && isPressed && (_player->getPlayerBackpack().size() < __BACKPACK_CAPACITY__)){
 			checkForObjectsAtPlayerPosition();
 		}
 	}
@@ -291,12 +291,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		//////////////////////////
 		if (_isInventoryWindowOpen && !_isStatusWindowOpen && isPressed){
 			if (key == sf::Keyboard::D && isPressed){
-				try{
 					heroDropsItem();
-				}
-				catch (std::exception e){
-
-				}
 			}
 			_inventoryWindow.handleInput(key, isPressed);
 			
@@ -593,9 +588,10 @@ void Game::takeTurn()
 
 void Game::heroDropsItem()
 {
-	std::shared_ptr<Item> item = _player->dropSelectedItem(_inventoryWindow.getHighlitItem());
-	_currentMap->pushItemToMapStorage(_player->getPlayerPositionOnGrid(), item);
-	_inventoryWindow.putItemsOnTiles();
+		std::shared_ptr<Item> item = _player->dropSelectedItem(_inventoryWindow.getHighlitItem(), _inventoryWindow.isHighlitInBag());
+		if (item == nullptr) return;
+		_currentMap->pushItemToMapStorage(_player->getPlayerPositionOnGrid(), item);
+		_inventoryWindow.putItemsOnTiles();
 }
 
 //////////////////////////

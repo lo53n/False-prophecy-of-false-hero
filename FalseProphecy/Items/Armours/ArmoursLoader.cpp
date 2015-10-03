@@ -151,12 +151,14 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 			_currentData.armour_class = ARMOUR_CLASS::CLOTH;
 		else if (output[1] == "LEATHER")
 			_currentData.armour_class = ARMOUR_CLASS::LEATHER;
-		else if (output[1] == "MAIL")
-			_currentData.armour_class = ARMOUR_CLASS::MAIL;
+		else if (output[1] == "METAL")
+			_currentData.armour_class = ARMOUR_CLASS::METAL;
+		else if (output[1] == "LIGHT")
+			_currentData.armour_class = ARMOUR_CLASS::LIGHT;
+		else if (output[1] == "MEDIUM")
+			_currentData.armour_class = ARMOUR_CLASS::AVERAGE;
 		else if (output[1] == "HEAVY")
 			_currentData.armour_class = ARMOUR_CLASS::HEAVY;
-		else if (output[1] == "PLATE")
-			_currentData.armour_class = ARMOUR_CLASS::PLATE;
 		else _currentData.armour_class = -1;
 		break;
 
@@ -277,6 +279,9 @@ bool ArmoursLoader::checkStructCorrectness()
 
 	if (_currentData.armour_class == -1) return false;
 
+	if ((_currentData.armour_class < 4 && _currentData.type == 3) || (_currentData.armour_class >= 4 && _currentData.type < 3)) 
+			correctStruct(TAGVALUE::CLASS);
+
 	if (_currentData.speed == -1) return false;
 
 	if (_currentData.defence == -1) return false;
@@ -287,8 +292,38 @@ bool ArmoursLoader::checkStructCorrectness()
 
 	return isSuccessful;
 }
-//No ideas, how to correct invalid armour structure. Incorrect one will be disposed as for now.
+//No ideas, how to correct invalid armour structure. Incorrect one mostly will be disposed as for now.
 bool ArmoursLoader::correctStruct(int tag)
 {
+
+	switch(tag){
+
+	case TAGVALUE::CLASS:
+		switch (_currentData.armour_class){
+
+		case ARMOUR_CLASS::CLOTH:
+			if (_currentData.type == ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::LIGHT;
+			break;
+		case ARMOUR_CLASS::LEATHER:
+			if (_currentData.type == ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::AVERAGE;
+			break;
+		case ARMOUR_CLASS::METAL:
+			if (_currentData.type == ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::HEAVY;
+			break;
+
+		case ARMOUR_CLASS::LIGHT:
+			if (_currentData.type != ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::CLOTH;
+			break;
+		case ARMOUR_CLASS::AVERAGE:
+			if (_currentData.type != ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::LEATHER;
+			break;
+		case ARMOUR_CLASS::HEAVY:
+			if (_currentData.type != ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::METAL;
+			break;
+
+		}
+		break;
+
+	}
 	return true;
 }

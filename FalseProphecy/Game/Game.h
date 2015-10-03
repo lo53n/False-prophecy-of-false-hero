@@ -97,6 +97,10 @@ private:
 	char __ENEMY_ON_MAP__ = '8';
 	char __ENEMY_CORPSE_ON_MAP__ = '#';
 
+
+	//If changed, change in Player.h//
+	const int __BACKPACK_CAPACITY__ = 50;
+
 private:
 	//////////////////
 	//Game main loop//

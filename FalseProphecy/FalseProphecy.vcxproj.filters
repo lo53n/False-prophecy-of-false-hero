@@ -244,6 +244,7 @@
     <Text Include="data\armours.txt">
       <Filter>Resource Files\----Data----</Filter>
     </Text>
+    <Text Include="Z:\False-prophecy-of-false-hero\progress.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />

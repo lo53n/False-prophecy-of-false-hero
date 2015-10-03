@@ -1,4 +1,17 @@
 [-----]
+2015-10-03
+
+What is done?
+	
+	- item equipping/unequipping w/o stats change
+
+	- item drop from bag and equipment fully implemented (w/o stats change)
+
+TO DO?
+
+	- stats change after unequip, equip and drop operations
+
+[-----]
 2015-08-25
 
 What is done?

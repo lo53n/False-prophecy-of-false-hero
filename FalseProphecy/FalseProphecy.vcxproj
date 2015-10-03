@@ -68,6 +68,7 @@
     <Text Include="data\enemies.txt" />
     <Text Include="data\map.txt" />
     <Text Include="data\weapons.txt" />
+    <Text Include="Z:\False-prophecy-of-false-hero\progress.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />

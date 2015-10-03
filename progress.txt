@@ -1,0 +1,128 @@
+[MODIFICATION]
+	- items:
+		++ weapons
+		++ armors
+		-- consumables
+
+	+ maps
+	+ enemies
+	- textures:
+		-- default:
+			-- weapons:
+				++ axe
+				-- sword
+				-- mace
+				-- spear
+			-- armours:
+				-- head:
+					-- cloth
+					-- leather
+					-- metal
+				-- torso:
+					-- cloth
+					-- leather
+					-- metal
+				-- legs:
+					-- cloth
+					-- leather
+					-- metal
+				-- shield:
+					-- light
+					-- medium
+					-- heavy
+			-- consumables:
+					-- TBD
+		-- normal for eq
+		-- terrain
+		-- walls
+
+[EQUIPMENT]
+	+ picking up items
+	+ dropping items
+	+ equip items
+	+ unequip items
+	- calculate stats for new piece of gear depending on user strenght
+	- refresh player stats for each equipement change
+
+[PLAYER]
+	+ movement:
+		++ moving around
+		++ moving from map to map
+	- attacking:
+		++ normal attack
+		-- skills
+		-- TBD
+	+ proficiences:
+		++ experience
+		++ multipliers
+		++ dependable on weapon
+	- level:
+		-- experience
+		-- stats points
+		-- TBD
+	- inventory:
+		++ backpack
+		++ equipement slots
+		-- stats change after un/equipping
+	- TBD
+
+[MAP]
+	+ random generating
+	+ random connecting
+	+ infinite dungeon
+	- spawn random enemies:
+		++ normal enemies
+		-- elite enemies
+		-- boss enemies
+		-- better balance of spawn
+	+ enemy respawning
+	- environmental stuff:
+		-- barrels
+		-- chests
+	- special maps:
+		-- boss maps
+		-- story maps
+	
+[ENEMIES]
+	- AI:
+		-- coward
+		-- brave
+		-- angry
+		-- calm
+		-- TBD
+	- movement
+	- attacking
+	- loot drop
+		++ drop item after death
+		-- generate item with some formula
+	- respawn:
+		++ respawn
+		-- stregthen after dead
+	- class:
+		-- normal
+		-- elite
+		-- boss
+
+[INTERFACE]
+	- Main Window:
+		-- hp/mana/stamina bars
+		-- skills view
+		-- icons for each menu
+	- Character Window
+		-- player stats
+		-- proficiences
+		-- player battle stats
+		-- current equipement
+	- Inventory Window
+		++ bag view
+		++ equipement view
+		-- piece of gear statistics
+		++ manipulating
+	- Menus:
+		-- main menu
+		-- game menu
+	- Dialogue Box:
+		-- TBD
+
+[EVENTS]
+	- TBD

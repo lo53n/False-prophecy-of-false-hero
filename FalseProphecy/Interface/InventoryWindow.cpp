@@ -2,8 +2,6 @@
 InventoryWindow::InventoryWindow()
 {
 
-	asd = "lol";
-
 	_inventoryWindow.setSize(sf::Vector2f(500.f, 378.f));
 	_inventoryWindow.setPosition(100.f, 100.f);
 	_inventoryWindow.setFillColor(sf::Color(90, 90, 90, 220));
@@ -25,6 +23,10 @@ InventoryWindow::InventoryWindow()
 	_legsTile.setSize(sf::Vector2f(33.f, 33.f));
 	
 	setInventoryWindowTiles();
+
+	_highlightBag = sf::Vector2i(0,0);
+	_highlightEquipment = sf::Vector2i(0,0);
+
 
 	_highlightPosition = sf::Vector2i(0, 0);
 
@@ -79,8 +81,15 @@ void InventoryWindow::setPlayer(std::shared_ptr<Player> player)
 
 int InventoryWindow::getHighlitItem()
 {
-	return  (_highlightPosition.x + (_highlightPosition.y * __MAX_TILE_COLUMN_INV__));
+	return selectItem();
 }
+
+
+bool InventoryWindow::isHighlitInBag()
+{
+	return _isHighlitInBag;
+}
+
 
 void InventoryWindow::setInventoryWindowTiles()
 {
@@ -90,6 +99,9 @@ void InventoryWindow::setInventoryWindowTiles()
 
 	_mainHandTile.setPosition(position.x, position.y);
 	_mainHandTile.setTexture(&_backtileTexture);
+
+	__FIRST_EQ_TILE_POS_X__ = _mainHandTile.getPosition().x;
+	__FIRST_EQ_TILE_POS_Y__ = _mainHandTile.getPosition().y;
 
 	_offHandTile.setPosition(position.x + 35, position.y);
 	_offHandTile.setTexture(&_backtileTexture);
@@ -104,12 +116,13 @@ void InventoryWindow::setInventoryWindowTiles()
 	_legsTile.setTexture(&_backtileTexture);
 
 	_inventoryTiles.clear();
+
 	for (int i = 0; i < __MAX_TILE_ROW_INV__; i++){
 		std::vector<sf::RectangleShape> tileRow;
 		for (int j = 0; j < __MAX_TILE_COLUMN_INV__; j++){
 			sf::RectangleShape tile;
 
-			tile.setSize(sf::Vector2f(33.f, 33.f));
+			tile.setSize(sf::Vector2f(31.f, 31.f));
 			tile.setPosition(__FIRST_TILE_POSITION_X__ + 35.f * j, __FIRST_TILE_POSITION_Y__ + 35.f * i);
 			tile.setTexture(&_backtileTexture);
 
@@ -158,26 +171,41 @@ void InventoryWindow::handleInput(int key, bool isPressed)
 	if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
 		highlightNextItem(key);
 	}
+
+
+	if (key == sf::Keyboard::Tab && isPressed){
+
+		changeHighlitSlots();
+
+	}
+
 	if (key == sf::Keyboard::Return && isPressed){
 		int item = selectItem();
 		//_player->getPlayerBackpack()[item]->getItemStats();
 		try{
-			if (_player->getPlayerBackpack().at(item) != nullptr){
-				if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::ARMOUR){
-					std::shared_ptr<Armour> item1 = (std::dynamic_pointer_cast <Armour>(_player->getPlayerBackpack()[item]));
-					_player->equipItem(item1);
-				}
-				if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::WEAPON){
-					std::shared_ptr<Weapon> item1 = (std::dynamic_pointer_cast <Weapon>(_player->getPlayerBackpack()[item]));
-					_player->equipItem(item1);
+			if (_isHighlitInBag){
+				if (_player->getPlayerBackpack().at(item) != nullptr){
+					if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::ARMOUR){
+						std::shared_ptr<Armour> item1 = (std::dynamic_pointer_cast <Armour>(_player->getPlayerBackpack()[item]));
+						_player->equipItem(item1);
+					}
+					if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::WEAPON){
+						std::shared_ptr<Weapon> item1 = (std::dynamic_pointer_cast <Weapon>(_player->getPlayerBackpack()[item]));
+						_player->equipItem(item1);
+					}
+					else{
+						_player->getPlayerBackpack()[item]->getItemStats();
+					}
 				}
 				else{
-					_player->getPlayerBackpack()[item]->getItemStats();
 				}
 			}
+
 			else{
-				std::cout << "blam." << std::endl;
+				_player->unequipItem(item);
 			}
+
+
 		}
 		catch (std::exception e){
 		}
@@ -188,28 +216,52 @@ void InventoryWindow::handleInput(int key, bool isPressed)
 
 
 void InventoryWindow::highlightNextItem(int direction){
-	switch (direction){
-	case sf::Keyboard::Up:
-		_highlightPosition.y = (_highlightPosition.y - 1) % __MAX_TILE_ROW_INV__;
-		if (_highlightPosition.y < 0) _highlightPosition.y = __MAX_TILE_ROW_INV__ - 1;
-		break;
-	case sf::Keyboard::Down:
-		_highlightPosition.y = (_highlightPosition.y + 1) % __MAX_TILE_ROW_INV__;
-		break;
-	case sf::Keyboard::Left:
-		_highlightPosition.x = (_highlightPosition.x - 1) % __MAX_TILE_COLUMN_INV__;
-		if (_highlightPosition.x < 0) _highlightPosition.x = __MAX_TILE_COLUMN_INV__ - 1;
-		break;
-	case sf::Keyboard::Right:
-		_highlightPosition.x = (_highlightPosition.x + 1) % __MAX_TILE_COLUMN_INV__;
-		break;
+
+	if (_isHighlitInBag){
+		switch (direction){
+		case sf::Keyboard::Up:
+			_highlightPosition.y = (_highlightPosition.y - 1) % __MAX_TILE_ROW_INV__;
+			if (_highlightPosition.y < 0) _highlightPosition.y = __MAX_TILE_ROW_INV__ - 1;
+			break;
+		case sf::Keyboard::Down:
+			_highlightPosition.y = (_highlightPosition.y + 1) % __MAX_TILE_ROW_INV__;
+			break;
+		case sf::Keyboard::Left:
+			_highlightPosition.x = (_highlightPosition.x - 1) % __MAX_TILE_COLUMN_INV__;
+			if (_highlightPosition.x < 0) _highlightPosition.x = __MAX_TILE_COLUMN_INV__ - 1;
+			break;
+		case sf::Keyboard::Right:
+			_highlightPosition.x = (_highlightPosition.x + 1) % __MAX_TILE_COLUMN_INV__;
+			break;
+
+			//case default:
+
+		}
+
+		_highlight.setPosition(__FIRST_TILE_POSITION_X__ + 35.f * _highlightPosition.x, __FIRST_TILE_POSITION_Y__ + 35.f * _highlightPosition.y);
+		_highlitItem = _highlightPosition.x + (_highlightPosition.y * __MAX_TILE_COLUMN_INV__);
+		std::cout << "Item No.: " << _highlitItem << std::endl;
+	}
+	else{
+
+		switch (direction){
+		case sf::Keyboard::Left:
+			_highlightPosition.x = (_highlightPosition.x - 1) % __MAX_EQ_ROW__;
+			if (_highlightPosition.x < 0) _highlightPosition.x = __MAX_EQ_ROW__ - 1;
+			break;
+		case sf::Keyboard::Right:
+			_highlightPosition.x = (_highlightPosition.x + 1) % __MAX_EQ_ROW__;
+			break;
+
+			//case default:
+
+		}
+
+		_highlight.setPosition(__FIRST_EQ_TILE_POS_X__ + 35.f * _highlightPosition.x, __FIRST_EQ_TILE_POS_Y__ + 35.f * _highlightPosition.y);
+		_highlitItem = _highlightPosition.x;
+		std::cout << "Item No.: " << _highlitItem << std::endl;
 
 	}
-
-	_highlight.setPosition(__FIRST_TILE_POSITION_X__ + 35.f * _highlightPosition.x, __FIRST_TILE_POSITION_Y__ + 35.f * _highlightPosition.y);
-	_highlitItem = _highlightPosition.x + (_highlightPosition.y * __MAX_TILE_COLUMN_INV__);
-	std::cout << "Item No.: " << _highlitItem << std::endl;
-
 }
 
 void InventoryWindow::resizeByGameWindow(sf::Vector2f center)
@@ -233,4 +285,24 @@ void InventoryWindow::resizeByGameWindow(sf::Vector2f center)
 int InventoryWindow::selectItem()
 {
 	return _highlitItem;
+}
+
+void InventoryWindow::changeHighlitSlots()
+{
+	if (_isHighlitInBag){
+		_isHighlitInBag = false;
+		std::cout << _isHighlitInBag << std::endl;
+		_highlightBag = _highlightPosition;
+		_highlightPosition = _highlightEquipment;
+		_highlight.setPosition(__FIRST_EQ_TILE_POS_X__ + 35.f * _highlightPosition.x, __FIRST_EQ_TILE_POS_Y__ + 35.f * _highlightPosition.y);
+		_highlight.setSize(sf::Vector2f(33.f, 33.f));
+	}
+	else {
+		_isHighlitInBag = true;
+		std::cout << _isHighlitInBag << std::endl;
+		_highlightEquipment = _highlightPosition;
+		_highlightPosition = _highlightBag;
+		_highlight.setPosition(__FIRST_TILE_POSITION_X__ + 35.f * _highlightPosition.x, __FIRST_TILE_POSITION_Y__ + 35.f * _highlightPosition.y);
+		_highlight.setSize(sf::Vector2f(32.f, 32.f));
+	}
 }

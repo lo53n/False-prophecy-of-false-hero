@@ -60,9 +60,10 @@ enum ARMOUR_TYPE{
 enum ARMOUR_CLASS{
 	CLOTH,
 	LEATHER,
-	MAIL,
-	HEAVY,
-	PLATE
+	METAL,
+	LIGHT,
+	AVERAGE,
+	HEAVY
 };
 
 struct Armour_struct{

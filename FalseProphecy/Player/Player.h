@@ -80,7 +80,9 @@ public:
 	void equipItem(std::shared_ptr<Weapon> item);
 	void equipItem(std::shared_ptr<Armour> item);
 
-	std::shared_ptr<Item> dropSelectedItem(int itemNumber);
+	void unequipItem(int slot);
+
+	std::shared_ptr<Item> dropSelectedItem(int itemNumber, bool inBag);
 
 	///////////
 	//Battle!//
@@ -130,6 +132,9 @@ private:
 	/////////////////
 	//Magic numbers//
 	/////////////////
+
+	//If changed, change in Game.h//
+	const int __BACKPACK_CAPACITY__ = 50;
 
 	const float __PLAYER_HEIGHT__ = 32.0f;
 	const float __PLAYER_WIDTH__ = 32.0f;

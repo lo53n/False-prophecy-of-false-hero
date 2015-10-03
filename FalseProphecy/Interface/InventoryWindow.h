@@ -27,6 +27,8 @@ public:
 
 	void resizeByGameWindow(sf::Vector2f center);
 
+	bool isHighlitInBag();
+
 	InventoryWindow();
 	~InventoryWindow();
 
@@ -57,6 +59,12 @@ private:
 	sf::Vector2i _highlightPosition;
 
 	int _highlitItem;
+	int _highlitSlot;
+
+	sf::Vector2i _highlightBag;
+	sf::Vector2i _highlightEquipment;
+
+	bool _isHighlitInBag = true;
 
 
 
@@ -67,15 +75,21 @@ private:
 	int __MAX_TILE_COLUMN_INV__ = 5;
 	//how many rows aka y axis
 	int __MAX_TILE_ROW_INV__ = 10;
+	//how many eq tiles
+	int __MAX_EQ_ROW__ = 5;
 
 	float __FIRST_TILE_POSITION_X__ = 330.f;
 	float __FIRST_TILE_POSITION_Y__ = 110.f;
+
+	float __FIRST_EQ_TILE_POS_X__;
+	float __FIRST_EQ_TILE_POS_Y__;
 
 	float __TILE_SPAN_SIZE_X__ = 15.f;
 	float __TILE_SPAN_SIZE_Y__ = 15.f;
 private:
 
 	void setInventoryWindowTiles();
+	void changeHighlitSlots();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
