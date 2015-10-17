@@ -6,7 +6,7 @@ Game::Game()
 	, _interfaceView(sf::FloatRect(0.f, 0.f, 800.f, 640.f))
 	, _player(std::make_shared<Player>())
 {
-
+		
 	///////////////////////
 	//Load game resources//
 	///////////////////////
@@ -24,11 +24,24 @@ Game::Game()
 	//_player->setPlayerPositionOnGrid(sf::Vector2i(5, 5));
 
 
-	//////////////////////////////////
-	//Set player on inventory window//
-	//////////////////////////////////
+	//////////////////////////////////////////////
+	//Set player on inventory window and DevMode//
+	//////////////////////////////////////////////
 
 	_inventoryWindow.setPlayer(_player);
+	_statusWindow.setPlayer(_player);
+	_devMode.setPlayer(_player);
+
+	////////////////////////
+	//Set size of dev menu//
+	////////////////////////
+
+	sf::Vector2f size = (sf::Vector2f) _window.getSize();
+	sf::Vector2f position = sf::Vector2f(0, _gameWindowInterface.getInterfaceHeight());
+
+	size = sf::Vector2f(size.x, size.y - _gameWindowInterface.getInterfaceHeight());
+
+	_devMode.setPositionAndSize(position, size);
 
 	/////////////
 	//Set views//
@@ -40,6 +53,7 @@ Game::Game()
 	_gameWindowInterface.setGameWindowInterfaceSizeByResize(sf::Vector2f((float)_window.getSize().x, (float)_window.getSize().y));
 
 	_inventoryWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
+	_statusWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 
 }
 
@@ -55,10 +69,10 @@ void Game::run(){
 		std::shared_ptr<Item> asd(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
 		_player->putItemInBackpack(asd);
 	}
-	for (int i = 0; i < 19; i++){
+/*	for (int i = 0; i < 19; i++){
 		std::shared_ptr<Item> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
 		_player->putItemInBackpack(asd);
-	}
+	}*/
 
 	std::shared_ptr<Armour> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
 	_player->putItemInBackpack(asd);
@@ -113,19 +127,28 @@ void Game::processEvents()
 		case sf::Event::Closed:
 			_window.close();
 			break;
+
+		//RESIZE//
 		case sf::Event::Resized:
-			visible = sf::Vector2f((float)event.size.width, (float)event.size.height);
+			visible = sf::Vector2f((int)event.size.width, (int)event.size.height);
+			if (visible.x < 640.f && visible.y < 480){
+				visible = sf::Vector2f(640, 480);
+				_window.setSize((sf::Vector2u)visible);
+			}
 			_gameView.setSize(visible);
 			_interfaceView.setSize(visible);
 			_interfaceView.setCenter(visible.x/2, visible.y/2);
 			_gameWindowInterface.setGameWindowInterfaceSizeByResize(visible);
 			_inventoryWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
+			_statusWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 			_window.setView(_gameView);
+
+			_devMode.resizeMenu(sf::Vector2f(visible.x, visible.y - _gameWindowInterface.getInterfaceHeight()));
 			break;
-		case::sf::Event::MouseButtonPressed:
+		/*case::sf::Event::MouseButtonPressed:
 			coords = sf::Mouse::getPosition(_window);
 			std::cout << coords.x << " " << coords.y << std::endl;
-			break;
+			break;*/
 		}
 	}
 }
@@ -157,6 +180,7 @@ void Game::draw()
 	_window.draw(_gameWindowInterface);
 	if (_isInventoryWindowOpen) _window.draw(_inventoryWindow);
 	if (_isStatusWindowOpen) _window.draw(_statusWindow);
+	if (_isDevModeActive) _window.draw(_devMode);
 	_window.display();
 }
 
@@ -189,20 +213,47 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	/////////////////////////////////
 	//Switch interfaces and windows//
 	/////////////////////////////////
+	//INVENTORY WINDOW//
 	if (key == sf::Keyboard::I && isPressed) {
 		if (_isInventoryWindowOpen) _isInventoryWindowOpen = false;
 		else {
 			_isInventoryWindowOpen = true;
 			_inventoryWindow.putItemsOnTiles();
 		}
-		_isStatusWindowOpen = false;
+
+		_isStatusWindowOpen = false; 
+		_isDevModeActive = false;
 	}
+	//STATUS WINDOW//
 	if (key == sf::Keyboard::C && isPressed) {
 		if (_isStatusWindowOpen) _isStatusWindowOpen = false;
-		else _isStatusWindowOpen = true;
+		else{
+			_isStatusWindowOpen = true;
+			_statusWindow.refreshStatus();
+		}
+
+		_isInventoryWindowOpen = false; 
+		_isDevModeActive = false;
+	}
+	//DEVMODE//
+	if (key == sf::Keyboard::F1 && isPressed){
+		if (_isDevModeActive) _isDevModeActive = false;
+		else _isDevModeActive = true;
+
 		_isInventoryWindowOpen = false;
+		_isStatusWindowOpen = false;
 	}
 
+	////////////////////////
+	//DevMode manipulation//
+	////////////////////////
+	
+	if (_isDevModeActive){
+		DevMode::Result result = _devMode.handlePlayerInput(key, isPressed);
+
+		return;
+	}
+	
 	////////////////
 	//Map Movement//
 	////////////////
@@ -228,7 +279,9 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 		_window.setView(_gameView); //refresh view
 	}
-
+	//////////////////
+	//Player & Menus//
+	//////////////////
 	if (!_isInventoryWindowOpen && !_isStatusWindowOpen){
 		///////////////////
 		//Player Movement//

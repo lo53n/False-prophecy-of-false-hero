@@ -105,6 +105,10 @@ GameWindowInterface::~GameWindowInterface()
 
 }
 
+float GameWindowInterface::getInterfaceHeight()
+{
+	return _upperInterface.getSize().y;
+}
 
 void GameWindowInterface::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

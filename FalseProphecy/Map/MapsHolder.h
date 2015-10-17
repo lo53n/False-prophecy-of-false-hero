@@ -30,7 +30,7 @@ public:
 	//Getters//
 	///////////
 	int getMapCount();
-
+	std::vector<std::vector<std::vector<char>>> getAllMaps();
 
 
 };

@@ -46,3 +46,7 @@ std::vector<std::vector<char>> MapsHolder::getMapFromHolder(int mapIndex)
 {
 	return _maps[mapIndex];
 }
+std::vector<std::vector<std::vector<char>>> MapsHolder::getAllMaps()
+{
+	return _maps;
+}

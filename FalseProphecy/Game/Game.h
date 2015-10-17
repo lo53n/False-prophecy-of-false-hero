@@ -5,15 +5,21 @@
 
 
 #include "../Enemy/EnemiesLoader.h"
+
 #include "../Map/MapLoader.h"
 #include "../Map/Map.h"
+
 #include "../Player/Player.h"
+
 #include "../Items/ItemsLoader.h"
 #include "../Items/Weapons/Weapon.h"
 #include "../Items/Armours/Armour.h"
+
 #include "../Interface/GameWindowInterface.h"
 #include "../Interface/InventoryWindow.h"
 #include "../Interface/StatusWindow.h"
+
+#include "../DevMode/DevMode.h"
 
 class Game {
 public:
@@ -35,6 +41,7 @@ private:
 	bool _isPlaying = true;
 	bool _isStatusWindowOpen = false;
 	bool _isInventoryWindowOpen = false;
+	bool _isDevModeActive = false;
 
 
 	///////////////////////
@@ -44,6 +51,7 @@ private:
 	GameWindowInterface _gameWindowInterface;
 	InventoryWindow _inventoryWindow;
 	StatusWindow _statusWindow;
+	DevMode _devMode;
 
 	///////////////////////
 	//Items related stuff//
@@ -108,6 +116,7 @@ private:
 	void processEvents();
 	void update();
 	void draw();
+
 
 	///////////////////////
 	//Handle player input//

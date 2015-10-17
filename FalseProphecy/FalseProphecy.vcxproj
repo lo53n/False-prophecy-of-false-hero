@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DevMode\DevMode.cpp" />
     <ClCompile Include="Enemy\Enemy.cpp" />
     <ClCompile Include="Enemy\EnemiesHolder.cpp" />
     <ClCompile Include="Enemy\EnemiesLoader.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Player\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DevMode\DevMode.h" />
     <ClInclude Include="Enemy\Enemy.h" />
     <ClInclude Include="Enemy\EnemiesHolder.h" />
     <ClInclude Include="Enemy\EnemiesLoader.h" />

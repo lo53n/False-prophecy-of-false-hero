@@ -80,7 +80,7 @@ public:
 	//Setters//
 	///////////
 
-	//Set maap template
+	//Set map template
 	void setMap(std::vector<std::vector<char>> mapTemplate);
 
 

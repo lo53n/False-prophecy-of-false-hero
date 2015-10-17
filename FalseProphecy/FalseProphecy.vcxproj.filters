@@ -81,6 +81,12 @@
     <Filter Include="Resource Files\Enemy">
       <UniqueIdentifier>{17a26496-1b7d-43e5-8f20-a25f2c57c34c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\DevMode">
+      <UniqueIdentifier>{b70f84a9-1cb8-479d-831c-130a50b17519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DevMode">
+      <UniqueIdentifier>{90381106-0bb6-41b6-867f-408d7d1f41eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -151,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="Enemy\EnemiesLoader.cpp">
       <Filter>Resource Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="DevMode\DevMode.cpp">
+      <Filter>Resource Files\DevMode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +234,9 @@
     </ClInclude>
     <ClInclude Include="Enemy\EnemiesLoader.h">
       <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="DevMode\DevMode.h">
+      <Filter>Header Files\DevMode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

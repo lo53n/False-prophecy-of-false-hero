@@ -1,4 +1,32 @@
 [-----]
+2015-10-17
+
+What is done?
+
+	- status window is half way done - equipement side left
+
+	- optimalized inventory window to me much less CPU hungry
+
+To do?
+
+	- some textures
+
+	- make everything more beautiful :>
+
+[-----]
+2015-10-14
+
+What is done?
+	
+	- inventory window
+
+	- started works on dev mode
+
+To do?
+
+	- optimalize inventory window by drawing it on render texture to minimalize CPU usage
+
+[-----]
 2015-10-03
 
 What is done?

@@ -17,6 +17,7 @@ public:
 	void handleInput(int key, bool isPressed);
 	void highlightNextItem(int direction);
 
+
 	int getHighlitItem();
 
 	void putItemsOnTiles();
@@ -34,9 +35,11 @@ public:
 
 	std::shared_ptr<Player> _player;
 
-	std::string asd = "asd";
 
 private:
+
+	sf::RenderTexture _renderTexture;
+	sf::Sprite _sprite;
 
 	sf::RectangleShape _inventoryWindow;
 	sf::RectangleShape _characterWindow;
@@ -65,8 +68,10 @@ private:
 	sf::Vector2i _highlightEquipment;
 
 	bool _isHighlitInBag = true;
+	bool _isItemHighlit = false;
 
-
+	sf::Text _itemStats;
+	sf::Font _font;
 
 	/////////////////
 	//Magic numbers//
@@ -78,8 +83,8 @@ private:
 	//how many eq tiles
 	int __MAX_EQ_ROW__ = 5;
 
-	float __FIRST_TILE_POSITION_X__ = 330.f;
-	float __FIRST_TILE_POSITION_Y__ = 110.f;
+	float __FIRST_TILE_POSITION_X__ = 206;
+	float __FIRST_TILE_POSITION_Y__ = 19;
 
 	float __FIRST_EQ_TILE_POS_X__;
 	float __FIRST_EQ_TILE_POS_Y__;
@@ -88,8 +93,11 @@ private:
 	float __TILE_SPAN_SIZE_Y__ = 15.f;
 private:
 
+	void drawOnRenderTexture();
 	void setInventoryWindowTiles();
 	void changeHighlitSlots();
+	void checkIfItemExists();
+	void createItemDescription(std::shared_ptr<Item> item_generic);
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

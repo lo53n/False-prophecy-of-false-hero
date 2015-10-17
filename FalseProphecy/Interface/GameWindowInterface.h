@@ -16,6 +16,8 @@ class GameWindowInterface : public sf::Drawable{
 public:
 
 
+	float getInterfaceHeight();
+
 	void setGameWindowInterfaceSizeByResize(sf::Vector2f newSize);
 
 	GameWindowInterface();

@@ -109,7 +109,11 @@ enum HERO_ABILITIES_NUMBER{
 };
 
 struct Hero_Profile{
-	int max_hp, hp;
+	int level;
+	int exp, max_exp;
+	int hp, max_hp;
+	int mp, max_mp;
+	int stam, max_stam;
 	int attack;
 	int defence;
 	int speed;

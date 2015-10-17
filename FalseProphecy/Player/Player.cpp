@@ -286,8 +286,12 @@ int Player::calculateDamage()
 	
 	dmg = _stats.attack;
 
+
+	//increase weapon proficienty after attack//
 	if(!isUnarmed) increaseProficiency(_heroWeaponHandle, 100);
 	increaseProficiency(_heroWeaponType, 100);
+
+	//calculate damage for weapon type based on prificiences
 	if (isUnarmed){
 		dmg = (int)(dmg * _proficiences[HERO_ABILITIES_NUMBER::UNARMED_PROFICIENCY].effectiveness);
 	}
@@ -316,6 +320,8 @@ void Player::presetProficiences()
 		else ability.experience_needed = __BASE_PROFICIENCY_WEAPON_EXP__;
 
 		ability.experience = 0;
+
+		//After changing this, remember to change it in StatusWindow.cpp in func setProgressBars() & refreshProficiences()
 		if (i == 0) ability.name = "Onehanded";
 		else if (i == 1) ability.name = "Twohanded";
 		else if (i == 2) ability.name = "Dualwield";

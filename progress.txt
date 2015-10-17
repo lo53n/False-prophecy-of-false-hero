@@ -3,7 +3,6 @@
 		++ weapons
 		++ armors
 		-- consumables
-
 	+ maps
 	+ enemies
 	- textures:
@@ -35,21 +34,23 @@
 		-- normal for eq
 		-- terrain
 		-- walls
+		-- hero
 
 [EQUIPMENT]
 	+ picking up items
 	+ dropping items
 	+ equip items
 	+ unequip items
-	- calculate stats for new piece of gear depending on user strenght
+	- calculate stats for new piece of gear depending on player strenght
 	- refresh player stats for each equipement change
+	- maybe item tiers?
 
 [PLAYER]
 	+ movement:
 		++ moving around
 		++ moving from map to map
 	- attacking:
-		++ normal attack
+		++ melee normal attack
 		-- skills
 		-- TBD
 	+ proficiences:
@@ -126,3 +127,17 @@
 
 [EVENTS]
 	- TBD
+
+[DEVMODE]
+	- menu
+		-- distinction by type:
+			-- weapon
+			-- armour
+			-- consumables
+			-- maps
+			-- enemies
+	- give option
+		-- items
+		-- experience
+		-- proficiency
+
