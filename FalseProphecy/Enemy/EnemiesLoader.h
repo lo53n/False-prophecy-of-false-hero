@@ -9,19 +9,23 @@
 
 
 #include <stdexcept>
-
+#include <memory>
 
 #include "../StructsEnums.h"
 #include "EnemiesHolder.h"
+#include "../Errors/ErrorHandler.h"
 
 class EnemiesLoader{
 public:
 	void loadFromFile();
 
-	EnemiesLoader();
+	EnemiesLoader(std::shared_ptr<ErrorHandler> errorHandler);
 	~EnemiesLoader();
 
 private:
+
+	std::shared_ptr<ErrorHandler> _errorHandler;
+	std::string _errorMsg;
 
 	std::vector<Enemy_Stats> _enemiesData;
 

@@ -1,6 +1,8 @@
 #include "EnemiesLoader.h"
 
-EnemiesLoader::EnemiesLoader()
+EnemiesLoader::EnemiesLoader(std::shared_ptr<ErrorHandler> errorHandler)
+	:
+	_errorHandler(errorHandler)
 {
 	_enemiesData.reserve(100000);
 }
@@ -11,6 +13,9 @@ EnemiesLoader::~EnemiesLoader()
 
 void EnemiesLoader::prepareStruct()
 {
+	_errorMsg = "";
+
+
 	_currentData.name = "";
 	_currentData.img_path = "";
 
@@ -231,24 +236,45 @@ void EnemiesLoader::parseTag(std::vector<std::string> &output)
 /////////////////////
 bool EnemiesLoader::checkStructCorrectness()
 {
+	_errorMsg = "";
+	std::string error;
+
 	bool isSuccessful = true;
 
 	//At first, let's check for abnormalities beyond repair//
-	if (_currentData.name == "") return false;
+	if (_currentData.name == "")  {
+		_errorMsg += "\n   No name.";
+		_currentData.name = "Enemy no. " + std::to_string(_enemiesCount);
+	}
 
-	if (_currentData.type == -1) return false;
+	if (_currentData.type == -1)    {
+		_errorMsg += "\n   Invalid enemy type.";
+	}
+	if (_currentData.attack == -1)    {
+		_errorMsg += "\n   Invalid enemy attack.";
+	}
+	if (_currentData.defence == -1)    {
+		_errorMsg += "\n   Invalid enemy defence.";
+	}
+	if (_currentData.max_hitpoints == -1)    {
+		_errorMsg += "\n   Invalid enemy hitpoints.";
+	}
+	if (_currentData.experience == -1)    {
+		_errorMsg += "\n   Invalid enemy experience.";
+	}
+	if (_currentData.value == -1)     {
+		_errorMsg += "\n   Invalid enemy value.";
+	}
+	if (_currentData.speed == -1)    {
+		_errorMsg += "\n   Invalid enemy speed.";
+	}
 
-	if (_currentData.attack == -1) return false;
-	if (_currentData.defence == -1) return false;
 
-	if (_currentData.max_hitpoints == -1) return false;
-
-	if (_currentData.experience == -1) return false;
-
-	if (_currentData.value == -1) return false;
-
-	if (_currentData.speed == -1) return false;
-
+	if (!_errorMsg.empty()){
+		error = "Fatal error in loading enemy " + _currentData.name + ". \nEnemy not loaded. Reasons:" + _errorMsg + "\n";
+		_errorHandler->processError(error);
+		return false;
+	}
 
 
 	//Now time to fix stuff. If unfixable, then sorry, but I don't really see no options as for now to fail.//

@@ -15,6 +15,7 @@
     <ClCompile Include="Enemy\Enemy.cpp" />
     <ClCompile Include="Enemy\EnemiesHolder.cpp" />
     <ClCompile Include="Enemy\EnemiesLoader.cpp" />
+    <ClCompile Include="Errors\ErrorHandler.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Interface\GameWindowInterface.cpp" />
     <ClCompile Include="Interface\InventoryWindow.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="Enemy\Enemy.h" />
     <ClInclude Include="Enemy\EnemiesHolder.h" />
     <ClInclude Include="Enemy\EnemiesLoader.h" />
+    <ClInclude Include="Errors\ErrorHandler.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Interface\GameWindowInterface.h" />
     <ClInclude Include="Interface\InventoryWindow.h" />
@@ -73,6 +75,7 @@
     <Text Include="Z:\False-prophecy-of-false-hero\progress.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
   </ItemGroup>
   <ItemGroup>

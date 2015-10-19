@@ -87,6 +87,12 @@
     <Filter Include="Header Files\DevMode">
       <UniqueIdentifier>{90381106-0bb6-41b6-867f-408d7d1f41eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Error handling">
+      <UniqueIdentifier>{b13228f5-89bc-4f9e-864b-71015f57895b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Error Handling">
+      <UniqueIdentifier>{6ab88262-5392-4510-939e-cb5447774cf3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -160,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="DevMode\DevMode.cpp">
       <Filter>Resource Files\DevMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Errors\ErrorHandler.cpp">
+      <Filter>Resource Files\Error Handling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +247,9 @@
     <ClInclude Include="DevMode\DevMode.h">
       <Filter>Header Files\DevMode</Filter>
     </ClInclude>
+    <ClInclude Include="Errors\ErrorHandler.h">
+      <Filter>Header Files\Error handling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
@@ -260,6 +272,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\arial.ttf">

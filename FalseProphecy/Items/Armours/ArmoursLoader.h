@@ -9,10 +9,12 @@
 
 
 #include <stdexcept>
+#include <memory>
 
 
 #include "../../StructsEnums.h"
 #include "../ItemsHolder.h"
+#include "../../Errors/ErrorHandler.h"
 
 
 
@@ -21,10 +23,14 @@ class ArmoursLoader{
 public:
 	void loadFromFile();
 
-	ArmoursLoader();
+	ArmoursLoader(std::shared_ptr<ErrorHandler> errorHandler);
 	~ArmoursLoader();
 
 private:
+
+	std::shared_ptr<ErrorHandler> _errorHandler;
+	std::string _errorMsg;
+
 	std::vector<Armour_struct> _armoursData;
 
 	enum TAGVALUE{

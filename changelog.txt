@@ -1,4 +1,11 @@
 [-----]
+2015-10-18
+
+What is done?
+
+	- error handler, currently working only with loaders
+
+[-----]
 2015-10-17
 
 What is done?

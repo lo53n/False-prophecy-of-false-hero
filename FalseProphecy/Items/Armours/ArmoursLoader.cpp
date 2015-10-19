@@ -1,5 +1,7 @@
 #include "ArmoursLoader.h"
-ArmoursLoader::ArmoursLoader()
+ArmoursLoader::ArmoursLoader(std::shared_ptr<ErrorHandler> errorHandler)
+	:
+	_errorHandler(errorHandler)
 {
 	_armoursData.reserve(100000);
 }
@@ -11,6 +13,7 @@ ArmoursLoader::~ArmoursLoader()
 
 void ArmoursLoader::prepareStruct()
 {
+	_errorMsg = "";
 
 	_currentData.name = "";
 	_currentData.type = -1;
@@ -270,25 +273,54 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 /////////////////////
 bool ArmoursLoader::checkStructCorrectness()
 {
+	_errorMsg = "";
+	std::string error;
+
 	bool isSuccessful = true;
+	bool isFatal = false;
 
 	//At first, let's check for abnormalities beyond repair//
-	if (_currentData.name == "") return false;
+	if (_currentData.name == "")  {
+		_errorMsg += "\n   No name.";
+		_currentData.name = "Armour no. " + std::to_string(_armourCount);
+	}
 
-	if (_currentData.type == -1) return false;
+	if (_currentData.type == -1)   {
+		_errorMsg += "\n   Invalid armour type.";
+	}
 
-	if (_currentData.armour_class == -1) return false;
+	if (_currentData.armour_class == -1)    {
+		_errorMsg += "\n   Invalid armour class.";
+	}
+	if (_currentData.speed == -1)    {
+		_errorMsg += "\n   Invalid armour speed.";
+	}
+	if (_currentData.defence == -1)   {
+		_errorMsg += "\n   Invalid armour defence.";
+	}
 
-	if ((_currentData.armour_class < 4 && _currentData.type == 3) || (_currentData.armour_class >= 4 && _currentData.type < 3)) 
-			correctStruct(TAGVALUE::CLASS);
-
-	if (_currentData.speed == -1) return false;
-
-	if (_currentData.defence == -1) return false;
+	//compile fatal error message
+	if (!_errorMsg.empty()){
+		error = "Fatal error in loading armour " + _currentData.name + ". \nArmour not loaded. Reasons:" + _errorMsg + "\n";
+		_errorMsg = "";
+		isFatal = true;
+	}
 
 
 	//Now time to fix stuff. If unfixable, then sorry, but I don't really see no options as for now to fail.//
 	//boo, none. no ideas how to correct anything here.//
+
+
+	if ((_currentData.armour_class < 4 && _currentData.type == 3) || (_currentData.armour_class >= 4 && _currentData.type < 3))
+		correctStruct(TAGVALUE::CLASS);
+
+
+	//send error message
+	if (!_errorMsg.empty() || isFatal){
+		error += "Error in loading armour " + _currentData.name + ":" + _errorMsg;
+		_errorHandler->processError(error);
+		if (isFatal) return false;
+	}
 
 	return isSuccessful;
 }
@@ -299,26 +331,32 @@ bool ArmoursLoader::correctStruct(int tag)
 	switch(tag){
 
 	case TAGVALUE::CLASS:
+		_errorMsg += "\n   Wrong class. Changed ";
 		switch (_currentData.armour_class){
-
 		case ARMOUR_CLASS::CLOTH:
 			if (_currentData.type == ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::LIGHT;
+			_errorMsg += "Cloth -> Light";
 			break;
 		case ARMOUR_CLASS::LEATHER:
 			if (_currentData.type == ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::AVERAGE;
+			_errorMsg += "Leather -> Average";
 			break;
 		case ARMOUR_CLASS::METAL:
 			if (_currentData.type == ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::HEAVY;
+			_errorMsg += "Metal -> Heavy";
 			break;
 
 		case ARMOUR_CLASS::LIGHT:
 			if (_currentData.type != ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::CLOTH;
+			_errorMsg += "Light -> Cloth";
 			break;
 		case ARMOUR_CLASS::AVERAGE:
 			if (_currentData.type != ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::LEATHER;
+			_errorMsg += "Average -> Leather";
 			break;
 		case ARMOUR_CLASS::HEAVY:
 			if (_currentData.type != ARMOUR_TYPE::SHIELD) _currentData.armour_class = ARMOUR_CLASS::METAL;
+			_errorMsg += "Heavy -> Metal";
 			break;
 
 		}

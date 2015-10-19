@@ -18,7 +18,6 @@
 [---]
 [[NAME::SHIELDU]]
 [[IMG::armor69.png]]
-[[TYPE::SHIELD]]
 [[CLASS::CLOTH]]
 [[SPEED::11]]
 [[DEFENCE::2]]

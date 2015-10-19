@@ -21,6 +21,7 @@
 
 #include "../DevMode/DevMode.h"
 
+
 class Game {
 public:
 	Game();
@@ -42,6 +43,15 @@ private:
 	bool _isStatusWindowOpen = false;
 	bool _isInventoryWindowOpen = false;
 	bool _isDevModeActive = false;
+
+	bool _isErrorMessageActive = false;
+
+
+	//////////////////
+	//Error Handling//
+	//////////////////
+	std::shared_ptr<ErrorHandler> _errorHandler;
+
 
 
 	///////////////////////

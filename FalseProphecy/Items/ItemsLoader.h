@@ -13,7 +13,11 @@ public:
 	void loadWeapons();
 	void loadArmours();
 
+	ItemsLoader(std::shared_ptr<ErrorHandler> handler);
+
 private:
+
+	std::shared_ptr<ErrorHandler> _errorHandler;
 };
 
 

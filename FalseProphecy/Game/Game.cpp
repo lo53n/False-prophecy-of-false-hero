@@ -6,6 +6,12 @@ Game::Game()
 	, _interfaceView(sf::FloatRect(0.f, 0.f, 800.f, 640.f))
 	, _player(std::make_shared<Player>())
 {
+
+
+	/////////////////////
+	//Set error handler//
+	/////////////////////
+	_errorHandler = std::make_shared<ErrorHandler>();
 		
 	///////////////////////
 	//Load game resources//
@@ -13,16 +19,15 @@ Game::Game()
 	MapLoader mapLoader;
 	mapLoader.loadFromFile(); //Load maps from file
 
-	ItemsLoader itemsloader;
+	ItemsLoader itemsloader(_errorHandler);
 	itemsloader.loadResources(); //Load items from file
 
-	EnemiesLoader enemiesLoader;
+	EnemiesLoader enemiesLoader(_errorHandler);
 	enemiesLoader.loadFromFile(); //Load enemies from file
 
 //	_itemsHolder->loadResources();
 
 	//_player->setPlayerPositionOnGrid(sf::Vector2i(5, 5));
-
 
 	//////////////////////////////////////////////
 	//Set player on inventory window and DevMode//
@@ -55,6 +60,8 @@ Game::Game()
 	_inventoryWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 	_statusWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 
+	_errorHandler->resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
+
 }
 
 /////////////
@@ -62,7 +69,7 @@ Game::Game()
 /////////////
 
 void Game::run(){
-	
+
 	_currentMapNumber = 0;
 	
 	for (int i = 0; i < 29; i++){
@@ -93,6 +100,9 @@ void Game::run(){
 	const sf::Time timePerFrame = sf::seconds(1.0f/60.0f); //set to 60fps
 
 	while (_window.isOpen()){
+
+		_isErrorMessageActive = _errorHandler->getErrorStatus();
+
 		processEvents();
 		timeSinceLastUpdate += clock.restart();
 		while (timeSinceLastUpdate > timePerFrame){
@@ -141,6 +151,9 @@ void Game::processEvents()
 			_gameWindowInterface.setGameWindowInterfaceSizeByResize(visible);
 			_inventoryWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 			_statusWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
+
+			_errorHandler->resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
+
 			_window.setView(_gameView);
 
 			_devMode.resizeMenu(sf::Vector2f(visible.x, visible.y - _gameWindowInterface.getInterfaceHeight()));
@@ -181,6 +194,7 @@ void Game::draw()
 	if (_isInventoryWindowOpen) _window.draw(_inventoryWindow);
 	if (_isStatusWindowOpen) _window.draw(_statusWindow);
 	if (_isDevModeActive) _window.draw(_devMode);
+	if (_isErrorMessageActive) _window.draw(*_errorHandler);
 	_window.display();
 }
 
@@ -208,7 +222,16 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	////////////////////
 	//Some fast debugs//
 	////////////////////
-	if (key == sf::Keyboard::Period && isPressed) _itemList[0]->setImagesPosition(sf::Vector2f(32.f, 32.f));
+	//if (key == sf::Keyboard::Period && isPressed) _itemList[0]->setImagesPosition(sf::Vector2f(32.f, 32.f));
+
+	//////////////////
+	//Error handling//
+	//////////////////
+	if (_isErrorMessageActive){
+		_errorHandler->handleInput(key, isPressed);
+		return;
+	}
+
 
 	/////////////////////////////////
 	//Switch interfaces and windows//
@@ -332,7 +355,8 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		}
 		//Show next map//
 		if (key == sf::Keyboard::Return && isPressed){
-			generateNewMap();
+			//generateNewMap();
+			_errorHandler->processError("Current map is " + std::to_string(_currentMap->getMapId()));
 		}
 		if (key == sf::Keyboard::D && isPressed && (_player->getPlayerBackpack().size() < __BACKPACK_CAPACITY__)){
 			checkForObjectsAtPlayerPosition();

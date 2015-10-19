@@ -9,10 +9,12 @@
 
 
 #include <stdexcept>
+#include <memory>
 
 
 #include "../../StructsEnums.h"
 #include "../ItemsHolder.h"
+#include "../../Errors/ErrorHandler.h"
 
 class WeaponsLoader{
 
@@ -23,10 +25,13 @@ public:
 
 	std::vector<Weapon_struct>& getWeaponsData();
 
-	WeaponsLoader();
+	WeaponsLoader(std::shared_ptr<ErrorHandler> errorHandler);
 	~WeaponsLoader();
 
 private:
+
+	std::shared_ptr<ErrorHandler> _errorHandler;
+	std::string _errorMsg;
 
 	std::vector<Weapon_struct> _weaponsData;
 

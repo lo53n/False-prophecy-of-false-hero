@@ -1,6 +1,8 @@
 #include "WeaponsLoader.h"
 
-WeaponsLoader::WeaponsLoader()
+WeaponsLoader::WeaponsLoader(std::shared_ptr<ErrorHandler> errorHandler)
+	:
+	_errorHandler(errorHandler)
 {
 	_weaponsData.reserve(100000);
 }
@@ -11,6 +13,7 @@ WeaponsLoader::~WeaponsLoader()
 
 void WeaponsLoader::prepareStruct()
 {
+
 	_currentData.name = "";
 	_currentData.size = -1;
 	_currentData.type = -1;
@@ -382,15 +385,36 @@ int WeaponsLoader::checkTag(std::string tag)
 /////////////////////
 bool WeaponsLoader::checkStructCorrectness()
 {
+
+	_errorMsg = "";
+	std::string error;
+
 	bool isSuccessful = true;
+	bool isFatal = false;
 
 	//At first, let's check for abnormalities beyond repair//
-	if (_currentData.name == "") return false;
+	if (_currentData.name == "") {
+		_errorMsg += "\n   No name.";
+		_currentData.name = "Weapon no. " + std::to_string(_weaponCount);
+	}
 
-	if (_currentData.size == -1 && _currentData.weapon_handle == -1) return false;
+	if (_currentData.size == -1 && _currentData.weapon_handle == -1)  {
+		_errorMsg += "\n   Invalid weapon size and handle.";
+	}
 
-	if (_currentData.speed == -1) return false;
-	if (_currentData.min_dmg == -1 || _currentData.max_dmg == -1) return false;
+	if (_currentData.speed == -1) {
+		_errorMsg += "\n   Invalid weapon speed.";
+	}
+	if (_currentData.min_dmg == -1 || _currentData.max_dmg == -1) {
+		_errorMsg += "\n   Invalid damage range.";
+	}
+
+	//compile fatal error message
+	if (!_errorMsg.empty()){
+		error = "Fatal error in loading weapon " + _currentData.name + ". \nWeapon not loaded. Reasons:" + _errorMsg + "\n";
+		_errorMsg = "";
+		isFatal = true;
+	}
 
 	//Now time to fix stuff. If unfixable, then sorry, but I don't really see no options as for now to fail.//
 	if (_currentData.type == -1){
@@ -410,6 +434,15 @@ bool WeaponsLoader::checkStructCorrectness()
 		if (!isSuccessful) return false;
 	}
 
+
+	//send error message
+	if (!_errorMsg.empty() || isFatal){
+		error += "Error in loading weapon " + _currentData.name + ":"+ _errorMsg;
+		_errorHandler->processError(error);
+		if (isFatal) return false;
+	}
+
+
 	return isSuccessful;
 }
 
@@ -425,6 +458,9 @@ bool WeaponsLoader::correctStruct(int tag)
 
 		//fix weapon multipliers
 	case TAGVALUE::PRIMARY_MULTIPLIER:
+
+		_errorMsg += "\n   Invalid primary multiplier, correction based on other stats.";
+
 		//std::cout << "Correcting weapon scheme No. " << _weaponCount << " primary multipliers." << std::endl;
 		//check for weapon handle
 		switch (_currentData.weapon_handle){
@@ -580,6 +616,9 @@ bool WeaponsLoader::correctStruct(int tag)
 		break;
 
 		case TAGVALUE::SIZE:
+
+			_errorMsg += "\n   Invalid weapon size, correction based on other stats.";
+
 			//std::cout << "Correcting weapon scheme No. " << _weaponCount << " weapon size." << std::endl;
 			int newSize;
 
@@ -598,6 +637,9 @@ bool WeaponsLoader::correctStruct(int tag)
 			break;
 
 		case TAGVALUE::HANDLE:
+
+			_errorMsg += "\n   Invalid weapon handling, correction based on other stats.";
+
 			//std::cout << "Correcting weapon scheme No. " << _weaponCount << " weapon handle." << std::endl;
 			int newHandle;
 
@@ -617,6 +659,7 @@ bool WeaponsLoader::correctStruct(int tag)
 			break;
 
 		case TAGVALUE::TYPE:
+			_errorMsg += "\n   Invalid weapon type, chosen radomly.";
 			//std::cout << "Correcting weapon scheme No. " << _weaponCount << " weapon type." << std::endl;
 			int newType;
 			newType = rand() % 4;

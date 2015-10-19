@@ -1,5 +1,14 @@
 #include "ItemsLoader.h"
 
+
+
+ItemsLoader::ItemsLoader(std::shared_ptr<ErrorHandler> handler)
+	:
+	_errorHandler(handler)
+{
+
+}
+
 void ItemsLoader::loadResources()
 {
 	loadWeapons();
@@ -9,12 +18,12 @@ void ItemsLoader::loadResources()
 
 void ItemsLoader::loadWeapons()
 {
-	WeaponsLoader weaponloader;
+	WeaponsLoader weaponloader(_errorHandler);
 	weaponloader.loadFromFile();
 }
 
 void ItemsLoader::loadArmours()
 {
-	ArmoursLoader armoursloader;
+	ArmoursLoader armoursloader(_errorHandler);
 	armoursloader.loadFromFile();
 }
