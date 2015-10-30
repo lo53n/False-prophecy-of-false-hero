@@ -4,6 +4,8 @@
 #include <string>
 
 
+#define DEBUG_WITH_LINE std::cout << __FUNCSIG__ << " :[" << __LINE__ << "] "
+
 ///////////////////////////
 //Items structs and enums//
 ///////////////////////////
@@ -15,10 +17,11 @@ enum ITEM_TYPE{
 };
 
 enum WEAPON_TYPE{
-	SWORD,
-	MACE,
-	SPEAR,
-	AXE
+	UNARMED = 4,
+	SWORD = 5,
+	MACE = 6,
+	SPEAR = 7,
+	AXE = 8
 };
 
 enum WEAPON_SIZE{
@@ -28,8 +31,9 @@ enum WEAPON_SIZE{
 };
 
 enum WEAPON_HANDLE{
-	ONEHANDED,
-	TWOHANDED
+	ONEHANDED = 0,
+	TWOHANDED = 1,
+	DUALWIELD = 2
 };
 
 
@@ -58,9 +62,11 @@ enum ARMOUR_TYPE{
 };
 
 enum ARMOUR_CLASS{
+	NAKED,
 	CLOTH,
 	LEATHER,
 	METAL,
+	EMPTYHAND,
 	LIGHT,
 	AVERAGE,
 	HEAVY
@@ -73,6 +79,8 @@ struct Armour_struct{
 	int armour_class;
 	bool isMagic;
 	int defence;
+	int dodge;
+	int block;
 	int speed;
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;
 
@@ -114,13 +122,15 @@ struct Hero_Profile{
 	int hp, max_hp;
 	int mp, max_mp;
 	int stam, max_stam;
-	int attack;
+	int min_dmg, max_dmg;
 	int defence;
-	int speed;
+	int min_speed, speed;
+	int max_dodge, dodge;
+	int max_block, block;
 	int strenght;
 	int endurance;
 	int intelligence;
-	int wisdom;
+	int willpower;
 	int agility;
 	int dexterity;
 	int luck;

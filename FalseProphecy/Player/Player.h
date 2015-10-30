@@ -57,8 +57,12 @@ public:
 	std::shared_ptr<Weapon> getPlayerWeapon();
 	//Get player piece of gear
 	std::shared_ptr<Armour> getPlayerArmour(int type);
-
-
+	//Get player specific ability
+	int getPlayerAbilityValue(int type);
+	//Get player weapon handle
+	int getPlayerWeaponHandle();
+	//Get player weapon type
+	int getPlayerWeaponType();
 	//get player's backpack
 	std::vector<std::shared_ptr<Item>>& getPlayerBackpack();
 
@@ -84,6 +88,8 @@ public:
 
 	std::shared_ptr<Item> dropSelectedItem(int itemNumber, bool inBag);
 
+	void setAsUnarmed();
+
 	///////////
 	//Battle!//
 	///////////
@@ -97,6 +103,26 @@ public:
 	void presetProficiences();
 	void increaseProficiency(int id, int amount);
 	void calculateProficientyEffectivness(int id);
+
+	//////////////
+	//Experience//
+	//////////////
+	void increaseExperience(int amount);
+	void advanceToNextLevel();
+
+
+	/////////////////////
+	//Preset structures//
+	/////////////////////
+	void presetHeroStructure();
+
+
+	/////////
+	//Stats//
+	/////////
+	void refreshStatistics();
+	void addStatsByWeapon();
+	void addStatsByArmour();
 
 private:
 	sf::Texture _playerTexture;
@@ -119,6 +145,16 @@ private:
 	std::vector<std::shared_ptr<Item>> _backpack;
 	int _heroWeaponType = 0;
 	int _heroWeaponHandle = 0;
+	
+	int _heroOffhandType = 0;
+	int _heroOffhandClass = 0;
+
+	int _heroHelmetType = 0;
+	int _heroHelmetClass = 0;
+	int _heroTorsoType = 0;
+	int _heroTorsoClass = 0;
+	int _heroLegsType = 0;
+	int _heroLegsClass = 0;
 
 	std::shared_ptr<Weapon> _mainHand;
 	std::shared_ptr<Armour> _offHand;
@@ -154,6 +190,8 @@ private:
 	const float __PROFICIENCY_DEFENCE_EFFICIENCY__ = 0.05f;
 	const float __PROFICIENCY_DODGE_EFFICIENCY__ = 0.01f;
 
+	const int __BASE_EXPERIENCE__ = 100;
+	const float __EXPIERIENCE_LVL_INCREASE__ = 1.20f;
 
 
 private:

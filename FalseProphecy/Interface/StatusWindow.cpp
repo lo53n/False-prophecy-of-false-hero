@@ -16,11 +16,11 @@ StatusWindow::StatusWindow()
 	_statsPart.setOutlineThickness(2.f);
 	_statsPart.setOutlineColor(sf::Color(60, 180, 80));
 
-	_equipementPart.setSize(sf::Vector2f(200.f, 200.f));
-	_equipementPart.setPosition(5.f, 210.f);
-	_equipementPart.setFillColor(sf::Color(30, 50, 150));
-	_equipementPart.setOutlineThickness(2.f);
-	_equipementPart.setOutlineColor(sf::Color(60, 80, 180));
+	_equipmentPart.setSize(sf::Vector2f(200.f, 200.f));
+	_equipmentPart.setPosition(5.f, 210.f);
+	_equipmentPart.setFillColor(sf::Color(30, 50, 150));
+	_equipmentPart.setOutlineThickness(2.f);
+	_equipmentPart.setOutlineColor(sf::Color(60, 80, 180));
 
 	_proficiencesPart.setSize(sf::Vector2f(200.f, 405.f));
 	_proficiencesPart.setPosition(210.f, 5.f);
@@ -53,9 +53,9 @@ StatusWindow::StatusWindow()
 	_statsNumbersText.setPosition(_statsPart.getPosition() + sf::Vector2f(85.f, 104.f));
 
 
-	_equipementText.setFont(_font);
-	_equipementText.setCharacterSize(14);
-	_equipementText.setPosition(_equipementPart.getPosition() + sf::Vector2f(5.f, 5.f));
+	_equipmentText.setFont(_font);
+	_equipmentText.setCharacterSize(14);
+	_equipmentText.setPosition(_equipmentPart.getPosition() + sf::Vector2f(5.f, 5.f));
 
 
 	_proficiencesText.setFont(_font);
@@ -80,7 +80,7 @@ void StatusWindow::drawOnRenderTexture()
 	_renderTexture.clear();
 
 	_renderTexture.draw(_statusWindow);
-	_renderTexture.draw(_equipementPart);
+	_renderTexture.draw(_equipmentPart);
 	_renderTexture.draw(_statsPart);
 	_renderTexture.draw(_proficiencesPart);
 
@@ -93,8 +93,9 @@ void StatusWindow::drawOnRenderTexture()
 	_renderTexture.draw(_statsText);
 	_renderTexture.draw(_statsNumbersText);
 
-	//Equipement part
+	//Equipment part
 
+	_renderTexture.draw(_equipmentText);
 
 	//Proficiences part
 	_renderTexture.draw(_proficiencesText);
@@ -110,7 +111,7 @@ void StatusWindow::drawOnRenderTexture()
 void StatusWindow::refreshStatus()
 {
 	refreshStats();
-	refreshEquipementStats();
+	refreshEquipmentStats();
 	refreshProficiences();
 
 	drawOnRenderTexture();
@@ -173,13 +174,42 @@ void StatusWindow::refreshStats()
 	string += "\n" + std::to_string(stats.dexterity);
 	string += "\n" + std::to_string(stats.agility);
 	string += "\n" + std::to_string(stats.intelligence);
-	string += "\n" + std::to_string(stats.wisdom);
+	string += "\n" + std::to_string(stats.willpower);
 
 	_statsNumbersText.setString(string);
 
 }
-void StatusWindow::refreshEquipementStats()
+void StatusWindow::refreshEquipmentStats()
 {
+
+	Hero_Profile stats = _player->getPlayerStats();
+	std::string string = "";
+	int calc_min_dmg, calc_max_dmg;
+	if (_player->getPlayerWeapon() == nullptr){
+		calc_min_dmg = (int)((float)stats.min_dmg * (_player->getPlayerProficiences()[HERO_ABILITIES_NUMBER::UNARMED_PROFICIENCY].effectiveness + 1));
+		calc_max_dmg = (int)((float)stats.max_dmg * (_player->getPlayerProficiences()[HERO_ABILITIES_NUMBER::UNARMED_PROFICIENCY].effectiveness + 1));
+	}
+	else{
+		calc_min_dmg = (int)(stats.min_dmg
+							* (_player->getPlayerProficiences()[_player->getPlayerWeaponType()].effectiveness
+							+ _player->getPlayerProficiences()[_player->getPlayerWeaponHandle()].effectiveness
+							+ 1));
+		calc_max_dmg = (int)(stats.max_dmg
+							* (_player->getPlayerProficiences()[_player->getPlayerWeaponType()].effectiveness
+							+ _player->getPlayerProficiences()[_player->getPlayerWeaponHandle()].effectiveness
+							+ 1));
+	}
+
+	string += "Damage: " + std::to_string(calc_min_dmg) + " - " + std::to_string(calc_max_dmg);
+	string += "\nSpeed: " + std::to_string(stats.speed);
+	string += "\nDefence: " + std::to_string(stats.defence);
+	string += "\nDodge: " + std::to_string(stats.dodge);
+	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr){
+		string += "\nBlock: " + std::to_string(stats.block);
+	}
+
+	_equipmentText.setString(string);
+
 
 }
 void StatusWindow::refreshProficiences()

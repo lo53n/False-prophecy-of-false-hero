@@ -267,6 +267,16 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		_isStatusWindowOpen = false;
 	}
 
+	//Exit all menus or enter game menu.//
+	if (key == sf::Keyboard::Escape && isPressed){
+		if (_isInventoryWindowOpen || _isStatusWindowOpen || _isDevModeActive){
+			_isInventoryWindowOpen = false;
+			_isStatusWindowOpen = false;
+			_isDevModeActive = false;
+		}
+	}
+
+
 	////////////////////////
 	//DevMode manipulation//
 	////////////////////////
@@ -426,10 +436,12 @@ bool Game::checkMovement(int direction)
 				heroAttacksEnemy(checkForPosition);
 				//_currentMap->printConsoleMap();
 
-				//if dead, then calculate loot
+				//if dead, then calculate outcome
 				if (!enemy->checkIfAlive()){
 					generateDrop(checkForPosition);
-					std::cout << "ded" << std::endl;
+
+					_player->increaseExperience(enemy->getEnemyStats().experience);
+
 				}
 			}
 		}

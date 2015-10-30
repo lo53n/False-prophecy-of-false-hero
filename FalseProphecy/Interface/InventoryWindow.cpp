@@ -221,7 +221,7 @@ void InventoryWindow::handleInput(int key, bool isPressed)
 						std::shared_ptr<Armour> item1 = (std::dynamic_pointer_cast <Armour>(_player->getPlayerBackpack()[item]));
 						_player->equipItem(item1);
 					}
-					if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::WEAPON){
+					else if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::WEAPON){
 						std::shared_ptr<Weapon> item1 = (std::dynamic_pointer_cast <Weapon>(_player->getPlayerBackpack()[item]));
 						_player->equipItem(item1);
 					}
@@ -325,7 +325,7 @@ int InventoryWindow::selectItem()
 void InventoryWindow::changeHighlitSlots()
 {
 	if (_isHighlitInBag){
-		//is in equipement
+		//is in equipment
 		_isHighlitInBag = false;
 		std::cout << _isHighlitInBag << std::endl;
 		_highlightBag = _highlightPosition;
@@ -591,11 +591,14 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 			break;
 		}
 
-		//Show item base dfence
-		descriptionString += "\n\nBase defence: " + std::to_string(stats.defence);
+		//Show item base defence options
+		if (stats.armour_class != ARMOUR_CLASS::CLOTH) descriptionString += "\n\nBase defence: " + std::to_string(stats.defence);
+		if (stats.armour_class != ARMOUR_CLASS::METAL) descriptionString += "\n\nBase dodge: " + std::to_string(stats.dodge);
 
 		//Show item base speed
-		descriptionString += "\nBase speed: " + std::to_string(stats.speed);
+		int modifier = 1;
+		if (stats.armour_class == ARMOUR_CLASS::CLOTH) modifier == -1;
+		descriptionString += "\nBase speed: " + std::to_string(stats.speed * modifier);
 
 		//Item requirements
 		if (stats.agi_req == stats.dex_req == stats.end_req == stats.int_req == stats.str_req == stats.wil_req == 0){

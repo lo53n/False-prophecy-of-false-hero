@@ -22,6 +22,8 @@ void ArmoursLoader::prepareStruct()
 	_currentData.isMagic = false;
 
 	_currentData.defence = -1;
+	_currentData.dodge = -1;
+	_currentData.block = -1;
 	_currentData.speed = -1;
 
 
@@ -119,6 +121,8 @@ int ArmoursLoader::checkTag(std::string tag)
 	else if (tag == "TYPE") return TAGVALUE::TYPE;
 	else if (tag == "SPEED") return TAGVALUE::SPEED;
 	else if (tag == "DEFENCE") return TAGVALUE::DEFENCE;
+	else if (tag == "DODGE") return TAGVALUE::DODGE;
+	else if (tag == "BLOCK") return TAGVALUE::BLOCK;
 	else if (tag == "STR_REQ") return TAGVALUE::STR_REQ;
 	else if (tag == "END_REQ") return TAGVALUE::END_REQ;
 	else if (tag == "AGI_REQ") return TAGVALUE::AGI_REQ;
@@ -190,6 +194,27 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 		_currentData.defence = value;
 		break;
 
+		//parse armour dodge chance
+	case TAGVALUE::DODGE:
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
+		_currentData.dodge = value;
+		break;
+
+		//parse shield block chance
+	case TAGVALUE::BLOCK:
+		try{
+			value = std::stoi(output[1]);
+		}
+		catch (const std::invalid_argument&){
+			value = -1;
+		}
+		_currentData.block = value;
+		break;
 
 		//parse armour speed boost
 	case TAGVALUE::SPEED:
@@ -295,8 +320,11 @@ bool ArmoursLoader::checkStructCorrectness()
 	if (_currentData.speed == -1)    {
 		_errorMsg += "\n   Invalid armour speed.";
 	}
-	if (_currentData.defence == -1)   {
-		_errorMsg += "\n   Invalid armour defence.";
+	if (_currentData.block == -1 && _currentData.type == ARMOUR_TYPE::SHIELD)    {
+		_errorMsg += "\n   Invalid shield block chance.";
+	}
+	if (_currentData.defence == -1 && _currentData.dodge == -1)    {
+		_errorMsg += "\n   Invalid armour defence options.";
 	}
 
 	//compile fatal error message
@@ -314,6 +342,19 @@ bool ArmoursLoader::checkStructCorrectness()
 	if ((_currentData.armour_class < 4 && _currentData.type == 3) || (_currentData.armour_class >= 4 && _currentData.type < 3))
 		correctStruct(TAGVALUE::CLASS);
 
+	if (_currentData.dodge == -1 && _currentData.armour_class == ARMOUR_CLASS::CLOTH) {
+		if (!correctStruct(TAGVALUE::DODGE)){
+			_errorMsg += "\n   Invalid armour dodge.";
+			isFatal = true;
+		}
+	}
+
+	if (_currentData.defence == -1 && _currentData.armour_class == ARMOUR_CLASS::METAL) {
+		if (!correctStruct(TAGVALUE::DEFENCE)){
+			_errorMsg += "\n   Invalid armour defence.";
+			isFatal = true;
+		}
+	}
 
 	//send error message
 	if (!_errorMsg.empty() || isFatal){
@@ -362,6 +403,15 @@ bool ArmoursLoader::correctStruct(int tag)
 		}
 		break;
 
+	case TAGVALUE::DODGE:
+		if (_currentData.defence == -1) return false;
+		_currentData.dodge = _currentData.defence;
+		break;
+
+	case TAGVALUE::DEFENCE:
+		if (_currentData.dodge == -1) return false;
+		_currentData.defence = _currentData.dodge;
+		break;
 	}
 	return true;
 }

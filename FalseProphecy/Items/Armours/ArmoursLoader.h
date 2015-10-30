@@ -39,6 +39,8 @@ private:
 		TYPE,
 		CLASS,
 		DEFENCE,
+		DODGE,
+		BLOCK,
 		SPEED,
 		MIN_DMG,
 		MAX_DMG,

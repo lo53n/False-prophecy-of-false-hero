@@ -1,4 +1,24 @@
 [-----]
+2015-10-30
+
+What is done?
+
+	- works on status window and equipment system
+
+	- equipping items is almost done - shields are left, unless I want to add mgic equipment
+
+	- fixed some spelling errors
+
+[-----]
+2015-10-26
+
+What is done?
+
+	- lv-up system. Stat points based on equipment (only weapons at the moment)
+
+	- logic behind equipping weapon (70% done)
+
+[-----]
 2015-10-18
 
 What is done?
@@ -10,7 +30,7 @@ What is done?
 
 What is done?
 
-	- status window is half way done - equipement side left
+	- status window is half way done - equipment side left
 
 	- optimalized inventory window to me much less CPU hungry
 

@@ -27,6 +27,8 @@ public:
 	char getTileUnderneathEnemy();
 	//Get enemy identifier
 	int getEnemyId();
+	//Get enemy stats structure
+	Enemy_Stats getEnemyStats();
 	///////////
 	//Setters//
 	///////////

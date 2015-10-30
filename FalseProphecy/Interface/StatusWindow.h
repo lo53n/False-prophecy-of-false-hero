@@ -31,7 +31,7 @@ private:
 
 	sf::RectangleShape _statusWindow;
 	sf::RectangleShape _statsPart;
-	sf::RectangleShape _equipementPart;
+	sf::RectangleShape _equipmentPart;
 	sf::RectangleShape _proficiencesPart;
 
 	sf::Font _font;
@@ -42,7 +42,7 @@ private:
 
 	sf::Text _statsText;
 	sf::Text _statsNumbersText;
-	sf::Text _equipementText;
+	sf::Text _equipmentText;
 
 	sf::Text _proficiencesText;
 	std::vector<sf::RectangleShape> _proficienciesBarEmpty;
@@ -54,7 +54,7 @@ private:
 	void drawOnRenderTexture();
 	
 	void refreshStats();
-	void refreshEquipementStats();
+	void refreshEquipmentStats();
 	void refreshProficiences();
 
 	void setProgressBars();

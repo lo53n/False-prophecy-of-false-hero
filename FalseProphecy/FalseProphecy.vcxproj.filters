@@ -272,7 +272,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\arial.ttf">

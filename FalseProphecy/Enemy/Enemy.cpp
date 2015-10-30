@@ -58,6 +58,11 @@ int Enemy::getEnemyId()
 {
 	return _enemy_id;
 }
+
+Enemy_Stats Enemy::getEnemyStats()
+{
+	return _stats;
+}
 ///////////
 //Setters//
 ///////////

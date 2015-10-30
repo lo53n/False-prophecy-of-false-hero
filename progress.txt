@@ -42,7 +42,7 @@
 	+ equip items
 	+ unequip items
 	- calculate stats for new piece of gear depending on player strenght
-	- refresh player stats for each equipement change
+	- refresh player stats for each equipment change
 	- maybe item tiers?
 
 [PLAYER]
@@ -63,7 +63,7 @@
 		-- TBD
 	- inventory:
 		++ backpack
-		++ equipement slots
+		++ equipemnt slots
 		-- stats change after un/equipping
 	- TBD
 
@@ -113,10 +113,10 @@
 		-- player stats
 		-- proficiences
 		-- player battle stats
-		-- current equipement
+		-- current equipment
 	- Inventory Window
 		++ bag view
-		++ equipement view
+		++ equipment view
 		-- piece of gear statistics
 		++ manipulating
 	- Menus:
