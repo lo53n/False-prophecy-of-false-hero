@@ -21,6 +21,11 @@ Game::Game()
 	///////////////////////
 	//Load game resources//
 	///////////////////////
+
+	ResourcesLoader resload(_errorHandler);
+	resload.loadGameData();
+
+	/*
 	MapLoader mapLoader;
 	mapLoader.loadFromFile(); //Load maps from file
 
@@ -31,7 +36,7 @@ Game::Game()
 	enemiesLoader.loadFromFile(); //Load enemies from file
 
 //	_itemsHolder->loadResources();
-
+	*/
 	//_player->setPlayerPositionOnGrid(sf::Vector2i(5, 5));
 
 	//////////////////////////////////////////////
@@ -70,6 +75,14 @@ Game::Game()
 
 	_errorHandler->resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 
+
+
+
+	/////////
+	//Test stuff
+	////////
+
+
 }
 
 /////////////
@@ -79,9 +92,10 @@ Game::Game()
 void Game::run(){
 
 	_currentMapNumber = 0;
+
 	
 	for (int i = 0; i < 29; i++){
-		std::shared_ptr<Item> asd(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
+		std::shared_ptr<Item> asd(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0]));
 		_player->putItemInBackpack(asd);
 	}
 /*	for (int i = 0; i < 19; i++){
@@ -89,9 +103,9 @@ void Game::run(){
 		_player->putItemInBackpack(asd);
 	}*/
 
-	std::shared_ptr<Armour> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
+	std::shared_ptr<Armour> asd(std::make_shared<Armour>(_resHolder->getAllArmours()[0]));
 	_player->putItemInBackpack(asd);
-	std::shared_ptr<Armour> asd1(std::make_shared<Armour>(_itemsHolder->_armoursData[1]));
+	std::shared_ptr<Armour> asd1(std::make_shared<Armour>(_resHolder->getAllArmours()[1]));
 	_player->putItemInBackpack(asd1);
 
 
@@ -551,7 +565,7 @@ void Game::moveToMap(int mapNumber, bool needPair)
 void Game::generateNewMap()
 {
 	unsigned int mapID = _maps.size();
-	_currentMapNumber = rand() % _mapsHolder->getMapCount();
+	_currentMapNumber = rand() % _resHolder->getMapsCount();
 
 	//if (_maps.size() > 0) _currentMap->clearMap();
 	//if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
@@ -579,11 +593,11 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 
 	//Get new map identifier based on total maps generated
 	unsigned int mapID = _maps.size();
-	_currentMapNumber = rand() % _mapsHolder->getMapCount();
+	_currentMapNumber = rand() % _resHolder->getMapsCount();
 
 
 	//_currentMapNumber = 0;
-	if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
+	if (_currentMapNumber >= _resHolder->getMapsCount()) _currentMapNumber = 0;
 
 	//if (_maps.size() > 0) _currentMap->clearMap();
 
@@ -623,7 +637,7 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 			if (tile == '.'){
 				int chance = rand() % 100;
 				if (chance > 90){
-					Enemy_Stats enemy_template = _enemiesHolder->_enemiesData[rand()%_enemiesHolder->_enemiesData.size()];
+					Enemy_Stats enemy_template = _resHolder->getAllEnemies()[rand() % _resHolder->getAllEnemies().size()];
 					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, enemy_template, sf::Vector2i(tilex, tiley), tile));
 					_currentMap->getEnemies().push_back(enemy);
 					_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
@@ -654,7 +668,7 @@ void Game::checkForExistingFreeExits(std::shared_ptr<Map> mapToCheck)
 
 std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
 {
-	std::shared_ptr<Map> ptr(std::make_shared<Map>(_mapsHolder->getMapFromHolder(_currentMapNumber), mapID, _mapTexture));
+	std::shared_ptr<Map> ptr(std::make_shared<Map>(_resHolder->getMapFromHolder(_currentMapNumber), mapID, _mapTexture));
 	return ptr;
 }
 
@@ -718,9 +732,9 @@ void Game::heroAttacksEnemy(sf::Vector2i position)
 //Need better drop generator here.
 void Game::generateDrop(sf::Vector2i position)
 {
-	std::shared_ptr<Item> item(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
+	std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0]));
 	_currentMap->pushItemToMapStorage(position, item);
-	std::shared_ptr<Item> item1(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
+	std::shared_ptr<Item> item1(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0]));
 	_currentMap->pushItemToMapStorage(position, item1);
 
 	_currentMap->updateMap();

@@ -3,11 +3,9 @@
 
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <cstdlib>
 #include <vector>
 
-#include "MapsHolder.h"
 
 
 class MapLoader{
@@ -17,10 +15,13 @@ public:
 	~MapLoader();
 	void loadFromFile();
 
+	std::vector<std::vector<std::vector<char>>>& getMapsData();
 
 private:
 	std::vector<std::vector<char>> _map;
-	MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
+
+	std::vector<std::vector<std::vector<char>>> _mapsData;
+
 
 private:
 	void parseMapLine(std::string line);

@@ -8,10 +8,6 @@
 
 #include "../Player/Player.h"
 
-#include "../Items/ItemsLoader.h"
-#include "../Enemy/EnemiesLoader.h"
-#include "../Map/MapLoader.h"
-
 class DevMode : public sf::Drawable{
 
 public:
@@ -49,11 +45,6 @@ private:
 	sf::Text _optionsText;
 	sf::Text _overviewText;
 
-
-
-	MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
-	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
-	EnemiesHolder *_enemiesHolder = &EnemiesHolder::getEnemiesHolder();
 
 	std::shared_ptr<Player> _player;
 

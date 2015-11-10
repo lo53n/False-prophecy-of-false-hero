@@ -13,7 +13,6 @@
 
 
 #include "../../StructsEnums.h"
-#include "../ItemsHolder.h"
 #include "../../Errors/ErrorHandler.h"
 
 class WeaponsLoader{

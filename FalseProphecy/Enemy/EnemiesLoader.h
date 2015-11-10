@@ -12,7 +12,6 @@
 #include <memory>
 
 #include "../StructsEnums.h"
-#include "EnemiesHolder.h"
 #include "../Errors/ErrorHandler.h"
 
 class EnemiesLoader{
@@ -21,6 +20,8 @@ public:
 
 	EnemiesLoader(std::shared_ptr<ErrorHandler> errorHandler);
 	~EnemiesLoader();
+
+	std::vector<Enemy_Stats>& getEnemiesData();
 
 private:
 

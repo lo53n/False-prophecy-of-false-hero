@@ -124,7 +124,7 @@ void DevMode::setViewLoadable(int key)
 		_viewLoadableDistinct = true;
 		option = key % sf::Keyboard::Num1;
 	}
-	switch (key){
+	/*switch (key){
 	case sf::Keyboard::Num1:
 		_mapList = _mapsHolder->getAllMaps();
 		break;
@@ -140,7 +140,7 @@ void DevMode::setViewLoadable(int key)
 	case sf::Keyboard::Num5:
 		std::cout << "sheit" << std::endl;
 		break;
-	}
+	}*/
 
 	std::string string = "";
 	string = "1. Show maps\n2. Show enemies\n3. Show weapons\n4. Show armours\n5. Show consumables";

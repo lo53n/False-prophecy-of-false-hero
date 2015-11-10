@@ -11,6 +11,11 @@ ArmoursLoader::~ArmoursLoader()
 
 }
 
+std::vector<Armour_struct>& ArmoursLoader::getArmoursData()
+{
+	return _armoursData;
+}
+
 void ArmoursLoader::prepareStruct()
 {
 	_errorMsg = "";
@@ -82,9 +87,7 @@ void ArmoursLoader::loadFromFile()
 		if (stringLine.size() > 6) parseLine(stringLine);
 		if (stringLine == "[---]") saveStruct();
 	}
-	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
 	_armoursData.shrink_to_fit();
-	_itemsHolder->setData(_armoursData);
 
 }
 

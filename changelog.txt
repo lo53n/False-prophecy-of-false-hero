@@ -4,6 +4,10 @@ What is done?
 
 	- more code optimalization by changing how maps and their objects are drawn
 
+	- items no longer are drawn on alive enemies - thanks to new drawing system. 
+
+	- merged all holders into one, deleted unnessessary holders, and all loaders works under one slaver. 
+
 [-----]
 2015-11-1
 

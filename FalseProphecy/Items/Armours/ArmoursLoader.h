@@ -13,7 +13,6 @@
 
 
 #include "../../StructsEnums.h"
-#include "../ItemsHolder.h"
 #include "../../Errors/ErrorHandler.h"
 
 
@@ -25,7 +24,7 @@ public:
 
 	ArmoursLoader(std::shared_ptr<ErrorHandler> errorHandler);
 	~ArmoursLoader();
-
+	std::vector<Armour_struct>& getArmoursData();
 private:
 
 	std::shared_ptr<ErrorHandler> _errorHandler;

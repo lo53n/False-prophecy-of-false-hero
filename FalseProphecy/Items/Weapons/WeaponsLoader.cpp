@@ -40,6 +40,11 @@ void WeaponsLoader::prepareStruct()
 	_weaponCount++;
 }
 
+std::vector<Weapon_struct>& WeaponsLoader::getWeaponsData()
+{
+	return _weaponsData;
+}
+
 void WeaponsLoader::showStruct()
 {
 
@@ -97,9 +102,7 @@ void WeaponsLoader::loadFromFile()
 		if (stringLine.size() > 6) parseLine(stringLine);
 		if (stringLine == "[---]") saveStruct();
 	}
-	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
 	_weaponsData.shrink_to_fit();
-	_itemsHolder->setData(_weaponsData);
 }
 
 

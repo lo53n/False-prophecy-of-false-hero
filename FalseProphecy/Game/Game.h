@@ -4,14 +4,17 @@
 #include <SFML/Graphics.hpp>
 
 
-#include "../Enemy/EnemiesLoader.h"
+#include "../ResourceManagment/ResourcesLoader.h"
 
-#include "../Map/MapLoader.h"
+
+//#include "../Enemy/EnemiesLoader.h"
+//#include "../Items/ItemsLoader.h"
+//#include "../Map/MapLoader.h"
+
 #include "../Map/Map.h"
 
 #include "../Player/Player.h"
 
-#include "../Items/ItemsLoader.h"
 #include "../Items/Weapons/Weapon.h"
 #include "../Items/Armours/Armour.h"
 
@@ -77,18 +80,22 @@ private:
 	
 	sf::RenderTexture _mapTexture;
 
-	/////////////////////////
-	//Stuff holders/loaders//
-	/////////////////////////
-	MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
-	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
-	EnemiesHolder *_enemiesHolder = &EnemiesHolder::getEnemiesHolder();
-
 	std::shared_ptr<Map> _newMap;
 	std::shared_ptr<Map> _currentMap;
 
 
 	int _currentMapNumber;
+
+	/////////////////////////
+	//Stuff holders/loaders//
+	/////////////////////////
+
+	ResourcesHolder *_resHolder = &ResourcesHolder::getResourcesHolder();
+
+	/*MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
+	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
+	EnemiesHolder *_enemiesHolder = &EnemiesHolder::getEnemiesHolder();*/
+
 
 
 	////////////////////////

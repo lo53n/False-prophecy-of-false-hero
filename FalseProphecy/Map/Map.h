@@ -8,7 +8,6 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "MapsHolder.h"
 #include "../Enemy/Enemy.h"
 #include "../Items/Item.h"
 

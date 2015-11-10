@@ -13,7 +13,6 @@
   <ItemGroup>
     <ClCompile Include="DevMode\DevMode.cpp" />
     <ClCompile Include="Enemy\Enemy.cpp" />
-    <ClCompile Include="Enemy\EnemiesHolder.cpp" />
     <ClCompile Include="Enemy\EnemiesLoader.cpp" />
     <ClCompile Include="Errors\ErrorHandler.cpp" />
     <ClCompile Include="Game\Game.cpp" />
@@ -23,8 +22,6 @@
     <ClCompile Include="Items\Armours\Armour.cpp" />
     <ClCompile Include="Items\Armours\ArmoursLoader.cpp" />
     <ClCompile Include="Items\Item.cpp" />
-    <ClCompile Include="Items\ItemsHolder.cpp" />
-    <ClCompile Include="Items\ItemsLoader.cpp" />
     <ClCompile Include="Items\Weapons\Weapon.cpp" />
     <ClCompile Include="Items\Weapons\WeaponsLoader.cpp" />
     <ClCompile Include="LoadFromResource.cpp" />
@@ -33,14 +30,14 @@
     <ClCompile Include="Map\LandBuilderPattern.cpp" />
     <ClCompile Include="Map\MapBuilderPattern.cpp" />
     <ClCompile Include="Map\MapLoader.cpp" />
-    <ClCompile Include="Map\MapsHolder.cpp" />
     <ClCompile Include="Map\NormalBuilder.cpp" />
     <ClCompile Include="Player\Player.cpp" />
+    <ClCompile Include="ResourceManagment\ResourcesHolder.cpp" />
+    <ClCompile Include="ResourceManagment\ResourcesLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DevMode\DevMode.h" />
     <ClInclude Include="Enemy\Enemy.h" />
-    <ClInclude Include="Enemy\EnemiesHolder.h" />
     <ClInclude Include="Enemy\EnemiesLoader.h" />
     <ClInclude Include="Errors\ErrorHandler.h" />
     <ClInclude Include="Game\Game.h" />
@@ -50,8 +47,6 @@
     <ClInclude Include="Items\Armours\Armour.h" />
     <ClInclude Include="Items\Armours\ArmoursLoader.h" />
     <ClInclude Include="Items\Item.h" />
-    <ClInclude Include="Items\ItemsHolder.h" />
-    <ClInclude Include="Items\ItemsLoader.h" />
     <ClInclude Include="Items\Weapons\Weapon.h" />
     <ClInclude Include="Items\Weapons\WeaponsLoader.h" />
     <ClInclude Include="LoadFromResource.h" />
@@ -59,9 +54,10 @@
     <ClInclude Include="Map\LandBuilderPattern.h" />
     <ClInclude Include="Map\MapBuilderPattern.h" />
     <ClInclude Include="Map\MapLoader.h" />
-    <ClInclude Include="Map\MapsHolder.h" />
     <ClInclude Include="Map\NormalBuilder.h" />
     <ClInclude Include="Player\Player.h" />
+    <ClInclude Include="ResourceManagment\ResourcesHolder.h" />
+    <ClInclude Include="ResourceManagment\ResourcesLoader.h" />
     <ClInclude Include="StructsEnums.h" />
     <ClInclude Include="UIResource.h" />
   </ItemGroup>

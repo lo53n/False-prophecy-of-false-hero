@@ -11,6 +11,10 @@ MapLoader::~MapLoader()
 
 }
 
+std::vector<std::vector<std::vector<char>>>& MapLoader::getMapsData()
+{
+	return _mapsData;
+}
 void MapLoader::loadFromFile()
 {
 
@@ -28,12 +32,12 @@ void MapLoader::loadFromFile()
 			parseMapLine(stringLine);
 		}
 		else{
-			_mapsHolder->addToContainter(_map);
+			_mapsData.push_back(_map);
 			prepareMapVector();
 		}
 	}
-	_mapsHolder->addToContainter(_map);
-	//mapsHolder->showMaps();
+	_mapsData.push_back(_map);
+	
 }
 
 

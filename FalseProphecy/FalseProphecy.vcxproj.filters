@@ -93,6 +93,12 @@
     <Filter Include="Resource Files\Error Handling">
       <UniqueIdentifier>{6ab88262-5392-4510-939e-cb5447774cf3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\ResManage">
+      <UniqueIdentifier>{a9214e64-6ab3-415a-ae34-afa5dd73b836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ResManage">
+      <UniqueIdentifier>{4933573c-bce1-4a11-ab51-89811e553a0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -103,12 +109,6 @@
     </ClCompile>
     <ClCompile Include="Map\LandBuilderPattern.cpp">
       <Filter>Resource Files\Map\BuilderPattern</Filter>
-    </ClCompile>
-    <ClCompile Include="Map\MapLoader.cpp">
-      <Filter>Resource Files\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Map\MapsHolder.cpp">
-      <Filter>Resource Files\Map</Filter>
     </ClCompile>
     <ClCompile Include="Game\Game.cpp">
       <Filter>Resource Files\Game</Filter>
@@ -124,12 +124,6 @@
     </ClCompile>
     <ClCompile Include="Items\Weapons\WeaponsLoader.cpp">
       <Filter>Resource Files\Items\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="Items\ItemsHolder.cpp">
-      <Filter>Resource Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="Items\ItemsLoader.cpp">
-      <Filter>Resource Files\Items</Filter>
     </ClCompile>
     <ClCompile Include="Items\Item.cpp">
       <Filter>Resource Files\Items</Filter>
@@ -158,9 +152,6 @@
     <ClCompile Include="Enemy\Enemy.cpp">
       <Filter>Resource Files\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy\EnemiesHolder.cpp">
-      <Filter>Resource Files\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy\EnemiesLoader.cpp">
       <Filter>Resource Files\Enemy</Filter>
     </ClCompile>
@@ -170,6 +161,15 @@
     <ClCompile Include="Errors\ErrorHandler.cpp">
       <Filter>Resource Files\Error Handling</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManagment\ResourcesHolder.cpp">
+      <Filter>Resource Files\ResManage</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManagment\ResourcesLoader.cpp">
+      <Filter>Resource Files\ResManage</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapLoader.cpp">
+      <Filter>Resource Files\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map\MapBuilderPattern.h">
@@ -177,12 +177,6 @@
     </ClInclude>
     <ClInclude Include="Map\LandBuilderPattern.h">
       <Filter>Header Files\Map\BuilderPattern</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\MapLoader.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\MapsHolder.h">
-      <Filter>Header Files\Map</Filter>
     </ClInclude>
     <ClInclude Include="Game\Game.h">
       <Filter>Header Files\Game</Filter>
@@ -196,23 +190,11 @@
     <ClInclude Include="Player\Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Items\Weapons\WeaponsLoader.h">
-      <Filter>Header Files\Items\Weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="Items\ItemsHolder.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Items\ItemsLoader.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
     <ClInclude Include="Items\Item.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
     <ClInclude Include="Items\Weapons\Weapon.h">
       <Filter>Header Files\Items\Weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="Items\Armours\ArmoursLoader.h">
-      <Filter>Header Files\Items\Armors</Filter>
     </ClInclude>
     <ClInclude Include="Interface\GameWindowInterface.h">
       <Filter>Header Files\Interface</Filter>
@@ -238,17 +220,29 @@
     <ClInclude Include="Enemy\Enemy.h">
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy\EnemiesHolder.h">
-      <Filter>Header Files\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy\EnemiesLoader.h">
-      <Filter>Header Files\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="DevMode\DevMode.h">
       <Filter>Header Files\DevMode</Filter>
     </ClInclude>
     <ClInclude Include="Errors\ErrorHandler.h">
       <Filter>Header Files\Error handling</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManagment\ResourcesHolder.h">
+      <Filter>Header Files\ResManage</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManagment\ResourcesLoader.h">
+      <Filter>Header Files\ResManage</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemiesLoader.h">
+      <Filter>Header Files\ResManage</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Armours\ArmoursLoader.h">
+      <Filter>Header Files\ResManage</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Weapons\WeaponsLoader.h">
+      <Filter>Header Files\ResManage</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\MapLoader.h">
+      <Filter>Header Files\ResManage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

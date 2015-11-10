@@ -11,6 +11,11 @@ EnemiesLoader::~EnemiesLoader()
 
 }
 
+std::vector<Enemy_Stats>& EnemiesLoader::getEnemiesData()
+{
+	return _enemiesData;
+}
+
 void EnemiesLoader::prepareStruct()
 {
 	_errorMsg = "";
@@ -77,9 +82,7 @@ void EnemiesLoader::loadFromFile()
 		if (stringLine.size() > 6) parseLine(stringLine);
 		if (stringLine == "[---]") saveStruct();
 	}
-	EnemiesHolder *_enemiesHolder = &EnemiesHolder::getEnemiesHolder();
 	_enemiesData.shrink_to_fit();
-	_enemiesHolder->setData(_enemiesData);
 
 }
 
