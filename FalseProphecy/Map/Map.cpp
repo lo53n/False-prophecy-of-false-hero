@@ -7,7 +7,10 @@ Map::Map()
 
 }
 
-Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID) : _mapTemplate(mapTemplate), _mapIdentifier(mapID)
+Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture) 
+	: _mapTemplate(mapTemplate), 
+	_mapIdentifier(mapID),
+	_renderTexture(&renderTexture)
 {
 	checkMaxSizes(); 
 	findAllExitPoints();
@@ -18,20 +21,13 @@ Map::~Map()
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-
 	target.draw(_mapSprite);
-	for (auto enemy : _enemies){
-		target.draw(*enemy);
-	}
-	for (auto item : _itemsOnMap){
-		target.draw(*(item.second));
-	}
 
 }
 
-void Map::clearMap()
+void Map::updateMap()
 {
-	//STOP USING RENDER TEXTURE IN EVERY MAP. Figure way out, moron.
+	drawMap();
 }
 
 
@@ -104,31 +100,45 @@ void Map::setMapLayer(sf::RenderTexture& mapRenderTexture)
 	_mapSprite.setTexture(mapRenderTexture.getTexture(), true);
 }
 
-void Map::drawMap(sf::RenderTexture& mapRenderTexture)
+void Map::drawMap()
 {
 	takeEnemiesFromMap();
-	mapRenderTexture.create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
-	mapRenderTexture.clear();
+	_renderTexture->create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
+	_renderTexture->clear();
 	for (int i = 0, len = _mapTemplate.size(); i < len; i++){
 		for (int j = 0, len1 = _mapTemplate[i].size(); j < len1; j++){
 			switch (_mapTemplate[i][j]){
 			//Entrances/exits, call them as you please.//
-			case 'E': drawEntry(mapRenderTexture, i, j);		break;
+			case 'E': drawEntry(*_renderTexture, i, j);		break;
 
 			//Walls, as in name.//
-			case 'x': drawWall(mapRenderTexture, i, j);		break;
+			case 'x': drawWall(*_renderTexture, i, j);		break;
 
 			//Floor, as in name.//
-			case '.': drawFloor(mapRenderTexture, i, j);		break;
+			case '.': drawFloor(*_renderTexture, i, j);		break;
 
 			//Whatever happened, will be fully transparent. Unexpected tiles and spacebars will be treated as those.
 			//Note that spacebar will be treated as obstacle.
-			default: drawEmpty(mapRenderTexture, i, j);
+			default: drawEmpty(*_renderTexture, i, j);
 			}
 		}
 		//std::cout << std::endl;
 	}
-	setMapLayer(mapRenderTexture);
+
+
+	for (auto enemy : _enemies){
+		if (!enemy->checkIfAlive())
+			_renderTexture->draw(*enemy);
+	}
+	for (auto item : _itemsOnMap){
+		_renderTexture->draw(*(item.second));
+	}
+
+	for (auto enemy : _enemies){
+		if (enemy->checkIfAlive())
+			_renderTexture->draw(*enemy);
+	}
+	setMapLayer(*_renderTexture);
 	putEnemiesOnMap();
 }
 ////////////////////
@@ -241,6 +251,12 @@ std::shared_ptr<Map> Map::moveToMap(unsigned int previousMapID)
 //Map enemies//
 ///////////////
 
+
+std::vector<std::shared_ptr<Enemy>>& Map::getEnemies()
+{
+	return _enemies;
+}
+
 void Map::increaseRespawnCounter()
 {
 	_respawn_counter++;
@@ -252,6 +268,7 @@ void Map::increaseRespawnCounter()
 
 void Map::resurrectAndReinforceEnemies()
 {
+
 	for (auto enemy : _enemies){
 		enemy->resurrectAndReinforce();
 		changeMapTile(__ENEMY_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
@@ -273,6 +290,8 @@ void Map::killOffEnemy(int enemy_id)
 	for (auto enemy : _enemies){
 		if (enemy->getEnemyId() == enemy_id){
 			changeMapTile(__ENEMY_CORPSE_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
+			updateMap();
+			return;
 		}
 	}
 }
@@ -284,6 +303,7 @@ void Map::killOffEnemy(int enemy_id)
 void Map::changeMapTile(char newTile, int x, int y)
 {
 	_mapTemplate[y][x] = newTile;
+
 }
 
 

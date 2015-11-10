@@ -198,6 +198,11 @@ void Player::setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid)
 	_positionOnMap = (sf::Vector2f)(_positionOnGrid * (int)__PLAYER_HEIGHT__);
 	_playerShape.setPosition(_positionOnMap);
 }
+
+void Player::setGameWindowInterface(std::shared_ptr<GameWindowInterface> GWI)
+{
+	_gwi = GWI;
+}
 ///////////////////
 //Player movement//
 ///////////////////
@@ -639,6 +644,18 @@ int Player::calculateDamage()
 	return dmg;
 }
 
+void Player::takeDamage(int dmg)
+{
+	_stats.hp -= dmg;
+
+
+
+	if (_stats.hp < 0){
+		_stats.hp = 0;
+	}
+	_gwi->refreshBars(_stats);
+}
+
 ////////////////
 //Proficiences//
 ////////////////
@@ -720,7 +737,6 @@ void Player::calculateProficientyEffectivness(int id)
 void Player::increaseExperience(int value)
 {
 	_stats.exp += value * (1.0f + (float)(_stats.intelligence / 100));
-	std::cout << "EXP BASE: " << value << " EXP INC: " << value * (1 + (float)(_stats.intelligence / 100)) << std::endl;
 	while (_stats.exp >= _stats.max_exp){
 		advanceToNextLevel();
 	}
@@ -743,8 +759,9 @@ void Player::advanceToNextLevel()
 	addStatsByWeapon();
 
 	refreshStatistics();
-}
 
+	_gwi->refreshBars(_stats);
+}
 
 
 /////////
@@ -757,8 +774,8 @@ void Player::refreshStatistics()
 	_stats.stam = _stats.max_stam = _stats.strenght * 2 + _stats.endurance * 2;
 
 	if (_heroWeaponType == WEAPON_TYPE::UNARMED){
-		_stats.min_dmg = (int)((float)(_stats.strenght + _stats.endurance + (float)_stats.dexterity / 2) * 0.8f);
-		_stats.max_dmg = (int)((float)(_stats.strenght + _stats.endurance + (float)_stats.dexterity / 2) * 1.2f);
+		_stats.min_dmg = (int)(((float)_stats.strenght / 2 + (float)_stats.endurance / 2 + (float)_stats.dexterity / 4) * 0.8f);
+		_stats.max_dmg = (int)(((float)_stats.strenght / 2 + (float)_stats.endurance / 2 + (float)_stats.dexterity / 4) * 1.2f);
 	}
 	else{
 
@@ -786,7 +803,6 @@ void Player::addStatsByWeapon()
 	if (_heroWeaponType == 4){
 		_stats.strenght += 2;
 		_stats.endurance += 2;
-		_stats.dexterity += 2;
 		_stats.agility += 2;
 		return;
 	}
@@ -794,14 +810,14 @@ void Player::addStatsByWeapon()
 	//armed//
 	switch (_mainHand->getStatsStruct().size){
 	case WEAPON_SIZE::SMALL:
-		_stats.agility += 3;
+		_stats.agility += 2;
 		break;
 	case WEAPON_SIZE::MEDIUM:
-		_stats.agility += 2;
+		_stats.agility += 1;
 		_stats.strenght += 1;
 		break;
 	case WEAPON_SIZE::LARGE:
-		_stats.strenght += 2;
+		_stats.strenght += 1;
 		_stats.endurance += 1;
 		break;
 	}

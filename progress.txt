@@ -42,7 +42,7 @@
 	+ equip items
 	+ unequip items
 	- calculate stats for new piece of gear depending on player strenght
-	- refresh player stats for each equipment change
+	+ refresh player stats for each equipment change
 	- maybe item tiers?
 
 [PLAYER]
@@ -58,13 +58,13 @@
 		++ multipliers
 		++ dependable on weapon
 	- level:
-		-- experience
-		-- stats points
+		++ experience
+		++ stats points
 		-- TBD
 	- inventory:
 		++ backpack
 		++ equipemnt slots
-		-- stats change after un/equipping
+		++ stats change after un/equipping
 	- TBD
 
 [MAP]
@@ -105,19 +105,19 @@
 		-- boss
 
 [INTERFACE]
-	- Main Window:
-		-- hp/mana/stamina bars
-		-- skills view
-		-- icons for each menu
-	- Character Window
-		-- player stats
-		-- proficiences
-		-- player battle stats
-		-- current equipment
-	- Inventory Window
+	+ Main Window:
+		++ hp/mana/stamina bars
+		++ skills view
+		++ icons for each menu
+	+? Character Window
+		++ player stats
+		++ proficiences
+		++ player battle stats
+		?? current equipment - is it nessessary?
+	+ Inventory Window
 		++ bag view
 		++ equipment view
-		-- piece of gear statistics
+		++ piece of gear statistics
 		++ manipulating
 	- Menus:
 		-- main menu

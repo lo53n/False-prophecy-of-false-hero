@@ -8,8 +8,10 @@ GameWindowInterface::GameWindowInterface()
 	_upperInterface.setOutlineThickness(2.f);
 	_upperInterface.setOutlineColor(sf::Color(150, 130, 110, 90));
 
+	sf::Vector2f barLen(200.f, 20.f);
+
 	for (int i = 0; i < 3; i++){
-		sf::RectangleShape emptyBar(sf::Vector2f(200.f, 20.f));
+		sf::RectangleShape emptyBar(barLen);
 		emptyBar.setPosition(30.f, 14.f + i*22.f);
 		emptyBar.setFillColor(sf::Color::Black);
 		emptyBar.setOutlineColor(sf::Color(0, 0, 0, 190));
@@ -18,19 +20,19 @@ GameWindowInterface::GameWindowInterface()
 	}
 
 	_hpBar.setPosition(30.f, 14.f);
-	_hpBar.setSize(sf::Vector2f(100.f, 20.f));
+	_hpBar.setSize(barLen);
 	_hpBar.setFillColor(sf::Color(240, 20, 20, 255));
 	_hpBar.setOutlineThickness(1.f);
 	_hpBar.setOutlineColor(sf::Color(240, 20, 20, 50));
 
 	_manaBar.setPosition(30.f, 36.f);
-	_manaBar.setSize(sf::Vector2f(100.f, 20.f));
+	_manaBar.setSize(barLen);
 	_manaBar.setFillColor(sf::Color(20, 20, 240, 255));
 	_manaBar.setOutlineThickness(1.f);
 	_manaBar.setOutlineColor(sf::Color(20, 20, 240, 50));
 
 	_staminaBar.setPosition(30.f, 58.f);
-	_staminaBar.setSize(sf::Vector2f(100.f, 20.f));
+	_staminaBar.setSize(barLen);
 	_staminaBar.setFillColor(sf::Color(20, 240, 20, 255));
 	_staminaBar.setOutlineThickness(1.f);
 	_staminaBar.setOutlineColor(sf::Color(20, 240, 20, 50));
@@ -96,7 +98,6 @@ GameWindowInterface::GameWindowInterface()
 	_menuText.setPosition(upperSize.x - 41, __TEXT_PLACEMENT_Y__);
 
 
-
 }
 
 
@@ -114,7 +115,7 @@ void GameWindowInterface::draw(sf::RenderTarget& target, sf::RenderStates states
 {
 	target.draw(_upperInterface);
 
-	for(auto bar : _emptyResourceBar) target.draw(bar);
+	for (auto bar : _emptyResourceBar) target.draw(bar);
 	target.draw(_hpBar);
 	target.draw(_manaBar);
 	target.draw(_staminaBar);
@@ -130,6 +131,7 @@ void GameWindowInterface::draw(sf::RenderTarget& target, sf::RenderStates states
 	target.draw(_inventoryText);
 	target.draw(_statusText);
 	target.draw(_menuText);
+
 }
 
 void GameWindowInterface::setGameWindowInterfaceSizeByResize(sf::Vector2f newSize)
@@ -150,4 +152,20 @@ void GameWindowInterface::setGameWindowInterfaceSizeByResize(sf::Vector2f newSiz
 	_inventoryText.setPosition(upperSize.x - 110, __TEXT_PLACEMENT_Y__);
 	_statusText.setPosition(upperSize.x - 73, __TEXT_PLACEMENT_Y__);
 	_menuText.setPosition(upperSize.x - 41, __TEXT_PLACEMENT_Y__);
+
+}
+
+void GameWindowInterface::refreshBars(Hero_Profile &stats)
+{
+	float scaleX = 0.0f;
+	scaleX = (float)stats.hp / (float)stats.max_hp;
+	_hpBar.setScale(scaleX, 1);
+
+	scaleX = (float)stats.mp / (float)stats.max_mp;
+	_manaBar.setScale(scaleX, 1);
+
+	scaleX = (float)stats.stam / (float)stats.max_stam;
+	_staminaBar.setScale(scaleX, 1);
+
+
 }

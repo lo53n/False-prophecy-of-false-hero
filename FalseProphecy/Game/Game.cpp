@@ -7,6 +7,11 @@ Game::Game()
 	, _player(std::make_shared<Player>())
 {
 
+	//////////////////
+	//Create objects//
+	//////////////////
+	_gameWindowInterface = std::make_shared<GameWindowInterface>();
+
 
 	/////////////////////
 	//Set error handler//
@@ -37,14 +42,17 @@ Game::Game()
 	_statusWindow.setPlayer(_player);
 	_devMode.setPlayer(_player);
 
+
+	_player->setGameWindowInterface(_gameWindowInterface);
+
 	////////////////////////
 	//Set size of dev menu//
 	////////////////////////
 
 	sf::Vector2f size = (sf::Vector2f) _window.getSize();
-	sf::Vector2f position = sf::Vector2f(0, _gameWindowInterface.getInterfaceHeight());
+	sf::Vector2f position = sf::Vector2f(0, _gameWindowInterface->getInterfaceHeight());
 
-	size = sf::Vector2f(size.x, size.y - _gameWindowInterface.getInterfaceHeight());
+	size = sf::Vector2f(size.x, size.y - _gameWindowInterface->getInterfaceHeight());
 
 	_devMode.setPositionAndSize(position, size);
 
@@ -55,7 +63,7 @@ Game::Game()
 
 	_window.setView(_gameView);
 
-	_gameWindowInterface.setGameWindowInterfaceSizeByResize(sf::Vector2f((float)_window.getSize().x, (float)_window.getSize().y));
+	_gameWindowInterface->setGameWindowInterfaceSizeByResize(sf::Vector2f((float)_window.getSize().x, (float)_window.getSize().y));
 
 	_inventoryWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 	_statusWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
@@ -148,7 +156,7 @@ void Game::processEvents()
 			_gameView.setSize(visible);
 			_interfaceView.setSize(visible);
 			_interfaceView.setCenter(visible.x/2, visible.y/2);
-			_gameWindowInterface.setGameWindowInterfaceSizeByResize(visible);
+			_gameWindowInterface->setGameWindowInterfaceSizeByResize(visible);
 			_inventoryWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 			_statusWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 
@@ -156,7 +164,7 @@ void Game::processEvents()
 
 			_window.setView(_gameView);
 
-			_devMode.resizeMenu(sf::Vector2f(visible.x, visible.y - _gameWindowInterface.getInterfaceHeight()));
+			_devMode.resizeMenu(sf::Vector2f(visible.x, visible.y - _gameWindowInterface->getInterfaceHeight()));
 			break;
 		/*case::sf::Event::MouseButtonPressed:
 			coords = sf::Mouse::getPosition(_window);
@@ -182,15 +190,16 @@ void Game::draw()
 	_window.setView(_gameView);
 	//for (int i = 0, len = _maps.size(); i < len; i++) _window.draw(*_maps[i]);
 	_window.draw(*_currentMap);
-	_window.draw(*_player);
 	for (auto item : _itemList)
 		_window.draw(*item);
+
+	_window.draw(*_player);
 
 	//////////////////
 	//draw interface//
 	//////////////////
 	_window.setView(_interfaceView);
-	_window.draw(_gameWindowInterface);
+	_window.draw(*_gameWindowInterface);
 	if (_isInventoryWindowOpen) _window.draw(_inventoryWindow);
 	if (_isStatusWindowOpen) _window.draw(_statusWindow);
 	if (_isDevModeActive) _window.draw(_devMode);
@@ -366,7 +375,8 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		//Show next map//
 		if (key == sf::Keyboard::Return && isPressed){
 			//generateNewMap();
-			_errorHandler->processError("Current map is " + std::to_string(_currentMap->getMapId()));
+			//_errorHandler->processError("Current map is " + std::to_string(_currentMap->getMapId()));
+			_player->takeDamage(10);
 		}
 		if (key == sf::Keyboard::D && isPressed && (_player->getPlayerBackpack().size() < __BACKPACK_CAPACITY__)){
 			checkForObjectsAtPlayerPosition();
@@ -379,6 +389,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		if (_isInventoryWindowOpen && !_isStatusWindowOpen && isPressed){
 			if (key == sf::Keyboard::D && isPressed){
 					heroDropsItem();
+					_currentMap->updateMap();
 			}
 			_inventoryWindow.handleInput(key, isPressed);
 			
@@ -429,7 +440,7 @@ bool Game::checkMovement(int direction)
 	//We check now tiles
 	//Is it enemy?
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] == __ENEMY_ON_MAP__){
-		for (auto enemy : _currentMap->_enemies){
+		for (auto enemy : _currentMap->getEnemies()){
 			if (enemy->getEnemyPositionOnGrid() == checkForPosition){
 				//std::cout << "boom, enemy!" << std::endl;
 				//_currentMap->changeMapTile(__ENEMY_CORPSE_ON_MAP__, checkForPosition.x, checkForPosition.y);
@@ -493,7 +504,7 @@ bool Game::handleMapTraverse()
 
 			//std::cout << "BOOM! TIED WITH OTHER MAP WITH ID's: old " << _currentMap->getMapId() << ", new " << _newMap->getMapId() << std::endl;
 			_currentMap = _newMap;
-			_currentMap->drawMap(_mapTexture);
+			_currentMap->drawMap();
 		}
 	}
 	else{
@@ -506,7 +517,7 @@ bool Game::handleMapTraverse()
 			}
 		}
 		_currentMap = _currentMap->moveToMap(targetMap);
-		_currentMap->drawMap(_mapTexture);
+		_currentMap->drawMap();
 	}
 
 
@@ -520,7 +531,7 @@ void Game::moveToMap(int mapNumber, bool needPair)
 	if (!needPair){
 		std::shared_ptr<Map> ptr(_currentMap->moveToMap(mapNumber));
 		_currentMap = ptr;
-		_currentMap->drawMap(_mapTexture);
+		_currentMap->drawMap();
 	}
 	else{
 
@@ -542,12 +553,12 @@ void Game::generateNewMap()
 	unsigned int mapID = _maps.size();
 	_currentMapNumber = rand() % _mapsHolder->getMapCount();
 
-	if (_maps.size() > 0) _currentMap->clearMap();
+	//if (_maps.size() > 0) _currentMap->clearMap();
 	//if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
 	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 
 	_newMap = createMapSharedPointer(mapID);
-	_newMap->drawMap(_mapTexture);
+	_newMap->drawMap();
 
 	_maps.push_back(_newMap);
 	_mapsWithAvaiableExits.push_back(_newMap);
@@ -574,12 +585,12 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 	//_currentMapNumber = 0;
 	if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
 
-	if (_maps.size() > 0) _currentMap->clearMap();
+	//if (_maps.size() > 0) _currentMap->clearMap();
 
 
 	//Create new map and then draw it
 	_newMap = createMapSharedPointer(mapID);
-	_newMap->drawMap(_mapTexture);
+	//_newMap->drawMap();
 
 	//Save map
 	_maps.push_back(_newMap);
@@ -614,7 +625,7 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 				if (chance > 90){
 					Enemy_Stats enemy_template = _enemiesHolder->_enemiesData[rand()%_enemiesHolder->_enemiesData.size()];
 					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, enemy_template, sf::Vector2i(tilex, tiley), tile));
-					_currentMap->_enemies.push_back(enemy);
+					_currentMap->getEnemies().push_back(enemy);
 					_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
 					enemy_id++;
 				}
@@ -623,6 +634,7 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 		}
 		tiley++;
 	}
+	_currentMap->drawMap();
 	//_currentMap->printConsoleMap();
 
 }
@@ -642,7 +654,7 @@ void Game::checkForExistingFreeExits(std::shared_ptr<Map> mapToCheck)
 
 std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
 {
-	std::shared_ptr<Map> ptr(std::make_shared<Map>(_mapsHolder->getMapFromHolder(_currentMapNumber), mapID));
+	std::shared_ptr<Map> ptr(std::make_shared<Map>(_mapsHolder->getMapFromHolder(_currentMapNumber), mapID, _mapTexture));
 	return ptr;
 }
 
@@ -695,6 +707,8 @@ void Game::heroAttacksEnemy(sf::Vector2i position)
 	if (!enemy->checkIfAlive()){
 		_currentMap->killOffEnemy(enemy->getEnemyId());
 	}
+
+	_currentMap->updateMap();
 }
 
 ///////////////////////
@@ -708,12 +722,14 @@ void Game::generateDrop(sf::Vector2i position)
 	_currentMap->pushItemToMapStorage(position, item);
 	std::shared_ptr<Item> item1(std::make_shared<Weapon>(_itemsHolder->_weaponsData[0]));
 	_currentMap->pushItemToMapStorage(position, item1);
-	std::cout << "generated" << std::endl;
+
+	_currentMap->updateMap();
 }
 
 void Game::checkForObjectsAtPlayerPosition()
 {
 	if (_currentMap->checkForItemsAtTile(_player->getPlayerPositionOnGrid())){
 		_player->getPlayerBackpack().push_back(_currentMap->returnItemAtTile(_player->getPlayerPositionOnGrid()));
+		_currentMap->updateMap();
 	}
 }

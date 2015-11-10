@@ -58,7 +58,7 @@ private:
 	//Interfaces and menu//
 	///////////////////////
 
-	GameWindowInterface _gameWindowInterface;
+	std::shared_ptr<GameWindowInterface> _gameWindowInterface;
 	InventoryWindow _inventoryWindow;
 	StatusWindow _statusWindow;
 	DevMode _devMode;

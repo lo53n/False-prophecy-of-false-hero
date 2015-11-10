@@ -1,3 +1,20 @@
+2015-11-9
+
+What is done?
+
+	- more code optimalization by changing how maps and their objects are drawn
+
+[-----]
+2015-11-1
+
+What is done?
+
+	- linked hp/mana/stam bars to player, so it works properly.
+
+To do:
+	
+	- send item container to map - items are drawn on enemies.
+
 [-----]
 2015-10-30
 

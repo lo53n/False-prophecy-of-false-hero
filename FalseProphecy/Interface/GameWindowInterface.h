@@ -8,6 +8,7 @@
 #include "SFML\Graphics.hpp"
 
 #include "../LoadFromResource.h"
+#include "../StructsEnums.h"
 #include "../UIResource.h"
 
 
@@ -15,8 +16,11 @@ class GameWindowInterface : public sf::Drawable{
 
 public:
 
-
 	float getInterfaceHeight();
+
+	void refreshBars(Hero_Profile &stats);
+
+	void refreshWholeInterface();
 
 	void setGameWindowInterfaceSizeByResize(sf::Vector2f newSize);
 

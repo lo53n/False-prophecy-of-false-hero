@@ -13,7 +13,8 @@
 #include "../Items/Armours/Armour.h"
 #include "../Items/Weapons/Weapon.h"
 
-#include "../StructsEnums.h"
+#include "../Interface/GameWindowInterface.h"
+
 
 
 
@@ -74,6 +75,8 @@ public:
 	void setPlayerPositionOnMap(sf::Vector2f newPositionOnMap);		
 	//set player position on map (x,y)
 	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);
+	//set game interface to be responsive
+	void setGameWindowInterface(std::shared_ptr<GameWindowInterface> GWI);
 
 	/////////////
 	//Inventory//
@@ -96,6 +99,7 @@ public:
 
 	int calculateDamage();
 
+	void takeDamage(int);
 
 	////////////////
 	//Proficiences//
@@ -134,6 +138,8 @@ private:
 	Hero_Profile _stats;
 	std::vector<Ability_Proficiencies> _proficiences;
 	
+	std::shared_ptr<GameWindowInterface> _gwi;
+
 
 	/////////////
 	//Equipment//

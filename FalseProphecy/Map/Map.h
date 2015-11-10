@@ -38,14 +38,14 @@ class Enemy;
 class Map : public sf::Drawable{
 
 public:
+
+	sf::RenderTexture* _renderTexture;
+
 	Map();
-	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID);
+	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture);
 	~Map();
 
-	void clearMap();
 
-
-	std::vector<std::shared_ptr<Enemy>> _enemies;
 
 	///////////
 	//Getters//
@@ -90,7 +90,7 @@ public:
 
 
 	//and now to building texture tile by tile//
-	void drawMap(sf::RenderTexture& mapRenderTexture);
+	void drawMap();
 	void drawWall(sf::RenderTexture& mapRenderTexture, int y, int x);
 	void drawFloor(sf::RenderTexture& mapRenderTexture, int y, int x);
 	void drawEntry(sf::RenderTexture& mapRenderTexture, int y, int x);
@@ -98,6 +98,8 @@ public:
 	void drawEmpty(sf::RenderTexture& mapRenderTexture, int y, int x);
 
 	void setMapLayer(sf::RenderTexture& mapRenderTexture);
+
+	void updateMap();
 
 	//////////////////
 	//Map traversing//
@@ -118,6 +120,8 @@ public:
 	///////////////
 	//Map enemies//
 	///////////////
+
+	std::vector<std::shared_ptr<Enemy>>& getEnemies();
 
 	void increaseRespawnCounter();
 	void resurrectAndReinforceEnemies();
@@ -187,6 +191,8 @@ private:
 	///////////////
 	//Map enemies//
 	///////////////
+	std::vector<std::shared_ptr<Enemy>> _enemies;
+	std::vector<std::shared_ptr<Enemy>> _deadenemies;
 
 	int _respawn_counter = 0;
 
