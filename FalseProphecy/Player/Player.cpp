@@ -83,6 +83,14 @@ void Player::presetHeroStructure()
 	int _heroLegsType = -1;
 	int _heroLegsClass = ARMOUR_CLASS::NAKED;
 
+	_ratings.hero_rating = 0;
+	_ratings.weapon_rating = 0;
+	_ratings.offhand_rating = 0;
+	_ratings.head_rating = 0;
+	_ratings.torso_rating = 0;
+	_ratings.legs_rating = 0;
+	_ratings.overral_rating = 0;
+
 	refreshStatistics();
 
 }
@@ -180,6 +188,11 @@ int Player::getPlayerWeaponHandle()
 int Player::getPlayerWeaponType()
 {
 	return _heroWeaponType;
+}
+
+Hero_Ratings Player::getPlayerRating()
+{
+	return _ratings;
 }
 ///////////
 //Setters//
@@ -312,6 +325,7 @@ void Player::equipItem(std::shared_ptr<Weapon> item)
 	_heroWeaponType = _mainHand->getStatsStruct().type;
 	_stats.min_dmg = stats.min_dmg;
 	_stats.max_dmg = stats.max_dmg;
+	_ratings.weapon_rating = stats.rating;
 
 	int add_dmg;
 	//calculate multipliers//
@@ -322,6 +336,8 @@ void Player::equipItem(std::shared_ptr<Weapon> item)
 
 	_stats.min_dmg += add_dmg;
 	_stats.max_dmg += add_dmg;
+	//calculate rating//
+	calculateChallengeRating();
 
 
 }
@@ -353,14 +369,13 @@ void Player::equipItem(std::shared_ptr<Armour> item)
 				_stats.defence -= stats.defence;
 				break;
 			}
-
 			_heroTorsoClass = ARMOUR_CLASS::NAKED;
-
 		}
 
 		_torso = item;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
 		_heroTorsoClass = stats.armour_class;
+		_ratings.torso_rating = stats.rating;
 
 		switch (_heroTorsoClass){
 
@@ -381,6 +396,8 @@ void Player::equipItem(std::shared_ptr<Armour> item)
 			break;
 		}
 		break;
+
+
 	case ARMOUR_TYPE::HELMET:
 		if (_head != nullptr) {
 			temp = _head;
@@ -410,6 +427,7 @@ void Player::equipItem(std::shared_ptr<Armour> item)
 		_head = item;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
 		_heroHelmetClass = stats.armour_class;
+		_ratings.head_rating = stats.rating;
 
 		switch (_heroHelmetClass){
 
@@ -430,6 +448,8 @@ void Player::equipItem(std::shared_ptr<Armour> item)
 			break;
 		}
 		break;
+
+
 	case ARMOUR_TYPE::GREAVES:
 		if (_legs != nullptr) {
 			temp = _legs;
@@ -459,6 +479,7 @@ void Player::equipItem(std::shared_ptr<Armour> item)
 		_legs = item;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
 		_heroLegsClass = stats.armour_class;
+		_ratings.legs_rating = stats.rating;
 
 		switch (_heroLegsClass){
 
@@ -479,13 +500,64 @@ void Player::equipItem(std::shared_ptr<Armour> item)
 			break;
 		}
 		break;
+
+
 	case ARMOUR_TYPE::SHIELD:
 		if (_offHand != nullptr) {
 			temp = _offHand;
+			stats = std::dynamic_pointer_cast<Armour>(temp)->getStatsStruct();
+
+			switch (_heroOffhandClass){
+			case ARMOUR_CLASS::LIGHT:
+				_stats.speed += stats.speed;
+				_stats.dodge -= stats.dodge;
+				_stats.block -= stats.block;
+				break;
+
+			case ARMOUR_CLASS::AVERAGE:
+				_stats.speed -= stats.speed;
+				_stats.defence -= stats.defence;
+				_stats.block -= stats.block;
+				break;
+
+			case ARMOUR_CLASS::HEAVY:
+				_stats.speed -= stats.speed;
+				_stats.defence -= stats.defence;
+				_stats.block -= stats.block;
+				break;
+			}
+			_heroOffhandClass = ARMOUR_CLASS::NAKED;
 
 		}
 		_offHand = item;
+		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
+		_heroOffhandClass = stats.armour_class;
+		_ratings.offhand_rating = stats.rating;
+
+		switch (_heroOffhandClass){
+
+		case ARMOUR_CLASS::LIGHT:
+			_stats.speed -= stats.speed;
+			_stats.dodge += stats.dodge;
+			_stats.block += stats.block;
+			break;
+
+		case ARMOUR_CLASS::AVERAGE:
+			_stats.speed += stats.speed;
+			_stats.defence += stats.defence;
+			_stats.block += stats.block;
+			break;
+
+		case ARMOUR_CLASS::HEAVY:
+			_stats.speed += stats.speed;
+			_stats.defence += stats.defence;
+			_stats.block += stats.block;
+			break;
+		}
+		break;
 	}
+	//calculate rating
+	calculateChallengeRating();
 
 	if (temp != nullptr){
 		for (int i = 0, len = _backpack.size(); i < len; i++){
@@ -515,6 +587,7 @@ void Player::unequipItem(int slot)
 	case 0:
 		item = _mainHand;
 		_mainHand = nullptr;
+		_ratings.weapon_rating = 0;
 		//Set as unarmed//
 		setAsUnarmed();
 			break;
@@ -522,12 +595,36 @@ void Player::unequipItem(int slot)
 	case 1:
 		item = _offHand;
 		_offHand = nullptr;
+		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
+		_ratings.offhand_rating = 0;
+
+
+		switch (_heroOffhandClass){
+		case ARMOUR_CLASS::LIGHT:
+			_stats.speed += stats.speed;
+			_stats.block -= stats.block;
+			break;
+
+		case ARMOUR_CLASS::AVERAGE:
+			_stats.speed -= stats.speed;
+			_stats.defence -= stats.defence;
+			_stats.block -= stats.block;
+			break;
+
+		case ARMOUR_CLASS::HEAVY:
+			_stats.speed -= stats.speed;
+			_stats.defence -= stats.defence;
+			_stats.block -= stats.block;
+			break;
+		}
+		_heroOffhandClass = ARMOUR_CLASS::NAKED;
 			break;
 
 	case 2:
 		item = _head;
 		_head = nullptr;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
+		_ratings.head_rating = 0;
 
 		switch (_heroHelmetClass){
 		case ARMOUR_CLASS::CLOTH:
@@ -555,6 +652,7 @@ void Player::unequipItem(int slot)
 		item = _torso;
 		_torso = nullptr;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
+		_ratings.torso_rating = 0;
 
 		switch (_heroTorsoClass){
 		case ARMOUR_CLASS::CLOTH:
@@ -581,6 +679,7 @@ void Player::unequipItem(int slot)
 		item = _legs;
 		_legs = nullptr;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
+		_ratings.legs_rating = 0;
 
 		switch (_heroLegsClass){
 		case ARMOUR_CLASS::CLOTH:
@@ -606,7 +705,7 @@ void Player::unequipItem(int slot)
 	}
 
 	if(item != nullptr) putItemInBackpack(item);
-
+	calculateChallengeRating();
 
 }
 
@@ -616,6 +715,37 @@ void Player::setAsUnarmed()
 	_heroWeaponHandle = -1;
 	refreshStatistics();
 }
+
+void Player::calculateChallengeRating()
+{
+	int temp_rating = 0;
+
+	temp_rating += _stats.agility;
+	temp_rating += _stats.dexterity;
+	temp_rating += _stats.strenght;
+	temp_rating += _stats.endurance;
+	temp_rating += _stats.intelligence;
+	temp_rating += _stats.willpower;
+
+	/*
+	int dmg = (int)(((float)_stats.min_dmg + (float)_stats.max_dmg) / 2) / 10;
+	temp_rating += dmg + _stats.defence / 10;
+	temp_rating += _stats.dodge / 10;
+	*/
+
+	_ratings.hero_rating = temp_rating;
+	_ratings.overral_rating = _ratings.hero_rating;
+	_ratings.overral_rating += _ratings.weapon_rating;
+	_ratings.overral_rating += _ratings.offhand_rating;
+	_ratings.overral_rating += _ratings.head_rating;
+	_ratings.overral_rating += _ratings.torso_rating;
+	_ratings.overral_rating += _ratings.legs_rating;
+
+
+	std::cout << "Challenge rating: " << _ratings.overral_rating << std::endl;
+
+}
+
 
 ///////////
 //Battle!//
@@ -736,7 +866,7 @@ void Player::calculateProficientyEffectivness(int id)
 
 void Player::increaseExperience(int value)
 {
-	_stats.exp += value * (1.0f + (float)(_stats.intelligence / 100));
+	_stats.exp += (float)(value * (1.0f + (float)(_stats.intelligence / 100)));
 	while (_stats.exp >= _stats.max_exp){
 		advanceToNextLevel();
 	}
@@ -757,6 +887,9 @@ void Player::advanceToNextLevel()
 	_stats.willpower += 1;
 
 	addStatsByWeapon();
+	addStatsByOffhand();
+	addStatsByArmour();
+
 
 	refreshStatistics();
 
@@ -794,6 +927,7 @@ void Player::refreshStatistics()
 		_stats.min_dmg += add_dmg;
 		_stats.max_dmg += add_dmg;
 	}
+	calculateChallengeRating();
 
 }
 
@@ -801,23 +935,22 @@ void Player::addStatsByWeapon()
 {
 	//unarmed//
 	if (_heroWeaponType == 4){
-		_stats.strenght += 2;
-		_stats.endurance += 2;
-		_stats.agility += 2;
+		_stats.strenght += 1;
+		_stats.endurance += 1;
+		_stats.agility += 1;
+		_stats.dexterity += 1;
 		return;
 	}
 
 	//armed//
 	switch (_mainHand->getStatsStruct().size){
 	case WEAPON_SIZE::SMALL:
-		_stats.agility += 2;
+		_stats.agility += 1;
 		break;
 	case WEAPON_SIZE::MEDIUM:
-		_stats.agility += 1;
 		_stats.strenght += 1;
 		break;
 	case WEAPON_SIZE::LARGE:
-		_stats.strenght += 1;
 		_stats.endurance += 1;
 		break;
 	}
@@ -825,19 +958,16 @@ void Player::addStatsByWeapon()
 
 	switch (_mainHand->getStatsStruct().type){
 	case WEAPON_TYPE::AXE:
-		_stats.strenght += 2;
+		_stats.strenght += 1;
 		break;
 	case WEAPON_TYPE::MACE:
 		_stats.endurance += 1;
-		_stats.strenght += 1;
 		break;
 	case WEAPON_TYPE::SWORD:
 		_stats.agility += 1;
-		_stats.strenght += 1;
 		break;
 	case WEAPON_TYPE::SPEAR:
-		_stats.endurance += 1;
-		_stats.strenght += 1;
+		_stats.dexterity += 1;
 		break;
 	}
 
@@ -863,4 +993,76 @@ void Player::addStatsByWeapon()
 
 	}
 
+}
+
+void Player::addStatsByOffhand()
+{
+	switch (_heroOffhandClass){
+	case ARMOUR_CLASS::NAKED:
+		switch (_heroWeaponHandle){
+		case WEAPON_HANDLE::ONEHANDED: 
+			_stats.agility += 1;
+			_stats.dexterity += 1;
+			break;
+		default: break;
+		}
+		break;
+	case ARMOUR_CLASS::LIGHT:
+		_stats.agility += 1;
+		break;
+	case ARMOUR_CLASS::AVERAGE:
+		_stats.strenght += 1;
+		break;
+	case ARMOUR_CLASS::HEAVY:
+		_stats.endurance += 1;
+		break;
+	}
+}
+
+void Player::addStatsByArmour()
+{
+	switch (_heroHelmetClass){
+	case ARMOUR_CLASS::NAKED:
+		_stats.dexterity += 1;
+		break;
+	case ARMOUR_CLASS::CLOTH:
+		_stats.agility += 1;
+		break;
+	case ARMOUR_CLASS::LEATHER:
+		_stats.strenght += 1;
+		break;
+	case ARMOUR_CLASS::METAL:
+		_stats.endurance += 1;
+		break;
+	}
+	switch (_heroTorsoClass){
+	case ARMOUR_CLASS::NAKED:
+		_stats.dexterity += 1;
+		break;
+	case ARMOUR_CLASS::CLOTH:
+		_stats.agility += 1;
+		break;
+	case ARMOUR_CLASS::LEATHER:
+		_stats.strenght += 1;
+		break;
+	case ARMOUR_CLASS::METAL:
+		_stats.endurance += 1;
+		break;
+
+	}
+	switch (_heroLegsClass){
+	case ARMOUR_CLASS::NAKED:
+		_stats.dexterity += 1;
+		break;
+	case ARMOUR_CLASS::CLOTH:
+		_stats.agility += 1;
+		break;
+	case ARMOUR_CLASS::LEATHER:
+		_stats.strenght += 1;
+		break;
+	case ARMOUR_CLASS::METAL:
+		_stats.endurance += 1;
+		break;
+
+	}
 }

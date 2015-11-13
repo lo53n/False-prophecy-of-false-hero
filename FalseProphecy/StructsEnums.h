@@ -52,6 +52,7 @@ struct Weapon_struct{
 	int min_dmg;
 	int max_dmg;
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;
+	int rating;
 };
 
 enum ARMOUR_TYPE{
@@ -83,6 +84,7 @@ struct Armour_struct{
 	int block;
 	int speed;
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;
+	int rating;
 
 };
 
@@ -91,8 +93,8 @@ struct Armour_struct{
 enum HERO_STATS_NAMES{
 	STRENGTH,
 	ENDURANCE,
-	DEXTERITY,
-	AGILITY,
+	DEXTERITY, //affects whole body 
+	AGILITY, //affects hand and legs nibbleness
 	INTELLIGENCE,
 	WILLPOWER,
 	LUCK
@@ -136,6 +138,17 @@ struct Hero_Profile{
 	int luck;
 };
 
+struct Hero_Ratings{
+	int hero_rating;
+	int weapon_rating;
+	int offhand_rating;
+	int head_rating;
+	int torso_rating;
+	int legs_rating;
+	int overral_rating;
+};
+
+
 struct Ability_Proficiencies{
 	std::string name;
 	int id;
@@ -178,6 +191,7 @@ struct Enemy_Stats{
 	int enemy_class;
 	int experience;
 	int value;
+	int rating;
 };
 
 #endif //!STRUCTURES_AND_ENUMS

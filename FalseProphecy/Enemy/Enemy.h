@@ -8,7 +8,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "../StructsEnums.h"
+#include "../StatsCalculations.h"
 
 
 

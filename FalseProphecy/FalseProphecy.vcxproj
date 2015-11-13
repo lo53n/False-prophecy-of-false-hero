@@ -16,6 +16,7 @@
     <ClCompile Include="Enemy\EnemiesLoader.cpp" />
     <ClCompile Include="Errors\ErrorHandler.cpp" />
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\GameState.cpp" />
     <ClCompile Include="Interface\GameWindowInterface.cpp" />
     <ClCompile Include="Interface\InventoryWindow.cpp" />
     <ClCompile Include="Interface\StatusWindow.cpp" />
@@ -27,13 +28,11 @@
     <ClCompile Include="LoadFromResource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Map.cpp" />
-    <ClCompile Include="Map\LandBuilderPattern.cpp" />
-    <ClCompile Include="Map\MapBuilderPattern.cpp" />
     <ClCompile Include="Map\MapLoader.cpp" />
-    <ClCompile Include="Map\NormalBuilder.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="ResourceManagment\ResourcesHolder.cpp" />
     <ClCompile Include="ResourceManagment\ResourcesLoader.cpp" />
+    <ClCompile Include="StatsCalculations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DevMode\DevMode.h" />
@@ -41,6 +40,7 @@
     <ClInclude Include="Enemy\EnemiesLoader.h" />
     <ClInclude Include="Errors\ErrorHandler.h" />
     <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Game\GameState.h" />
     <ClInclude Include="Interface\GameWindowInterface.h" />
     <ClInclude Include="Interface\InventoryWindow.h" />
     <ClInclude Include="Interface\StatusWindow.h" />
@@ -51,13 +51,11 @@
     <ClInclude Include="Items\Weapons\WeaponsLoader.h" />
     <ClInclude Include="LoadFromResource.h" />
     <ClInclude Include="Map\Map.h" />
-    <ClInclude Include="Map\LandBuilderPattern.h" />
-    <ClInclude Include="Map\MapBuilderPattern.h" />
     <ClInclude Include="Map\MapLoader.h" />
-    <ClInclude Include="Map\NormalBuilder.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="ResourceManagment\ResourcesHolder.h" />
     <ClInclude Include="ResourceManagment\ResourcesLoader.h" />
+    <ClInclude Include="StatsCalculations.h" />
     <ClInclude Include="StructsEnums.h" />
     <ClInclude Include="UIResource.h" />
   </ItemGroup>
@@ -71,6 +69,7 @@
     <Text Include="Z:\False-prophecy-of-false-hero\progress.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
   </ItemGroup>
   <ItemGroup>

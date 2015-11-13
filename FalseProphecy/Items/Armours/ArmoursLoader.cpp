@@ -237,7 +237,7 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 			value = std::stoi(output[1]);
 		}
 		catch (const std::invalid_argument&){
-			value = -1;
+			value = 0;
 		}
 		_currentData.str_req = value;
 		break;
@@ -247,7 +247,7 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 			value = std::stoi(output[1]);
 		}
 		catch (const std::invalid_argument&){
-			value = -1;
+			value = 0;
 		}
 		_currentData.end_req = value;
 		break;
@@ -257,7 +257,7 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 			value = std::stoi(output[1]);
 		}
 		catch (const std::invalid_argument&){
-			value = -1;
+			value = 0;
 		}
 		_currentData.agi_req = value;
 		break;
@@ -267,7 +267,7 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 			value = std::stoi(output[1]);
 		}
 		catch (const std::invalid_argument&){
-			value = -1;
+			value = 0;
 		}
 		_currentData.dex_req = value;
 		break;
@@ -277,7 +277,7 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 			value = std::stoi(output[1]);
 		}
 		catch (const std::invalid_argument&){
-			value = -1;
+			value = 0;
 		}
 		_currentData.int_req = value;
 		break;
@@ -287,7 +287,7 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 			value = std::stoi(output[1]);
 		}
 		catch (const std::invalid_argument&){
-			value = -1;
+			value = 0;
 		}
 		_currentData.wil_req = value;
 		break;
@@ -365,6 +365,10 @@ bool ArmoursLoader::checkStructCorrectness()
 		_errorHandler->processError(error);
 		if (isFatal) return false;
 	}
+
+	//calculate rating//
+	Calculations::calculateBaseRating(_currentData);
+	std::cout << "Armour Rating: " << _currentData.rating << std::endl;
 
 	return isSuccessful;
 }

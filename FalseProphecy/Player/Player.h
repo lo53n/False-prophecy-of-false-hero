@@ -66,6 +66,8 @@ public:
 	int getPlayerWeaponType();
 	//get player's backpack
 	std::vector<std::shared_ptr<Item>>& getPlayerBackpack();
+	//get player's challenge rating
+	Hero_Ratings getPlayerRating();
 
 	///////////
 	//Setters//
@@ -92,6 +94,8 @@ public:
 	std::shared_ptr<Item> dropSelectedItem(int itemNumber, bool inBag);
 
 	void setAsUnarmed();
+
+	void calculateChallengeRating();
 
 	///////////
 	//Battle!//
@@ -126,6 +130,7 @@ public:
 	/////////
 	void refreshStatistics();
 	void addStatsByWeapon();
+	void addStatsByOffhand();
 	void addStatsByArmour();
 
 private:
@@ -140,6 +145,7 @@ private:
 	
 	std::shared_ptr<GameWindowInterface> _gwi;
 
+	Hero_Ratings _ratings;
 
 	/////////////
 	//Equipment//
@@ -181,15 +187,15 @@ private:
 	const float __PLAYER_HEIGHT__ = 32.0f;
 	const float __PLAYER_WIDTH__ = 32.0f;
 
-	const int __BASE_PROFICIENCY_WEAPON_EXP__ = 100;
+	const int __BASE_PROFICIENCY_WEAPON_EXP__ = 125;
 	const int __BASE_PROFICIENCY_HANDLE_EXP__ = 175;
 	const int __BASE_PROFICIENCY_BODY_EXP__ = 130;
 
-	const float __PROFICIENCY_LVL_INCREASE__ = 1.15f;
+	const float __PROFICIENCY_LVL_INCREASE__ = 1.25f;
 
-	const float __PROFICIENCY_HANDLE_EFFICIENCY__ = 0.05f;
-	const float __PROFICIENCY_WEAPON_EFFICIENCY__ = 0.05f;
-	const float __PROFICIENCY_UNARMED_EFFICIENCY__ = 0.07f;
+	const float __PROFICIENCY_HANDLE_EFFICIENCY__ = 0.02f;
+	const float __PROFICIENCY_WEAPON_EFFICIENCY__ = 0.02f;
+	const float __PROFICIENCY_UNARMED_EFFICIENCY__ = 0.02f;
 
 	const float __PROFICIENCY_PAIN_EFFICIENCY__ = 0.01f;
 	const float __PROFICIENCY_BODY_EFFICIENCY__ = 0.025f;

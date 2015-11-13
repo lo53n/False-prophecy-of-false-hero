@@ -4,7 +4,7 @@
 
 
 #include "../Item.h"
-#include "../../StructsEnums.h"
+#include "../../StatsCalculations.h"
 
 class Armour : public Item{
 

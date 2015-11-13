@@ -283,6 +283,11 @@ bool EnemiesLoader::checkStructCorrectness()
 	//Now time to fix stuff. If unfixable, then sorry, but I don't really see no options as for now to fail.//
 	//boo, none. no ideas how to correct anything here.//
 
+
+	//calculate rating//
+	Calculations::calculateBaseRating(_currentData);
+	std::cout << "Enemy Rating: " << _currentData.rating << std::endl;
+
 	return isSuccessful;
 }
 //No ideas, how to correct invalid armour structure. Incorrect one will be disposed as for now.

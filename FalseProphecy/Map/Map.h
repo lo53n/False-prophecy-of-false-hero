@@ -38,10 +38,9 @@ class Map : public sf::Drawable{
 
 public:
 
-	sf::RenderTexture* _renderTexture;
 
 	Map();
-	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture);
+	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed);
 	~Map();
 
 
@@ -90,14 +89,19 @@ public:
 
 	//and now to building texture tile by tile//
 	void drawMap();
+
+	//as the name suggests
 	void drawWall(sf::RenderTexture& mapRenderTexture, int y, int x);
 	void drawFloor(sf::RenderTexture& mapRenderTexture, int y, int x);
 	void drawEntry(sf::RenderTexture& mapRenderTexture, int y, int x);
-
 	void drawEmpty(sf::RenderTexture& mapRenderTexture, int y, int x);
 
+	void drawDecoration(int number, int type);
+
+	//set map texture
 	void setMapLayer(sf::RenderTexture& mapRenderTexture);
 
+	//redraw everything
 	void updateMap();
 
 	//////////////////
@@ -165,11 +169,25 @@ public:
 
 
 private:
+
+	///////////////
+	//Map overlay//
+	///////////////
 	std::vector<std::vector<char>> _mapTemplate; //Representation of 2D map, it ended with _mapTemplate[y_dimension][x_dimension]
 
+	sf::RenderTexture* _renderTexture;
+	sf::RenderTexture* _renderTextureDisplayed;
 	sf::Sprite _mapSprite;
+	sf::Sprite _mapSpriteToDisplay;
 
 	unsigned int _mapIdentifier; //Map identifying number
+
+	std::vector<sf::Vector2f> _wallDecorationSmall;
+	std::vector<sf::Vector2f> _wallDecorationLarge;
+
+	std::vector<sf::Vector2f> _floorDecorationSmall;
+	std::vector<sf::Vector2f> _floorDecorationMedium;
+	std::vector<sf::Vector2f> _floorDecorationLarge;
 
 	//////////////////
 	//Map Dimensions//
@@ -213,6 +231,18 @@ private:
 	//Change those also in Game.h//
 	char __ENEMY_ON_MAP__ = '8';
 	char __ENEMY_CORPSE_ON_MAP__ = '#';
+
+	////////
+	//ENUM//
+	////////
+
+	enum MAP_DECORATIONS{
+		SMALL_WALL,
+		LARGE_WALL,
+		SMALL_FLOOR,
+		MEDIUM_FLOOR,
+		LARGE_FLOOR
+	};
 
 
 private:

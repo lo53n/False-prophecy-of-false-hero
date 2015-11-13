@@ -120,7 +120,9 @@ char Enemy::swapTileUnderneathToNextOne(char newTile)
 void Enemy::takeHit(int damage)
 {
 
-	int dmgTaken = damage - _stats.defence;
+	//int dmgTaken = damage - _stats.defence;
+	int dmgTaken = damage;
+
 	if (dmgTaken < 0) dmgTaken = 0;
 	_stats.hitpoints-= dmgTaken;
 	float percentage = (float)_stats.hitpoints / (float)_stats.max_hitpoints;

@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <memory>
 
-#include "../StructsEnums.h"
+#include "../StatsCalculations.h"
 #include "../Errors/ErrorHandler.h"
 
 class EnemiesLoader{

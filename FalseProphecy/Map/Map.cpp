@@ -7,10 +7,11 @@ Map::Map()
 
 }
 
-Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture) 
+Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed)
 	: _mapTemplate(mapTemplate), 
 	_mapIdentifier(mapID),
-	_renderTexture(&renderTexture)
+	_renderTexture(&renderTexture),
+	_renderTextureDisplayed(&renderTextureDisplayed)
 {
 	checkMaxSizes(); 
 	findAllExitPoints();
@@ -21,13 +22,31 @@ Map::~Map()
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(_mapSprite);
+	target.draw(_mapSpriteToDisplay);
 
 }
 
 void Map::updateMap()
 {
-	drawMap();
+	_renderTextureDisplayed->clear();
+	_renderTextureDisplayed->draw(_mapSprite);
+
+
+	for (auto enemy : _enemies){
+		if (!enemy->checkIfAlive())
+			_renderTextureDisplayed->draw(*enemy);
+	}
+	for (auto item : _itemsOnMap){
+		_renderTextureDisplayed->draw(*(item.second));
+	}
+
+	for (auto enemy : _enemies){
+		if (enemy->checkIfAlive())
+			_renderTextureDisplayed->draw(*enemy);
+	}
+
+	_renderTextureDisplayed->display();
+	_mapSpriteToDisplay.setTexture(_renderTextureDisplayed->getTexture());
 }
 
 
@@ -104,6 +123,7 @@ void Map::drawMap()
 {
 	takeEnemiesFromMap();
 	_renderTexture->create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
+	_renderTextureDisplayed->create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
 	_renderTexture->clear();
 	for (int i = 0, len = _mapTemplate.size(); i < len; i++){
 		for (int j = 0, len1 = _mapTemplate[i].size(); j < len1; j++){
@@ -125,21 +145,9 @@ void Map::drawMap()
 		//std::cout << std::endl;
 	}
 
-
-	for (auto enemy : _enemies){
-		if (!enemy->checkIfAlive())
-			_renderTexture->draw(*enemy);
-	}
-	for (auto item : _itemsOnMap){
-		_renderTexture->draw(*(item.second));
-	}
-
-	for (auto enemy : _enemies){
-		if (enemy->checkIfAlive())
-			_renderTexture->draw(*enemy);
-	}
 	setMapLayer(*_renderTexture);
 	putEnemiesOnMap();
+	updateMap();
 }
 ////////////////////
 //Draw map texture//
@@ -187,6 +195,49 @@ void Map::drawEmpty(sf::RenderTexture& mapRenderTexture, int y, int x)
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	tile.setFillColor(sf::Color::Transparent);
 	mapRenderTexture.draw(tile);
+}
+
+//decorations//
+
+
+void Map::drawDecoration(int number, int type)
+{
+	sf::RectangleShape tile;
+	tile.setFillColor(sf::Color::Green);
+	switch (type){
+	case MAP_DECORATIONS::SMALL_WALL:
+		tile.setSize(sf::Vector2f(16.f, 16.f));
+		tile.setPosition(_wallDecorationSmall[number]);
+		_renderTexture->draw(tile);
+		break;
+
+	case MAP_DECORATIONS::LARGE_WALL:
+		tile.setSize(sf::Vector2f(32.f, 32.f));
+		tile.setPosition(_wallDecorationLarge[number]);
+		_renderTexture->draw(tile);
+		break;
+
+	case MAP_DECORATIONS::SMALL_FLOOR:
+		tile.setSize(sf::Vector2f(16.f, 16.f));
+		tile.setPosition(_floorDecorationSmall[number]);
+		_renderTexture->draw(tile);
+		break;
+
+	case MAP_DECORATIONS::MEDIUM_FLOOR:
+		tile.setSize(sf::Vector2f(32.f, 32.f));
+		tile.setPosition(_floorDecorationMedium[number]);
+		_renderTexture->draw(tile);
+		break;
+
+	case MAP_DECORATIONS::LARGE_FLOOR:
+		tile.setSize(sf::Vector2f(48.f, 48.f));
+		tile.setPosition(_floorDecorationLarge[number]);
+		_renderTexture->draw(tile);
+		break;
+
+
+	default: break;
+	}
 }
 
 void Map::printConsoleMap()

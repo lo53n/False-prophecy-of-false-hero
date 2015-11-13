@@ -183,6 +183,7 @@ void StatusWindow::refreshEquipmentStats()
 {
 
 	Hero_Profile stats = _player->getPlayerStats();
+	Hero_Ratings ratings = _player->getPlayerRating();
 	std::string string = "";
 	int calc_min_dmg, calc_max_dmg;
 	if (_player->getPlayerWeapon() == nullptr){
@@ -207,6 +208,14 @@ void StatusWindow::refreshEquipmentStats()
 	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr){
 		string += "\nBlock: " + std::to_string(stats.block);
 	}
+
+	string += "\n\nPlayer Rating: " + std::to_string(ratings.hero_rating);
+	string += "\nWeapon Rating: " + std::to_string(ratings.weapon_rating);
+	string += "\nOffand Rating: " + std::to_string(ratings.offhand_rating);
+	string += "\nHead Rating: " + std::to_string(ratings.head_rating);
+	string += "\nTorso Rating: " + std::to_string(ratings.torso_rating);
+	string += "\nLegs Rating: " + std::to_string(ratings.legs_rating);
+	string += "\nOverral Rating: " + std::to_string(ratings.overral_rating);
 
 	_equipmentText.setString(string);
 

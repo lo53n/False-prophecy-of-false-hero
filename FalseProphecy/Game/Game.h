@@ -7,10 +7,6 @@
 #include "../ResourceManagment/ResourcesLoader.h"
 
 
-//#include "../Enemy/EnemiesLoader.h"
-//#include "../Items/ItemsLoader.h"
-//#include "../Map/MapLoader.h"
-
 #include "../Map/Map.h"
 
 #include "../Player/Player.h"
@@ -79,6 +75,7 @@ private:
 	std::vector<std::shared_ptr<Map>> _mapsWithAvaiableExits;
 	
 	sf::RenderTexture _mapTexture;
+	sf::RenderTexture _mapTextureDisplayed;
 
 	std::shared_ptr<Map> _newMap;
 	std::shared_ptr<Map> _currentMap;

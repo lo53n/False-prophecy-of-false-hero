@@ -18,12 +18,6 @@
     <Filter Include="Header Files\Game">
       <UniqueIdentifier>{70da3cd8-ded0-45e5-9031-0cde210ff750}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Map\BuilderPattern">
-      <UniqueIdentifier>{fe88b3db-4479-44c9-964a-839fe2e1c587}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Map\BuilderPattern">
-      <UniqueIdentifier>{73fdefb4-d959-4bd0-8f32-3da1f87333c0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Player">
       <UniqueIdentifier>{ebd8921f-0dc1-476d-9d77-bb664e65eb0b}</UniqueIdentifier>
     </Filter>
@@ -104,35 +98,20 @@
     <ClCompile Include="main.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="Map\MapBuilderPattern.cpp">
-      <Filter>Resource Files\Map\BuilderPattern</Filter>
-    </ClCompile>
-    <ClCompile Include="Map\LandBuilderPattern.cpp">
-      <Filter>Resource Files\Map\BuilderPattern</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Game.cpp">
       <Filter>Resource Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="Map\Map.cpp">
       <Filter>Resource Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Map\NormalBuilder.cpp">
-      <Filter>Resource Files\Map\BuilderPattern</Filter>
-    </ClCompile>
     <ClCompile Include="Player\Player.cpp">
       <Filter>Resource Files\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Items\Weapons\WeaponsLoader.cpp">
-      <Filter>Resource Files\Items\Weapons</Filter>
     </ClCompile>
     <ClCompile Include="Items\Item.cpp">
       <Filter>Resource Files\Items</Filter>
     </ClCompile>
     <ClCompile Include="Items\Weapons\Weapon.cpp">
       <Filter>Resource Files\Items\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="Items\Armours\ArmoursLoader.cpp">
-      <Filter>Resource Files\Items\Armours</Filter>
     </ClCompile>
     <ClCompile Include="Interface\GameWindowInterface.cpp">
       <Filter>Resource Files\Interface</Filter>
@@ -152,9 +131,6 @@
     <ClCompile Include="Enemy\Enemy.cpp">
       <Filter>Resource Files\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy\EnemiesLoader.cpp">
-      <Filter>Resource Files\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="DevMode\DevMode.cpp">
       <Filter>Resource Files\DevMode</Filter>
     </ClCompile>
@@ -168,24 +144,30 @@
       <Filter>Resource Files\ResManage</Filter>
     </ClCompile>
     <ClCompile Include="Map\MapLoader.cpp">
-      <Filter>Resource Files\Map</Filter>
+      <Filter>Resource Files\ResManage</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Weapons\WeaponsLoader.cpp">
+      <Filter>Resource Files\ResManage</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Armours\ArmoursLoader.cpp">
+      <Filter>Resource Files\ResManage</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\EnemiesLoader.cpp">
+      <Filter>Resource Files\ResManage</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameState.cpp">
+      <Filter>Resource Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsCalculations.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Map\MapBuilderPattern.h">
-      <Filter>Header Files\Map\BuilderPattern</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\LandBuilderPattern.h">
-      <Filter>Header Files\Map\BuilderPattern</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Game.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Map\Map.h">
       <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\NormalBuilder.h">
-      <Filter>Header Files\Map\BuilderPattern</Filter>
     </ClInclude>
     <ClInclude Include="Player\Player.h">
       <Filter>Header Files\Player</Filter>
@@ -244,6 +226,12 @@
     <ClInclude Include="Map\MapLoader.h">
       <Filter>Header Files\ResManage</Filter>
     </ClInclude>
+    <ClInclude Include="Game\GameState.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsCalculations.h">
+      <Filter>Header Files\----Data----</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
@@ -266,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\arial.ttf">

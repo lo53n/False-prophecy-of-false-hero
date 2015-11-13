@@ -1,3 +1,36 @@
+[-----]
+2015-11-12
+
+What is done?
+	
+	- started works on item generation based on hero rating
+
+	- rating system for items, enemies and hero, need rebalancing
+
+To do?
+
+	- more balancing on rating system, a lot of work is needed there, especially fine-tuning values
+
+[-----]
+2015-11-11
+
+What is done?
+	
+	- completed lv-up logic and un/equiping items
+
+	- little excess class elimination
+
+
+[-----]
+2015-11-10
+
+What is done?
+
+	- another code optimalization on drawing map, changed a little way they are drawed with their objects
+
+	- preparations to map decorations
+
+[-----]
 2015-11-9
 
 What is done?

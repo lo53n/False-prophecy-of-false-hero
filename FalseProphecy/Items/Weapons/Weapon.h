@@ -4,7 +4,7 @@
 
 
 #include "../Item.h"
-#include "../../StructsEnums.h"
+#include "../../StatsCalculations.h"
 
 class Weapon : public Item{
 
@@ -16,6 +16,7 @@ public:
 
 	Weapon();
 	Weapon(Weapon_struct stats);
+	Weapon(Weapon_struct stats, int hero_rating);
 	~Weapon();
 
 private:
