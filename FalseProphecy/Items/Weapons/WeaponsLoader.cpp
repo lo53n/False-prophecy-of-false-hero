@@ -447,7 +447,7 @@ bool WeaponsLoader::checkStructCorrectness()
 
 	//calculate rating//
 	Calculations::calculateBaseRating(_currentData);
-	std::cout << "Weapon Rating: " << _currentData.rating << std::endl;
+	std::cout << "Weapon Rating: " << _currentData.current_rating << std::endl;
 
 	return isSuccessful;
 }

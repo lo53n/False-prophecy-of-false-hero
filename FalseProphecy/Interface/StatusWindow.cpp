@@ -203,10 +203,13 @@ void StatusWindow::refreshEquipmentStats()
 
 	string += "Damage: " + std::to_string(calc_min_dmg) + " - " + std::to_string(calc_max_dmg);
 	string += "\nSpeed: " + std::to_string(stats.speed);
-	string += "\nDefence: " + std::to_string(stats.defence);
-	string += "\nDodge: " + std::to_string(stats.dodge);
+	int reduction = (int)(stats.damage_reduction * 100);
+	string += "\nDamage reduction: " + std::to_string(reduction);
+	int dodge_chance = (int)(stats.dodge_chance * 100);
+	string += "\nDodge chance: " + std::to_string(dodge_chance);
 	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr){
-		string += "\nBlock: " + std::to_string(stats.block);
+		int block_chance = (int)(stats.block_chance * 100);
+		string += "\nBlock chance: " + std::to_string(block_chance);
 	}
 
 	string += "\n\nPlayer Rating: " + std::to_string(ratings.hero_rating);

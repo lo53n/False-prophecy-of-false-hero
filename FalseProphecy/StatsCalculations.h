@@ -6,9 +6,9 @@
 
 namespace Calculations{
 
-	void calculateBaseRating(Weapon_struct &stats);
-	void calculateBaseRating(Armour_struct &stats);
-	void calculateBaseRating(Enemy_Stats &stats);
+	void calculateBaseRating(Weapon_struct &stats, bool second_calc = false);
+	void calculateBaseRating(Armour_struct &stats, bool second_calc = false);
+	void calculateBaseRating(Enemy_Stats &stats, bool second_calc = false);
 
 
 	void calculateNewStats(Weapon_struct &stats, int heroRating);
@@ -16,6 +16,7 @@ namespace Calculations{
 	void calculateNewStats(Enemy_Stats &stats, int heroRating);
 
 
+	void makeMagicItem(bool &magic_type, int &rating, float &multiplier);
 
 }
 

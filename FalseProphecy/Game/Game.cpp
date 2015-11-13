@@ -668,7 +668,9 @@ void Game::checkForExistingFreeExits(std::shared_ptr<Map> mapToCheck)
 
 std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
 {
-	std::shared_ptr<Map> ptr(std::make_shared<Map>(_resHolder->getMapFromHolder(_currentMapNumber), mapID, _mapTexture, _mapTextureDisplayed));
+
+	Hero_Ratings new_rating = _player->getPlayerRating();
+	std::shared_ptr<Map> ptr(std::make_shared<Map>(_resHolder->getMapFromHolder(_currentMapNumber), mapID, _mapTexture, _mapTextureDisplayed, new_rating));
 	return ptr;
 }
 
@@ -733,10 +735,13 @@ void Game::heroAttacksEnemy(sf::Vector2i position)
 void Game::generateDrop(sf::Vector2i position)
 {
 	Hero_Ratings new_rating = _player->getPlayerRating();
-	std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0], new_rating.overral_rating));
-	_currentMap->pushItemToMapStorage(position, item);
+	_currentMap->generateItemAtPosition(position);
 
+	/*
+	std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0], new_rating.hero_rating));
+	_currentMap->pushItemToMapStorage(position, item);
 	_currentMap->updateMap();
+	*/
 }
 
 void Game::checkForObjectsAtPlayerPosition()

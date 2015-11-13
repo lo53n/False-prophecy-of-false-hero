@@ -41,9 +41,9 @@
 	+ dropping items
 	+ equip items
 	+ unequip items
-	- calculate stats for new piece of gear depending on player strenght
+	+ calculate stats for new piece of gear depending on player strenght
 	+ refresh player stats for each equipment change
-	- maybe item tiers?
+	+ maybe item tiers - hidden item rarity "normal -> rare -> unique"
 
 [PLAYER]
 	+ movement:
@@ -61,7 +61,7 @@
 		++ experience
 		++ stats points
 		-- TBD
-	- inventory:
+	+ inventory:
 		++ backpack
 		++ equipemnt slots
 		++ stats change after un/equipping

@@ -7,11 +7,12 @@ Map::Map()
 
 }
 
-Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed)
-	: _mapTemplate(mapTemplate), 
+Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed, Hero_Ratings ratings)
+	: _mapTemplate(mapTemplate),
 	_mapIdentifier(mapID),
 	_renderTexture(&renderTexture),
-	_renderTextureDisplayed(&renderTextureDisplayed)
+	_renderTextureDisplayed(&renderTextureDisplayed),
+	_ratings(ratings)
 {
 	checkMaxSizes(); 
 	findAllExitPoints();
@@ -385,6 +386,15 @@ void Map::takeEnemiesFromMap()
 //////////////////
 //Items and drop//
 //////////////////
+
+
+void Map::generateItemAtPosition(sf::Vector2i position)
+{
+	//std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0], _ratings.hero_rating));
+	std::shared_ptr<Item> item(std::make_shared<Armour>(_resHolder->getAllArmours()[0], _ratings.hero_rating));
+	pushItemToMapStorage(position, item);
+	updateMap();
+}
 
 void Map::pushItemToMapStorage(sf::Vector2i position, std::shared_ptr<Item> item)
 {

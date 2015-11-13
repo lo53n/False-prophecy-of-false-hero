@@ -10,6 +10,10 @@
 
 #include "../Enemy/Enemy.h"
 #include "../Items/Item.h"
+#include "../Items/Weapons/Weapon.h"
+#include "../Items/Armours/Armour.h"
+
+#include "../ResourceManagment/ResourcesHolder.h"
 
 namespace std
 {
@@ -40,7 +44,7 @@ public:
 
 
 	Map();
-	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed);
+	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed, Hero_Ratings ratings);
 	~Map();
 
 
@@ -155,6 +159,7 @@ public:
 	//Items and drop//
 	//////////////////
 
+	void generateItemAtPosition(sf::Vector2i position);
 	void pushItemToMapStorage(sf::Vector2i position, std::shared_ptr<Item> item);
 	bool checkForItemsAtTile(sf::Vector2i position);
 
@@ -169,6 +174,11 @@ public:
 
 
 private:
+	////////////////////////
+	//Generating and stuff//
+	////////////////////////
+	ResourcesHolder *_resHolder = &ResourcesHolder::getResourcesHolder();
+	Hero_Ratings _ratings;
 
 	///////////////
 	//Map overlay//

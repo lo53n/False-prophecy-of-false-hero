@@ -1,4 +1,15 @@
 [-----]
+2015-11-13
+
+What is done?
+
+	- item generation again (this time armour)
+
+	- calculating player's stats (again, some tweaks)
+
+	- code optimalization in un/equiping items
+
+[-----]
 2015-11-12
 
 What is done?

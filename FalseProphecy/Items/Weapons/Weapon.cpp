@@ -29,7 +29,7 @@ Weapon::Weapon(Weapon_struct stats) : _stats(stats)
 	_itemType = ITEM_TYPE::WEAPON;
 
 
-	std::cout << "Raw Weapon Rating: " << _stats.rating << std::endl;
+	std::cout << "Raw Weapon Rating: " << _stats.base_rating << std::endl;
 }
 
 Weapon::Weapon(Weapon_struct stats, int hero_rating) : _stats(stats)
@@ -56,7 +56,7 @@ Weapon::Weapon(Weapon_struct stats, int hero_rating) : _stats(stats)
 
 
 	Calculations::calculateNewStats(_stats, hero_rating);
-	std::cout << "Generated Weapon Rating: " << _stats.rating << std::endl;
+	std::cout << "Generated Weapon Rating: " << _stats.current_rating << std::endl;
 
 }
 

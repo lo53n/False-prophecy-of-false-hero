@@ -52,7 +52,7 @@ struct Weapon_struct{
 	int min_dmg;
 	int max_dmg;
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;
-	int rating;
+	int base_rating, current_rating;
 };
 
 enum ARMOUR_TYPE{
@@ -84,7 +84,7 @@ struct Armour_struct{
 	int block;
 	int speed;
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;
-	int rating;
+	int base_rating, current_rating;
 
 };
 
@@ -126,9 +126,10 @@ struct Hero_Profile{
 	int stam, max_stam;
 	int min_dmg, max_dmg;
 	int defence;
+	float damage_reduction, max_reduction, dodge_chance, max_dodge, block_chance, max_block;
 	int min_speed, speed;
-	int max_dodge, dodge;
-	int max_block, block;
+	int dodge;
+	int block;
 	int strenght;
 	int endurance;
 	int intelligence;
@@ -191,7 +192,7 @@ struct Enemy_Stats{
 	int enemy_class;
 	int experience;
 	int value;
-	int rating;
+	int base_rating, current_rating;
 };
 
 #endif //!STRUCTURES_AND_ENUMS

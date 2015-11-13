@@ -89,7 +89,7 @@ public:
 	void equipItem(std::shared_ptr<Weapon> item);
 	void equipItem(std::shared_ptr<Armour> item);
 
-	void unequipItem(int slot);
+	void unequipItem(int slot, bool drop_item = false);
 
 	std::shared_ptr<Item> dropSelectedItem(int itemNumber, bool inBag);
 
@@ -128,10 +128,13 @@ public:
 	/////////
 	//Stats//
 	/////////
+	void giveStatistic(int amount, int type);
+
 	void refreshStatistics();
 	void addStatsByWeapon();
 	void addStatsByOffhand();
 	void addStatsByArmour();
+	void calculateChances();
 
 private:
 	sf::Texture _playerTexture;
@@ -208,5 +211,8 @@ private:
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	//Add statistics with no stats calculating, mainly use for lvl-up
+	void addStatistic(int amount, int type);
 };
 #endif //!PLAYER_PLAYER

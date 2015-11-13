@@ -286,7 +286,7 @@ bool EnemiesLoader::checkStructCorrectness()
 
 	//calculate rating//
 	Calculations::calculateBaseRating(_currentData);
-	std::cout << "Enemy Rating: " << _currentData.rating << std::endl;
+	std::cout << "Enemy Rating: " << _currentData.current_rating << std::endl;
 
 	return isSuccessful;
 }

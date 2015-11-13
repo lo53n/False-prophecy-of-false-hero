@@ -16,6 +16,7 @@ public:
 
 	Armour();
 	Armour(Armour_struct stats);
+	Armour(Armour_struct stats, int hero_rating);
 	~Armour();
 
 private:

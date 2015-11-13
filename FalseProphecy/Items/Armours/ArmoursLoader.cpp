@@ -368,7 +368,7 @@ bool ArmoursLoader::checkStructCorrectness()
 
 	//calculate rating//
 	Calculations::calculateBaseRating(_currentData);
-	std::cout << "Armour Rating: " << _currentData.rating << std::endl;
+	std::cout << "Armour Rating: " << _currentData.base_rating << std::endl;
 
 	return isSuccessful;
 }
