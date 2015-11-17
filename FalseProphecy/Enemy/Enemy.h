@@ -29,6 +29,8 @@ public:
 	int getEnemyId();
 	//Get enemy stats structure
 	Enemy_Stats getEnemyStats();
+	//Get enemy rating
+	int getEnemyRating();
 	///////////
 	//Setters//
 	///////////
@@ -48,12 +50,12 @@ public:
 
 	void killEnemy();
 	void resurrectEnemy();
-	void reinforceEnemy();
-	void resurrectAndReinforce();
+	void reinforceEnemy(int heroRating);
+	void resurrectAndReinforce(int heroRating);
 
 	bool checkIfAlive();
 
-	Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGrid, char newTile);
+	Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGrid, char newTile, int heroRating);
 	~Enemy();
 
 private:
@@ -65,6 +67,7 @@ private:
 	/////////
 	int _enemy_id;
 	Enemy_Stats _stats;
+	Enemy_Stats _baseStats;
 
 	char _tile_underneath;
 

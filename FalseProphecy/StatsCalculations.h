@@ -11,12 +11,13 @@ namespace Calculations{
 	void calculateBaseRating(Enemy_Stats &stats, bool second_calc = false);
 
 
-	void calculateNewStats(Weapon_struct &stats, int heroRating);
-	void calculateNewStats(Armour_struct &stats, int heroRating);
+	void calculateNewStats(Weapon_struct &stats, int enemyRating);
+	void calculateNewStats(Armour_struct &stats, int enemyRating);
 	void calculateNewStats(Enemy_Stats &stats, int heroRating);
 
 
 	void makeMagicItem(bool &magic_type, int &rating, float &multiplier);
+	void increaseEnemyRarity(int &enemy_class, int &rating, float &multiplier);
 
 }
 

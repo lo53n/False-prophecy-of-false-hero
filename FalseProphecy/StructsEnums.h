@@ -159,24 +159,24 @@ struct Ability_Proficiencies{
 	float effectiveness;
 };
 
-
+//If new appears, change also in EnemiesLoader (also in StasCalculation?!)
 enum ENEMY_TYPE{
-	UNDEAD,
-	DEMON,
-	BEAST,
-	HUMANOID,
-	HUMAN,
-	GOLEM
+	UNDEAD_ENEMY,
+	DEMON_ENEMY,
+	BEAST_ENEMY,
+	HUMANOID_ENEMY,
+	HUMAN_ENEMY,
+	GOLEM_ENEMY
 };
 
 enum ENEMY_CLASS{
-	NORMAL,
-	RARE,
-	MAGIC,
-	ELITE,
-	MINIBOSS,
-	BOSS,
-	UNIQUE
+	NORMAL_ENEMY = 0,
+	RARE_ENEMY = 1,
+	MAGIC_ENEMY = 2,
+	ELITE_ENEMY = 3,
+	MINIBOSS_ENEMY = 4,
+	BOSS_ENEMY = 5,
+	UNIQUE_ENEMY = 6
 };
 
 

@@ -146,20 +146,20 @@ void EnemiesLoader::parseTag(std::vector<std::string> &output)
 		_currentData.img_path = "data\\img\\enemy\\" + output[1];
 		break;
 
-		//parse enemy type
+		//parse enemy type.
 	case TAGVALUE::TYPE:
 		if (output[1] == "UNDEAD")
-			_currentData.type = ENEMY_TYPE::UNDEAD;
+			_currentData.type = ENEMY_TYPE::UNDEAD_ENEMY;
 		else if (output[1] == "DEMON")
-			_currentData.type = ENEMY_TYPE::DEMON;
+			_currentData.type = ENEMY_TYPE::DEMON_ENEMY;
 		else if (output[1] == "BEAST")
-			_currentData.type = ENEMY_TYPE::BEAST;
+			_currentData.type = ENEMY_TYPE::BEAST_ENEMY;
 		else if (output[1] == "HUMANOID")
-			_currentData.type = ENEMY_TYPE::HUMANOID;
+			_currentData.type = ENEMY_TYPE::HUMANOID_ENEMY;
 		else if (output[1] == "HUMAN")
-			_currentData.type = ENEMY_TYPE::HUMAN;
+			_currentData.type = ENEMY_TYPE::HUMAN_ENEMY;
 		else if (output[1] == "GOLEM")
-			_currentData.type = ENEMY_TYPE::GOLEM;
+			_currentData.type = ENEMY_TYPE::GOLEM_ENEMY;
 		else _currentData.type = -1;
 		break;
 

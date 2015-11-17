@@ -807,7 +807,7 @@ void Player::calculateProficientyEffectivness(int id)
 
 void Player::increaseExperience(int value)
 {
-	_stats.exp += (float)(value * (1.0f + (float)(_stats.intelligence / 100)));
+	_stats.exp += (int)(value * (1.0f + (float)(_stats.intelligence / 200)));
 	while (_stats.exp >= _stats.max_exp){
 		advanceToNextLevel();
 	}

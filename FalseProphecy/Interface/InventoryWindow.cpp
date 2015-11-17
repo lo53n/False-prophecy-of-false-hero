@@ -2,7 +2,7 @@
 InventoryWindow::InventoryWindow()
 {
 
-	_renderTexture.create(394.f, 382.f);
+	_renderTexture.create(394, 382);
 	_sprite.setColor(sf::Color(255, 255, 255, 240));
 
 	//Change size also in resize function in Game.cpp
@@ -598,7 +598,7 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 
 		//Show item base speed
 		int modifier = 1;
-		if (stats.armour_class == ARMOUR_CLASS::CLOTH) modifier == -1;
+		if (stats.armour_class == ARMOUR_CLASS::CLOTH) modifier = -1;
 		descriptionString += "\nBase speed: " + std::to_string(stats.speed * modifier);
 
 		//Item requirements

@@ -1,8 +1,9 @@
 #include "Enemy.h"
 
-Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGrid, char newTile)
+Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGrid, char newTile, int heroRating)
 	: _enemy_id(enemy_id),
 	_stats(enemy_template),
+	_baseStats(enemy_template),
 	_positionOnGrid(positionOnGrid),
 	_tile_underneath(newTile)
 {
@@ -26,7 +27,11 @@ Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGr
 	//_stats.max_hitpoints = 10;
 	//_stats.hitpoints = 10;
 	//_stats.defence = 1;
+	//_stats.hitpoints = _stats.max_hitpoints;
+
+	Calculations::calculateNewStats(_stats, heroRating);
 	_stats.hitpoints = _stats.max_hitpoints;
+
 }
 
 Enemy::~Enemy()
@@ -62,6 +67,11 @@ int Enemy::getEnemyId()
 Enemy_Stats Enemy::getEnemyStats()
 {
 	return _stats;
+}
+
+int Enemy::getEnemyRating()
+{
+	return _stats.current_rating;
 }
 ///////////
 //Setters//
@@ -156,9 +166,9 @@ void Enemy::killEnemy()
 	_enemyCorpseShape.setPosition(_enemyShape.getPosition());
 }
 
-void Enemy::resurrectAndReinforce()
+void Enemy::resurrectAndReinforce(int heroRating)
 {
-	reinforceEnemy();
+	reinforceEnemy(heroRating);
 	resurrectEnemy();
 }
 
@@ -170,7 +180,8 @@ void Enemy::resurrectEnemy()
 	_hpBar.setFillColor(sf::Color(0, 255, 0, 255));
 }
 
-void Enemy::reinforceEnemy()
+void Enemy::reinforceEnemy(int heroRating)
 {
-	_stats.max_hitpoints = (int)((float) _stats.max_hitpoints * 1.15);
+	_stats = _baseStats;
+	Calculations::calculateNewStats(_stats, heroRating);
 }

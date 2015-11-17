@@ -159,7 +159,7 @@ public:
 	//Items and drop//
 	//////////////////
 
-	void generateItemAtPosition(sf::Vector2i position);
+	void generateItemAtPosition(sf::Vector2i position, int enemyRating);
 	void pushItemToMapStorage(sf::Vector2i position, std::shared_ptr<Item> item);
 	bool checkForItemsAtTile(sf::Vector2i position);
 

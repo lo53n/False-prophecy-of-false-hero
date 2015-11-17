@@ -190,7 +190,7 @@ private:
 	//Item and drop stuff//
 	///////////////////////
 
-	void generateDrop(sf::Vector2i position);
+	void generateDrop(sf::Vector2i position, int enemyRating);
 	void checkForObjectsAtPlayerPosition();
 
 };

@@ -313,6 +313,7 @@ void Map::increaseRespawnCounter()
 {
 	_respawn_counter++;
 	if (__MAPS_TILL_RESPAWN__ == _respawn_counter){
+		_ratings.overral_rating = (int)(_ratings.overral_rating * 1.2f);
 		resurrectAndReinforceEnemies();
 		_respawn_counter = 0;
 	}
@@ -322,7 +323,7 @@ void Map::resurrectAndReinforceEnemies()
 {
 
 	for (auto enemy : _enemies){
-		enemy->resurrectAndReinforce();
+		enemy->resurrectAndReinforce(_ratings.overral_rating);
 		changeMapTile(__ENEMY_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
 	}
 }
@@ -388,10 +389,10 @@ void Map::takeEnemiesFromMap()
 //////////////////
 
 
-void Map::generateItemAtPosition(sf::Vector2i position)
+void Map::generateItemAtPosition(sf::Vector2i position, int enemyRating)
 {
 	//std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0], _ratings.hero_rating));
-	std::shared_ptr<Item> item(std::make_shared<Armour>(_resHolder->getAllArmours()[0], _ratings.hero_rating));
+	std::shared_ptr<Item> item(std::make_shared<Armour>(_resHolder->getAllArmours()[0], enemyRating));
 	pushItemToMapStorage(position, item);
 	updateMap();
 }

@@ -162,7 +162,7 @@ void Game::processEvents()
 
 		//RESIZE//
 		case sf::Event::Resized:
-			visible = sf::Vector2f((int)event.size.width, (int)event.size.height);
+			visible = sf::Vector2f((float)event.size.width, (float)event.size.height);
 			if (visible.x < 640.f && visible.y < 480){
 				visible = sf::Vector2f(640, 480);
 				_window.setSize((sf::Vector2u)visible);
@@ -463,7 +463,7 @@ bool Game::checkMovement(int direction)
 
 				//if dead, then calculate outcome
 				if (!enemy->checkIfAlive()){
-					generateDrop(checkForPosition);
+					generateDrop(checkForPosition, enemy->getEnemyRating());
 
 					_player->increaseExperience(enemy->getEnemyStats().experience);
 
@@ -638,7 +638,7 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 				int chance = rand() % 100;
 				if (chance > 90){
 					Enemy_Stats enemy_template = _resHolder->getAllEnemies()[rand() % _resHolder->getAllEnemies().size()];
-					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, enemy_template, sf::Vector2i(tilex, tiley), tile));
+					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, enemy_template, sf::Vector2i(tilex, tiley), tile, _player->getPlayerRating().overral_rating));
 					_currentMap->getEnemies().push_back(enemy);
 					_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
 					enemy_id++;
@@ -732,10 +732,10 @@ void Game::heroAttacksEnemy(sf::Vector2i position)
 ///////////////////////
 
 //Need better drop generator here.
-void Game::generateDrop(sf::Vector2i position)
+void Game::generateDrop(sf::Vector2i position, int enemyRating)
 {
-	Hero_Ratings new_rating = _player->getPlayerRating();
-	_currentMap->generateItemAtPosition(position);
+	//Hero_Ratings new_rating = _player->getPlayerRating();
+	_currentMap->generateItemAtPosition(position, enemyRating);
 
 	/*
 	std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0], new_rating.hero_rating));

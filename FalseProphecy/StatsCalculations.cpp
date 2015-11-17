@@ -86,33 +86,49 @@ namespace Calculations{
 		}
 	}
 
-	void calculateNewStats(Weapon_struct &stats, int heroRating)
+	void calculateNewStats(Weapon_struct &stats, int enemyRating)
 	{
 		int rating_difference = 0;
 		float percentage_difference = 0.00f;
 		float multiplier = 1.f;
 
+
+		//extra rating modifing//
+		int rat_multip;
+		float rat_multip1 = 0.0f;
+		if (rand() % 2 == 1){
+			rat_multip = -1;
+		}
+		else{
+			rat_multip = 1;
+		}
+		rat_multip1 = (float)(rand() % 20) / 100.0f;
+		std::cout << "Old EnemyRating: " << enemyRating;
+		enemyRating += (int)((float)enemyRating * rat_multip * rat_multip1);
+		std::cout << " New EnemyRating: " << enemyRating << std::endl;
+
+
 		//strenghen new item//
 		if (rand() % 100 >= 85){
-			makeMagicItem(stats.isMagic, heroRating, multiplier);
+			makeMagicItem(stats.isMagic, enemyRating, multiplier);
 		}
 
-		rating_difference = heroRating - stats.base_rating;
+		rating_difference = enemyRating - stats.base_rating;
 		//difference < 0 weapon better than hero, needs nerf
 		//difference > 0 weapon worse than hero, needs buff
 		//difference = 0 weapon as good as hero, no change
 
 		//Nerfing//
 		if (rating_difference < 0){
-			percentage_difference = 1 - ((float)(rating_difference * -1) / (float)heroRating);
-			if (percentage_difference < 0.05){
-				percentage_difference = 0.05;
+			percentage_difference = 1 - ((float)(rating_difference * -1) / (float)enemyRating);
+			if (percentage_difference < 0.05f){
+				percentage_difference = 0.05f;
 			}
 
 		}
 		//buffing//
 		else if (rating_difference > 0){
-			percentage_difference = 1 + ((float)rating_difference / (float)heroRating);
+			percentage_difference = 1 + ((float)rating_difference / (float)enemyRating);
 		}
 
 
@@ -134,18 +150,33 @@ namespace Calculations{
 
 	}
 
-	void calculateNewStats(Armour_struct &stats, int heroRating)
+	void calculateNewStats(Armour_struct &stats, int enemyRating)
 	{
 		int rating_difference = 0;
 		float percentage_difference = 0.00f;
 		float multiplier = 1.f;
 
+		//extra rating modifing//
+		int rat_multip;
+		float rat_multip1 = 0.0f;
+		if (rand() % 2 == 1){
+			rat_multip = -1;
+		}
+		else{
+			rat_multip = 1;
+		}
+		rat_multip1 = (float)(rand() % 20) / 100.0f;
+		std::cout << "Old EnemyRating: " << enemyRating;
+		enemyRating += (int)((float)enemyRating * rat_multip * rat_multip1);
+		std::cout << " New EnemyRating: " << enemyRating << std::endl;
+
+
 		//strenghen new item//
 		if (rand() % 100 >= 85){
-			makeMagicItem(stats.isMagic, heroRating, multiplier);
+			makeMagicItem(stats.isMagic, enemyRating, multiplier);
 		}
 
-		rating_difference = heroRating - stats.base_rating;
+		rating_difference = enemyRating - stats.base_rating;
 		std::cout << rating_difference << std::endl;
 		//difference < 0 weapon better than hero, needs nerf
 		//difference > 0 weapon worse than hero, needs buff
@@ -153,16 +184,16 @@ namespace Calculations{
 
 		//Nerfing//
 		if (rating_difference < 0){
-			percentage_difference = 1 - ((float)(rating_difference * -1) / (float)heroRating);
+			percentage_difference = 1 - ((float)(rating_difference * -1) / (float)enemyRating);
 			std::cout << percentage_difference << std::endl;
-			if (percentage_difference < 0.05){
-				percentage_difference = 0.05;
+			if (percentage_difference < 0.05f){
+				percentage_difference = 0.05f;
 			}
 
 		}
 		//buffing//
 		else if (rating_difference > 0){
-			percentage_difference = 1 + ((float)rating_difference / (float)heroRating);
+			percentage_difference = 1 + ((float)rating_difference / (float)enemyRating);
 		}
 
 		std::cout << percentage_difference << std::endl;
@@ -208,6 +239,107 @@ namespace Calculations{
 	void calculateNewStats(Enemy_Stats &stats, int heroRating)
 	{
 
+		int rating_difference = 0;
+		float percentage_difference = 0.00f;
+
+		float multiplier = 1.f;
+
+		//extra rating modifing//
+		int rat_multip;
+		float rat_multip1 = 0.0f;
+		if (rand() % 2 == 1){
+			rat_multip = -1;
+		}
+		else{
+			rat_multip = 1;
+		}
+		rat_multip1 = (float)(rand() % 20) / 100.0f;
+		std::cout << "Old HeroRAting: " << heroRating;
+		heroRating += (int)((float)heroRating * rat_multip * rat_multip1);
+		std::cout << " New HeroRAting: " << heroRating << std::endl;
+
+
+		//strenghen new enemy//
+		if (rand() % 100 > 80){
+			increaseEnemyRarity(stats.enemy_class, heroRating, multiplier);
+		}
+		else{
+			stats.enemy_class = ENEMY_CLASS::NORMAL_ENEMY;
+		}
+
+		rating_difference = heroRating - stats.base_rating;
+		//difference < 0 weapon better than hero, needs nerf
+		//difference > 0 weapon worse than hero, needs buff
+		//difference = 0 weapon as good as hero, no change
+
+		//Nerfing//
+		if (rating_difference < 0){
+			percentage_difference = 1 - ((float)(rating_difference * -1) / (float)heroRating);
+			if (percentage_difference < 0.01f){
+				percentage_difference = 0.01f;
+			}
+
+		}
+		//buffing//
+		else if (rating_difference > 0){
+			percentage_difference = 1 + ((float)rating_difference / (float)heroRating);
+		}
+		//aplly enemy class multiplier
+		percentage_difference *= multiplier;
+
+		float hp_mod, atk_mod, def_mod, exp_mod;
+
+		hp_mod = atk_mod = def_mod = exp_mod = 1.0f;
+
+		if (rand() % 15 > 10){
+			switch (stats.type){
+			case ENEMY_TYPE::BEAST_ENEMY:
+				hp_mod -= 0.3f;
+				atk_mod += 0.3f;
+				exp_mod += 0.3f;
+				break;
+			case ENEMY_TYPE::UNDEAD_ENEMY:
+				hp_mod += 0.1f;
+				exp_mod += 0.1f;
+				break;
+			case ENEMY_TYPE::HUMAN_ENEMY:
+				hp_mod += 0.1f;
+				def_mod += 0.2f;
+				atk_mod += 0.2f;
+				exp_mod += 0.6f;
+				break;
+			case ENEMY_TYPE::HUMANOID_ENEMY:
+				hp_mod += 0.2f;
+				def_mod -= 0.2f;
+				atk_mod -= 0.2f;
+				exp_mod += 0.5f;
+				break;
+			case ENEMY_TYPE::DEMON_ENEMY:
+				atk_mod += 1.0f;
+				def_mod -= 0.4f;
+				hp_mod -= 0.2f;
+				exp_mod += 1.2f;
+				break;
+			case ENEMY_TYPE::GOLEM_ENEMY:
+				hp_mod += 0.5f;
+				atk_mod += 0.5f;
+				def_mod += 0.3f;
+				exp_mod += 1.3f;
+				break;
+			}
+		}
+
+
+		//HP will be added in Enemy class. DOn't forget it.
+		stats.max_hitpoints = (int)(((float)stats.max_hitpoints * percentage_difference) * hp_mod);
+		stats.attack = (int)(((float)stats.attack * percentage_difference)* atk_mod);
+		stats.defence = (int)(((float)stats.defence * percentage_difference)* def_mod);
+		stats.experience = (int)(((float)stats.experience* percentage_difference)* exp_mod);
+
+
+		calculateBaseRating(stats, true);
+		std::cout << "Base Rating: " << stats.base_rating << "Curr Rating: " << stats.current_rating << " class: " << stats.enemy_class << std::endl;
+
 	}
 
 
@@ -224,4 +356,45 @@ namespace Calculations{
 		}
 	}
 
+	void increaseEnemyRarity(int &enemy_class, int &rating, float &multiplier)
+	{
+		//become "rare"
+		int random = rand() % 1000;
+		if (random >= 400){ //60% chance of becoming "magic" or better
+			random -= 400;
+			if (random >= 300){ //50% chance of becoming "elite" or better
+				random -= 300;
+				if (random > 150){ //50% chance of becoming "miniboss" or better
+					random -= 150;
+					if (random >= 75){ //50% chance of becoming "boss" or better
+						//boss
+						enemy_class = ENEMY_CLASS::BOSS_ENEMY;
+						rating = (int)(rating * 3);
+						multiplier += 0.5f;
+						return;
+					}
+					//minibos
+					enemy_class = ENEMY_CLASS::MINIBOSS_ENEMY;
+					rating = (int)(rating * 2.5);
+					multiplier += 0.4f;
+					return;
+				}
+				//elite
+				enemy_class = ENEMY_CLASS::ELITE_ENEMY;
+				rating = (int)(rating * 2);
+				multiplier += 0.3f;
+				return;
+			}
+			//magic
+			enemy_class = ENEMY_CLASS::MAGIC_ENEMY;
+			rating = (int)(rating * 1.66);
+			multiplier += 0.2f;
+			return;
+		}
+		//rare
+		enemy_class = ENEMY_CLASS::RARE_ENEMY;
+		rating = (int)(rating * 1.25);
+		multiplier += 0.1f;
+		return;
+	}
 }

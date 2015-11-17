@@ -1,4 +1,16 @@
 [-----]
+2015-11-17
+
+What is done?
+
+	- enemy rating
+
+	- item generation based on enemy rating
+
+To do?
+
+	- balance on rating system
+[-----]
 2015-11-13
 
 What is done?

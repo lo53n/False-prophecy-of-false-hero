@@ -1,7 +1,7 @@
 #include "StatusWindow.h"
 StatusWindow::StatusWindow()
 {
-	_renderTexture.create(414.f, 414.f);
+	_renderTexture.create(414, 414);
 	_sprite.setColor(sf::Color(255, 255, 255, 240));
 
 	_statusWindow.setSize(sf::Vector2f(410.f, 410.f));
