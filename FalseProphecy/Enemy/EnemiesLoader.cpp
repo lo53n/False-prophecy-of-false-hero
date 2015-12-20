@@ -34,9 +34,6 @@ void EnemiesLoader::prepareStruct()
 
 	_currentData.experience = -1;
 
-	_currentData.speed = -1;
-	_currentData.value = -1;
-
 	_enemiesCount++;
 }
 
@@ -48,11 +45,9 @@ void EnemiesLoader::showStruct()
 	std::cout << "Hp: " << _currentData.max_hitpoints << std::endl;
 	std::cout << "Atk: " << _currentData.attack << std::endl;
 	std::cout << "Def: " << _currentData.defence << std::endl;
-	std::cout << "Speed: " << _currentData.speed << std::endl;
 
 	std::cout << "Type: " << _currentData.type << std::endl;
 	std::cout << "Exp: " << _currentData.experience << std::endl;
-	std::cout << "Value: " << _currentData.value << std::endl;
 }
 
 void EnemiesLoader::saveStruct()
@@ -119,10 +114,8 @@ int EnemiesLoader::checkTag(std::string tag)
 	else if (tag == "HP") return TAGVALUE::HP;
 	else if (tag == "ATTACK") return TAGVALUE::ATTACK;
 	else if (tag == "DEFENCE") return TAGVALUE::DEFENCE;
-	else if (tag == "SPEED") return TAGVALUE::SPEED;
 	else if (tag == "TYPE") return TAGVALUE::TYPE;
 	else if (tag == "BASE_EXP") return TAGVALUE::BASE_EXP;
-	else if (tag == "BASE_VALUE") return TAGVALUE::BASE_VALUE;
 
 	//if nothing works, surely there is problem
 	return -1;
@@ -198,17 +191,6 @@ void EnemiesLoader::parseTag(std::vector<std::string> &output)
 		break;
 
 
-		//parse speed
-	case TAGVALUE::SPEED:
-		try{
-			value = std::stoi(output[1]);
-		}
-		catch (const std::invalid_argument&){
-			value = -1;
-		}
-		_currentData.speed = value;
-		break;
-
 		//parse enemy base exp
 	case TAGVALUE::BASE_EXP:
 		try{
@@ -218,17 +200,6 @@ void EnemiesLoader::parseTag(std::vector<std::string> &output)
 			value = -1;
 		}
 		_currentData.experience = value;
-		break;
-
-		//parse enemy base value
-	case TAGVALUE::BASE_VALUE:
-		try{
-			value = std::stoi(output[1]);
-		}
-		catch (const std::invalid_argument&){
-			value = -1;
-		}
-		_currentData.value = value;
 		break;
 
 	}
@@ -264,12 +235,6 @@ bool EnemiesLoader::checkStructCorrectness()
 	}
 	if (_currentData.experience == -1)    {
 		_errorMsg += "\n   Invalid enemy experience.";
-	}
-	if (_currentData.value == -1)     {
-		_errorMsg += "\n   Invalid enemy value.";
-	}
-	if (_currentData.speed == -1)    {
-		_errorMsg += "\n   Invalid enemy speed.";
 	}
 
 

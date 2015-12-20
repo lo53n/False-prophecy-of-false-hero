@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <random>
 
 
 #include <SFML\Graphics.hpp>
@@ -41,6 +42,9 @@ public:
 	//@param int direction - 0 for north, 1 for east, 2 for south, 3 for west.
 	void movePlayer(int direction);
 
+	bool checkIfThereIsNeedToAnimate();
+	void moveSprite(float change);
+
 
 	///////////
 	//Getters//
@@ -50,6 +54,8 @@ public:
 	sf::Vector2f& getPlayerPositionOnMap();		
 	//get player position on map (x,y)
 	sf::Vector2i& getPlayerPositionOnGrid();
+	//get player's sprite position (px)
+	sf::Vector2f& getPlayerSpritePosition();
 	//Get player stats
 	Hero_Profile& getPlayerStats();
 	//Get player abilities
@@ -86,6 +92,9 @@ public:
 
 	void putItemInBackpack(std::shared_ptr<Item> item);
 
+
+	bool checkRequirements(std::shared_ptr<Weapon> item);
+	bool checkRequirements(std::shared_ptr<Armour> item);
 	void equipItem(std::shared_ptr<Weapon> item);
 	void equipItem(std::shared_ptr<Armour> item);
 
@@ -96,6 +105,13 @@ public:
 	void setAsUnarmed();
 
 	void calculateChallengeRating();
+
+
+	void takeTurn();
+	void regenHealth(bool forced = false);
+	void regenStamina(bool forced = false);
+	void drainStaminaAttack(int amount);
+	bool hasStaminaToAttack();
 
 	///////////
 	//Battle!//
@@ -150,11 +166,19 @@ private:
 
 	Hero_Ratings _ratings;
 
+	int _direction;
+	bool _isNeedToMoveSprite = false;
+
+
+	std::default_random_engine _generator;
+
+	float _turnsTillNaturalRegen = 0.f;
+
 	/////////////
 	//Equipment//
 	/////////////
 
-	bool isUnarmed = false;
+	bool _isUnarmed = true;
 
 
 	std::vector<std::shared_ptr<Item>> _backpack;
@@ -200,14 +224,13 @@ private:
 	const float __PROFICIENCY_WEAPON_EFFICIENCY__ = 0.02f;
 	const float __PROFICIENCY_UNARMED_EFFICIENCY__ = 0.02f;
 
-	const float __PROFICIENCY_PAIN_EFFICIENCY__ = 0.01f;
-	const float __PROFICIENCY_BODY_EFFICIENCY__ = 0.025f;
-	const float __PROFICIENCY_DEFENCE_EFFICIENCY__ = 0.05f;
-	const float __PROFICIENCY_DODGE_EFFICIENCY__ = 0.01f;
+	const int __PROFICIENCY_BODY_EFFICIENCY__ = 2;
+	const float __PROFICIENCY_DEFENCE_EFFICIENCY__ = 0.15f;
 
 	const int __BASE_EXPERIENCE__ = 100;
 	const float __EXPIERIENCE_LVL_INCREASE__ = 1.20f;
 
+	const int __TURNS_FOR_REGEN__ = 10;
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

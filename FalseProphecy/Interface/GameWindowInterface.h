@@ -35,9 +35,12 @@ private:
 
 	std::vector<sf::RectangleShape> _emptyResourceBar;
 	sf::RectangleShape _hpBar;
-	sf::RectangleShape _manaBar;
 	sf::RectangleShape _staminaBar;
+	sf::RectangleShape _expBar;
 
+	sf::Text _hpBarText;
+	sf::Text _staminaBarText;
+	sf::Text _expBarText;
 
 	sf::RectangleShape _inventoryIconBackground;
 	sf::RectangleShape _statusIconBackground;

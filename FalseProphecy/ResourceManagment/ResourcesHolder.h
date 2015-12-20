@@ -3,8 +3,14 @@
 
 #include <vector>
 #include <iostream>
+#include <memory>
+
+
+#include <SFML\Graphics.hpp>
+
 
 #include "../StructsEnums.h"
+#include "../LoadFromResource.h"
 
 
 class ResourcesHolder{
@@ -36,6 +42,27 @@ public:
 	void setData(std::vector<std::vector<std::vector<char>>> externalData);
 
 
+	//load data
+	void loadData();
+
+
+	void loadTilesTexture();
+	void loadWallsTexture();
+	void loadDoorsTexture();
+	/*void loadWeaponsTexture();
+	void loadArmoursTexture();
+	void loadEnemiesAliveTexture();
+	void loadEnemiesDeadTexture();
+	void loadTilesTexture();*/
+
+	//get texture
+	
+	sf::Texture& getTileTexture();
+	sf::Texture& getWallTexture();
+	sf::Texture& getDoorTexture();
+
+public:
+
 private:
 	static ResourcesHolder *_resHolder;
 
@@ -44,6 +71,12 @@ private:
 	std::vector<Weapon_struct> _weaponsData;
 	std::vector<Armour_struct> _armoursData;
 	std::vector<std::vector<std::vector<char>>> _mapsData;
+
+
+	std::vector<std::shared_ptr<sf::Texture>> _tilesTextures;
+	std::vector<std::shared_ptr<sf::Texture>> _wallsTextures;
+	std::vector<std::shared_ptr<sf::Texture>> _doorsTextures;
+
 
 
 private:

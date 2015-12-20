@@ -12,7 +12,7 @@ StatusWindow::StatusWindow()
 
 	_statsPart.setSize(sf::Vector2f(200.f, 200.f));
 	_statsPart.setPosition(5.f, 5.f);
-	_statsPart.setFillColor(sf::Color(30, 150, 50));
+	_statsPart.setFillColor(sf::Color(90, 150, 50));
 	_statsPart.setOutlineThickness(2.f);
 	_statsPart.setOutlineColor(sf::Color(60, 180, 80));
 
@@ -46,11 +46,11 @@ StatusWindow::StatusWindow()
 
 	_statsText.setFont(_font);
 	_statsText.setCharacterSize(13);
-	_statsText.setPosition(_statsPart.getPosition() + sf::Vector2f(5.f, 104.f));
+	_statsText.setPosition(_statsPart.getPosition() + sf::Vector2f(5.f, 94.f));
 
 	_statsNumbersText.setFont(_font);
 	_statsNumbersText.setCharacterSize(13);
-	_statsNumbersText.setPosition(_statsPart.getPosition() + sf::Vector2f(85.f, 104.f));
+	_statsNumbersText.setPosition(_statsPart.getPosition() + sf::Vector2f(85.f, 94.f));
 
 
 	_equipmentText.setFont(_font);
@@ -144,14 +144,13 @@ void StatusWindow::refreshStats()
 
 	string = "";
 
-	string += "Health\nMana\nStamina";
+	string += "Health\nStamina";
 
 	_healthText.setString(string);
 
 	string = "";
 
 	string += std::to_string(stats.hp) + "/" + std::to_string(stats.max_hp) + "\n";
-	string += std::to_string(stats.mp) + "/" + std::to_string(stats.max_mp) + "\n";
 	string += std::to_string(stats.stam) + "/" + std::to_string(stats.max_stam) + "\n";
 
 	_healthNumbersText.setString(string);
@@ -202,7 +201,6 @@ void StatusWindow::refreshEquipmentStats()
 	}
 
 	string += "Damage: " + std::to_string(calc_min_dmg) + " - " + std::to_string(calc_max_dmg);
-	string += "\nSpeed: " + std::to_string(stats.speed);
 	int reduction = (int)(stats.damage_reduction * 100);
 	string += "\nDamage reduction: " + std::to_string(reduction);
 	int dodge_chance = (int)(stats.dodge_chance * 100);
@@ -231,20 +229,16 @@ void StatusWindow::refreshProficiences()
 
 	string += "One-handed, level " + std::to_string(proficiences[0].level);
 	string += "\n\nTwo-handed, level " + std::to_string(proficiences[1].level);
-	string += "\n\nDual-wield, level " + std::to_string(proficiences[2].level);
-	string += "\n\nShield, level " + std::to_string(proficiences[3].level);
-	string += "\n\nUnarmed, level " + std::to_string(proficiences[4].level);
-	string += "\n\nSword, level " + std::to_string(proficiences[5].level);
-	string += "\n\nMace, level " + std::to_string(proficiences[6].level);
-	string += "\n\nSpear, level " + std::to_string(proficiences[7].level);
-	string += "\n\nAxe, level " + std::to_string(proficiences[8].level);
+	string += "\n\nShield, level " + std::to_string(proficiences[2].level);
+	string += "\n\nUnarmed, level " + std::to_string(proficiences[3].level);
+	string += "\n\nSword, level " + std::to_string(proficiences[4].level);
+	string += "\n\nMace, level " + std::to_string(proficiences[5].level);
+	string += "\n\nSpear, level " + std::to_string(proficiences[6].level);
+	string += "\n\nAxe, level " + std::to_string(proficiences[7].level);
 
 
-	string += "\n\nMagic, level " + std::to_string(proficiences[9].level);
-	string += "\n\nDefence, level " + std::to_string(proficiences[10].level);
-	string += "\n\nBody endurance, level " + std::to_string(proficiences[11].level);
-	string += "\n\nPain tolerance, level " + std::to_string(proficiences[12].level);
-	string += "\n\nDodging, level " + std::to_string(proficiences[13].level);
+	string += "\n\nDefence, level " + std::to_string(proficiences[8].level);
+	string += "\n\nBody endurance, level " + std::to_string(proficiences[9].level);
 
 
 	_proficiencesText.setString(string);
@@ -256,7 +250,7 @@ void StatusWindow::setProgressBars()
 {
 	sf::Vector2f position = _proficiencesText.getPosition() + sf::Vector2f(5, 19);
 
-	for (int i = 0; i < 14; i++){
+	for (int i = 0; i < 10; i++){
 		sf::RectangleShape empty(sf::Vector2f(180, 5));
 		sf::RectangleShape full(sf::Vector2f(180, 5));
 

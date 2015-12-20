@@ -1,4 +1,89 @@
 [-----]
+2015-12-19
+
+What is done?
+
+	- working item requirements
+
+	- little (temporary) tweak on enemy movement
+
+	- change in interface - no more mana
+
+	- loot generation
+
+	- enemy class distinctions
+
+	- player regens
+
+	- implemeneted hero exhaustion system
+
+	- fixed a lot of bugs (unexpected one popped up)
+
+To do?
+
+	- consumables
+
+[-----]
+2015-12-05
+
+What is done?
+
+	- equipment stuff
+
+	- little work on battle system
+
+	- loading textures at basics
+
+	- deleted obsolete proficiences
+
+To do?
+
+	- hm, maybe work with resources holder to store ALL textures?
+
+	- implement functionality for defence and body proficiences (hp regen per few turns and more dmg reduction?)
+
+[-----]
+2015-12-04
+
+What is done?
+
+	- application to modify .txt files (no maps actually)
+
+	- deleted obsolete speed attribute
+
+	- tidying up the code (yet again)
+
+	- fixed bug where hp bars were moved when moving too fast (hopefully)
+
+	- no more zombie enemies (unless intended :D)
+
+To do?
+
+	- fix bug where you can't pass doors while corpse is lying on them
+
+[-----]
+2015-11-22
+
+What is done?
+
+	- animation, woohoo~! Simple, but it is there as eye candy. More to come?!
+
+	- working enemy movement (based on random directions instead of actual pathfinding)
+
+To do?
+
+	- delete speed statistic. Its more complicated and really hard to do, when I took animations. It would work with some kind of container, which would storage directions, but... too much playing around.
+
+	- fix managing enemy's death on logic side
+
+[-----]
+2015-11-20
+
+What is done?
+
+	- pretty much nothing, started works on enemy movement
+
+[-----]
 2015-11-17
 
 What is done?
@@ -10,6 +95,7 @@ What is done?
 To do?
 
 	- balance on rating system
+
 [-----]
 2015-11-13
 

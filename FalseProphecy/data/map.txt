@@ -1,12 +1,12 @@
   xxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxx
-   xxxxxxxxxxx.x..x.x.x.x..x.x..x..x.x...x....x.x.x
-     x..............................................x
-  xx.............................................x
+   xxxxxxxxxxx.x..x.x.x.x..x.x..x..x.x...x....x.x.xxx
+   xxx..............................................x
+  xx.............................................xxxx
   x...xxxxxxxx...................................x
   x..............................................x
  xxxxxxxxxxx................xxxxxxxxxxxxxxxxxxxxx
-E..............................................x
-    xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
+ E..............................................x
+xxx.xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
 x..............................................x
 xxxxxxxxxx.....................................x
 x..............................................x
@@ -15,18 +15,18 @@ xxxxxxxxxxx................xxxxxxxxxxxxxxxxxxxxx
 x............................................E
 xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
 x..............................................x
-xxxxxxxxxx.....................................x
+xxxxxxxxxx.....................................xxx
 x................................................x
-x..............................................x
+x..............................................xxx
 xxxxxxxxxxx................xxxxxxxxxxxxxxxxxxxxx
 x..............................................x
 xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
 x..............................................x
 xxxxxxxxxx.....................................x
 x..............................................x
-xxxxExxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxx
-xx    xxx                      .
-                               E
+x.xxExx.xxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxx
+xxx   xxx                     x.x
+                              xEx
 [---]
 xxxxxxxxxxxxxxxxxxxxxxxxEx xExxxxxxxxxxxxxxxxxxxxxxxxx
 x......................x.x x.x.......................x
@@ -62,13 +62,13 @@ x..............................................x
 x.............xxxxxxxxxxxxxxx..................x
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 [---]
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxx
 x.x.xxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxx.x.x
 x..............................................x
-x.....ad.......................................x
+x..............................................x
 x..................xxxxxxxxxxxx................x
 E..............................................E
-x...............sdfdss.........................x
+x..............................................x
 x..............................................x
 xxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxx
 [---]

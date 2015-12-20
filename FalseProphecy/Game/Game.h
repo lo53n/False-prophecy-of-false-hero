@@ -28,6 +28,10 @@ public:
 
 
 private:
+
+	std::default_random_engine _generator;
+
+
 	///////////////
 	//Game Window//
 	///////////////
@@ -42,6 +46,10 @@ private:
 	bool _isStatusWindowOpen = false;
 	bool _isInventoryWindowOpen = false;
 	bool _isDevModeActive = false;
+	bool _isEnemyTurn = false;
+	bool _isItemsManipulated = false;
+
+	bool _isTimeToAnimate = false;
 
 	bool _isErrorMessageActive = false;
 
@@ -100,6 +108,8 @@ private:
 	////////////////////////
 	std::shared_ptr<Player> _player;
 
+
+	int _ticks = 0;
 	int _turns_taken = 0;
 
 	///////////////
@@ -113,6 +123,7 @@ private:
 	/////////////////
 	const float __CAMERA_MOVE_LENGTH__ = 32.0f;
 
+	int __TICKS_PER_TURN__ = 100;
 	int __TURNS_TO_INCREMENT_MAP_RESPAWN_TIMER__ = 50;
 
 	//Change those also in Map.h//
@@ -131,6 +142,8 @@ private:
 	void update();
 	void draw();
 
+
+	void animateStuff();
 
 	///////////////////////
 	//Handle player input//
@@ -170,7 +183,10 @@ private:
 	///////////////
 	//Enemy stuff//
 	///////////////
+	void enemyTurn();
+	void moveEnemy();
 
+	bool isPlayerNearby(sf::Vector2i position);
 
 
 	////////////////
@@ -190,7 +206,7 @@ private:
 	//Item and drop stuff//
 	///////////////////////
 
-	void generateDrop(sf::Vector2i position, int enemyRating);
+	void generateDrop(sf::Vector2i position, std::shared_ptr<Enemy> enemy);
 	void checkForObjectsAtPlayerPosition();
 
 };

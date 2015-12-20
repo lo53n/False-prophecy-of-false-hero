@@ -17,11 +17,11 @@ enum ITEM_TYPE{
 };
 
 enum WEAPON_TYPE{
-	UNARMED = 4,
-	SWORD = 5,
-	MACE = 6,
-	SPEAR = 7,
-	AXE = 8
+	UNARMED = 3,
+	SWORD = 4,
+	MACE = 5,
+	SPEAR = 6,
+	AXE = 7
 };
 
 enum WEAPON_SIZE{
@@ -32,14 +32,15 @@ enum WEAPON_SIZE{
 
 enum WEAPON_HANDLE{
 	ONEHANDED = 0,
-	TWOHANDED = 1,
-	DUALWIELD = 2
+	TWOHANDED = 1
 };
 
 
 struct Weapon_struct{
 	std::string name;
 	std::string img_path;
+	int texture_id;
+	bool isDefault;
 	int size;
 	int type;
 	int weapon_handle;
@@ -48,7 +49,6 @@ struct Weapon_struct{
 	int secondary_multiplier;
 	int secondary_multiplier_value;
 	bool isMagic;
-	int speed;
 	int min_dmg;
 	int max_dmg;
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;
@@ -76,13 +76,14 @@ enum ARMOUR_CLASS{
 struct Armour_struct{
 	std::string name;
 	std::string img_path;
+	int texture_id;
+	bool isDefault;
 	int type;
 	int armour_class;
 	bool isMagic;
 	int defence;
 	int dodge;
 	int block;
-	int speed;
 	int str_req, dex_req, agi_req, int_req, end_req, wil_req;
 	int base_rating, current_rating;
 
@@ -104,18 +105,14 @@ enum HERO_STATS_NAMES{
 enum HERO_ABILITIES_NUMBER{
 	ONEHANDED_PROFICIENCY,
 	TWOHANDED_PROFICIENCY,
-	DUALWIELD_PROFICIENCY,
 	SHIELD_PROFICIENCY,
 	UNARMED_PROFICIENCY,
 	SWORD_PROFICIENCY,
 	MACE_PROFICIENCY,
 	SPEAR_PROFICIENCY,
 	AXE_PROFICIENCY,
-	MAGIC_PROFICIENCY,
 	DEFENCE_PROFICIENCY,
 	BODY_ENDURANCE,
-	PAIN_ENDURANCE,
-	DODGING_PROFICIENCY
 };
 
 struct Hero_Profile{
@@ -127,7 +124,6 @@ struct Hero_Profile{
 	int min_dmg, max_dmg;
 	int defence;
 	float damage_reduction, max_reduction, dodge_chance, max_dodge, block_chance, max_block;
-	int min_speed, speed;
 	int dodge;
 	int block;
 	int strenght;
@@ -172,26 +168,26 @@ enum ENEMY_TYPE{
 enum ENEMY_CLASS{
 	NORMAL_ENEMY = 0,
 	RARE_ENEMY = 1,
-	MAGIC_ENEMY = 2,
-	ELITE_ENEMY = 3,
-	MINIBOSS_ENEMY = 4,
-	BOSS_ENEMY = 5,
-	UNIQUE_ENEMY = 6
+	MAGIC_ENEMY = 3,
+	ELITE_ENEMY = 5,
+	MINIBOSS_ENEMY = 8,
+	BOSS_ENEMY = 10,
+	UNIQUE_ENEMY = 11
 };
 
 
 struct Enemy_Stats{
 	std::string name;
 	std::string img_path;
+	int texture_id;
+	bool isDefault;
 	int hitpoints;
 	int max_hitpoints;
 	int attack;
 	int defence;
-	int speed;
 	int type;
 	int enemy_class;
 	int experience;
-	int value;
 	int base_rating, current_rating;
 };
 

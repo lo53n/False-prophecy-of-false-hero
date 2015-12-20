@@ -69,7 +69,6 @@
     <Text Include="Z:\False-prophecy-of-false-hero\progress.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
   </ItemGroup>
   <ItemGroup>

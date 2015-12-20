@@ -8,11 +8,11 @@ GameWindowInterface::GameWindowInterface()
 	_upperInterface.setOutlineThickness(2.f);
 	_upperInterface.setOutlineColor(sf::Color(150, 130, 110, 90));
 
-	sf::Vector2f barLen(200.f, 20.f);
+	sf::Vector2f barLen(200.f, 15.f);
 
 	for (int i = 0; i < 3; i++){
 		sf::RectangleShape emptyBar(barLen);
-		emptyBar.setPosition(30.f, 14.f + i*22.f);
+		emptyBar.setPosition(30.f, 14.f + i*21.f);
 		emptyBar.setFillColor(sf::Color::Black);
 		emptyBar.setOutlineColor(sf::Color(0, 0, 0, 190));
 		emptyBar.setOutlineThickness(1.f);
@@ -25,17 +25,20 @@ GameWindowInterface::GameWindowInterface()
 	_hpBar.setOutlineThickness(1.f);
 	_hpBar.setOutlineColor(sf::Color(240, 20, 20, 50));
 
-	_manaBar.setPosition(30.f, 36.f);
-	_manaBar.setSize(barLen);
-	_manaBar.setFillColor(sf::Color(20, 20, 240, 255));
-	_manaBar.setOutlineThickness(1.f);
-	_manaBar.setOutlineColor(sf::Color(20, 20, 240, 50));
 
-	_staminaBar.setPosition(30.f, 58.f);
+	_staminaBar.setPosition(30.f, 35.f);
 	_staminaBar.setSize(barLen);
 	_staminaBar.setFillColor(sf::Color(20, 240, 20, 255));
 	_staminaBar.setOutlineThickness(1.f);
 	_staminaBar.setOutlineColor(sf::Color(20, 240, 20, 50));
+
+
+	_expBar.setPosition(30.f, 56.f);
+	_expBar.setSize(barLen);
+	_expBar.setScale(0, 1);
+	_expBar.setFillColor(sf::Color(240, 240, 90, 255));
+	_expBar.setOutlineThickness(1.f);
+	_expBar.setOutlineColor(sf::Color(20, 20, 240, 50));
 
 	sf::Vector2f upperSize = _upperInterface.getSize();
 
@@ -77,26 +80,50 @@ GameWindowInterface::GameWindowInterface()
 
 
 
-	_font = LoadFontFromResource("Arialfont");
+	_font = LoadFontFromResource("arialfont");
 
 	_inventoryText.setString("[I]");
 	_inventoryText.setCharacterSize(14);
 	_inventoryText.setFont(_font);
+	_inventoryText.setStyle(sf::Text::Bold);
 	_inventoryText.setColor(sf::Color::Black);
 	_inventoryText.setPosition(upperSize.x - 110, __TEXT_PLACEMENT_Y__);
 
 	_statusText.setString("[C]");
 	_statusText.setCharacterSize(14);
 	_statusText.setFont(_font);
+	_statusText.setStyle(sf::Text::Bold);
 	_statusText.setColor(sf::Color::Black);
 	_statusText.setPosition(upperSize.x - 73, __TEXT_PLACEMENT_Y__);
 
 	_menuText.setString("[ESC]");
 	_menuText.setCharacterSize(14);
 	_menuText.setFont(_font);
+	_menuText.setStyle(sf::Text::Bold);
 	_menuText.setColor(sf::Color::Black);
-	_menuText.setPosition(upperSize.x - 41, __TEXT_PLACEMENT_Y__);
+	_menuText.setPosition(upperSize.x - 39, __TEXT_PLACEMENT_Y__);
 
+
+	_hpBarText.setString("HP");
+	_hpBarText.setCharacterSize(14);
+	_hpBarText.setFont(_font);
+	_hpBarText.setStyle(sf::Text::Bold);
+	_hpBarText.setColor(sf::Color(30, 30, 30, 250));
+	_hpBarText.setPosition(_hpBar.getPosition() - sf::Vector2f(22, 2));
+
+	_staminaBarText.setString("SP");
+	_staminaBarText.setCharacterSize(14);
+	_staminaBarText.setFont(_font);
+	_staminaBarText.setStyle(sf::Text::Bold);
+	_staminaBarText.setColor(sf::Color(30, 30, 30, 250));
+	_staminaBarText.setPosition(_staminaBar.getPosition() - sf::Vector2f(22, 2));
+
+	_expBarText.setString("XP");
+	_expBarText.setCharacterSize(14);
+	_expBarText.setFont(_font);
+	_expBarText.setStyle(sf::Text::Bold);
+	_expBarText.setColor(sf::Color(30, 30, 30, 250));
+	_expBarText.setPosition(_expBar.getPosition() - sf::Vector2f(22, 2));
 
 }
 
@@ -117,8 +144,11 @@ void GameWindowInterface::draw(sf::RenderTarget& target, sf::RenderStates states
 
 	for (auto bar : _emptyResourceBar) target.draw(bar);
 	target.draw(_hpBar);
-	target.draw(_manaBar);
+	target.draw(_hpBarText);
+	target.draw(_expBar);
+	target.draw(_expBarText);
 	target.draw(_staminaBar);
+	target.draw(_staminaBarText);
 
 	target.draw(_inventoryIconBackground);
 	target.draw(_statusIconBackground);
@@ -151,7 +181,7 @@ void GameWindowInterface::setGameWindowInterfaceSizeByResize(sf::Vector2f newSiz
 
 	_inventoryText.setPosition(upperSize.x - 110, __TEXT_PLACEMENT_Y__);
 	_statusText.setPosition(upperSize.x - 73, __TEXT_PLACEMENT_Y__);
-	_menuText.setPosition(upperSize.x - 41, __TEXT_PLACEMENT_Y__);
+	_menuText.setPosition(upperSize.x - 43, __TEXT_PLACEMENT_Y__);
 
 }
 
@@ -161,8 +191,8 @@ void GameWindowInterface::refreshBars(Hero_Profile &stats)
 	scaleX = (float)stats.hp / (float)stats.max_hp;
 	_hpBar.setScale(scaleX, 1);
 
-	scaleX = (float)stats.mp / (float)stats.max_mp;
-	_manaBar.setScale(scaleX, 1);
+	scaleX = (float)stats.exp / (float)stats.max_exp;
+	_expBar.setScale(scaleX, 1);
 
 	scaleX = (float)stats.stam / (float)stats.max_stam;
 	_staminaBar.setScale(scaleX, 1);

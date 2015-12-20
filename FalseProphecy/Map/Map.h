@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <memory>
 #include <unordered_map>
+#include <random>
+#include <queue>
 
 #include <SFML\Graphics.hpp>
 
@@ -133,6 +135,9 @@ public:
 	void increaseRespawnCounter();
 	void resurrectAndReinforceEnemies();
 
+	void increaseEnemyTicks(int &amount);
+	void moveEnemy(std::shared_ptr<Enemy> &enemy, sf::Vector2i newPos);
+
 	std::shared_ptr<Enemy> getEnemyAtPosition(int posx, int posy);
 
 	void killOffEnemy(int enemy_id);
@@ -180,6 +185,8 @@ private:
 	ResourcesHolder *_resHolder = &ResourcesHolder::getResourcesHolder();
 	Hero_Ratings _ratings;
 
+	std::default_random_engine _generator;
+
 	///////////////
 	//Map overlay//
 	///////////////
@@ -189,6 +196,15 @@ private:
 	sf::RenderTexture* _renderTextureDisplayed;
 	sf::Sprite _mapSprite;
 	sf::Sprite _mapSpriteToDisplay;
+
+	sf::Sprite _wallTile;
+	sf::Texture _wallTexture;
+
+	sf::Sprite _floorTile;
+	sf::Texture _floorTexture;
+
+	sf::Sprite _doorTile;
+	sf::Texture _doorTexture;
 
 	unsigned int _mapIdentifier; //Map identifying number
 

@@ -8,9 +8,44 @@ Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGr
 	_tile_underneath(newTile)
 {
 	_positionOnMap = (sf::Vector2f)(_positionOnGrid * (int)__ENEMY_HEIGHT__);
+
+	if (!_enemyTexture.loadFromFile(_stats.img_path, sf::IntRect(0,0,32,32))){
+		switch (_stats.type){
+		case ENEMY_TYPE::BEAST_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_BEAST__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_BEAST__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::UNDEAD_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_UNDEAD__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_UNDEAD__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::DEMON_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_DEMON__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_DEMON__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::HUMANOID_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_HUMANOID__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_HUMANOID__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::HUMAN_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_HUMAN__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_HUMAN__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::GOLEM_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_GOLEM__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_GOLEM__, sf::IntRect(32, 0, 32, 32));
+			break;
+		}
+	}
+	else{
+		_enemyCorpseTexture.loadFromFile(_stats.img_path, sf::IntRect(32, 0, 32, 32));
+	}
+
+
 	_enemyShape.setSize(sf::Vector2f(__ENEMY_WIDTH__, __ENEMY_HEIGHT__));
 	_enemyShape.setPosition(_positionOnMap);
-	_enemyShape.setFillColor(sf::Color(15, 200, 100, 255));
+	//_enemyShape.setFillColor(sf::Color(15, 200, 100, 255));
+	_enemyShape.setTexture(&_enemyTexture);
 
 	_enemyCorpseShape.setSize(sf::Vector2f(__ENEMY_WIDTH__, __ENEMY_HEIGHT__));
 	_enemyCorpseShape.setPosition(_positionOnMap);
@@ -23,14 +58,39 @@ Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGr
 	_underHpBar.setSize(_hpBar.getSize());
 	_underHpBar.setPosition(_hpBar.getPosition());
 	_underHpBar.setFillColor(sf::Color());
+	_underHpBar.setOutlineThickness(1.f);
+	_underHpBar.setOutlineColor(sf::Color::Black);
 
-	//_stats.max_hitpoints = 10;
-	//_stats.hitpoints = 10;
-	//_stats.defence = 1;
-	//_stats.hitpoints = _stats.max_hitpoints;
+
 
 	Calculations::calculateNewStats(_stats, heroRating);
 	_stats.hitpoints = _stats.max_hitpoints;
+
+
+	//Set coloring based on monster class
+	switch (_stats.enemy_class)
+	{
+	case ENEMY_CLASS::RARE_ENEMY:
+		_enemyShape.setFillColor(sf::Color(15, 150, 50, 255));
+		break;
+	case ENEMY_CLASS::MAGIC_ENEMY:
+		_enemyShape.setFillColor(sf::Color(15, 15, 200, 255));
+		break;
+	case ENEMY_CLASS::ELITE_ENEMY:
+		_enemyShape.setFillColor(sf::Color(100, 200, 100, 255));
+		break;
+	case ENEMY_CLASS::MINIBOSS_ENEMY:
+		_enemyShape.setFillColor(sf::Color(15, 15, 100, 255));
+		break;
+	case ENEMY_CLASS::BOSS_ENEMY:
+		_enemyShape.setFillColor(sf::Color(40, 40, 40, 255));
+		break;
+
+	}
+
+
+
+
 
 }
 
@@ -73,6 +133,11 @@ int Enemy::getEnemyRating()
 {
 	return _stats.current_rating;
 }
+
+int Enemy::getEnemyClass()
+{
+	return _stats.enemy_class;
+}
 ///////////
 //Setters//
 ///////////
@@ -91,7 +156,7 @@ void Enemy::setEnemyPositionOnGrid(sf::Vector2i newPositionOnGrid)
 	_enemyShape.setPosition(_positionOnMap);
 }
 
-void Enemy::SetTileUnderneathEnemy(char newTile)
+void Enemy::setTileUnderneathEnemy(char newTile)
 {
 	_tile_underneath = newTile;
 }
@@ -132,6 +197,7 @@ void Enemy::takeHit(int damage)
 
 	//int dmgTaken = damage - _stats.defence;
 	int dmgTaken = damage;
+	std::cout << "DMG TAKEN: " << damage << std::endl;
 
 	if (dmgTaken < 0) dmgTaken = 0;
 	_stats.hitpoints-= dmgTaken;
@@ -163,7 +229,7 @@ void Enemy::killEnemy()
 {
 	//std::cout << "Enemy is killed" << std::endl;
 	isAlive = false;
-	_enemyCorpseShape.setPosition(_enemyShape.getPosition());
+	_enemyCorpseShape.setPosition((sf::Vector2f)getEnemyPositionOnGrid()*32.f);
 }
 
 void Enemy::resurrectAndReinforce(int heroRating)
@@ -184,4 +250,99 @@ void Enemy::reinforceEnemy(int heroRating)
 {
 	_stats = _baseStats;
 	Calculations::calculateNewStats(_stats, heroRating);
+}
+
+////////////
+//Movement//
+////////////
+
+void Enemy::moveEnemy(sf::Vector2i newPos)
+{
+	//decreaseTicks();
+
+	if (_positionOnMap != _enemyShape.getPosition()){
+		_enemyShape.setPosition(_positionOnMap);
+		_hpBar.setPosition(sf::Vector2f(_enemyShape.getPosition().x + 1.f, _enemyShape.getPosition().y + 25.f));
+		_underHpBar.setPosition(_hpBar.getPosition());
+	}
+
+	//temporary???
+	if (newPos.x > _positionOnGrid.x){
+		_direction = MOVEMENT::RIGHT;
+	}
+	else if (newPos.y > _positionOnGrid.y){
+		_direction = MOVEMENT::DOWN;
+	}
+	else if (newPos.x < _positionOnGrid.x){
+		_direction = MOVEMENT::LEFT;
+	}
+	else if (newPos.y < _positionOnGrid.y){
+		_direction = MOVEMENT::UP;
+	}
+
+	//std::cout << "Move Enemy ID " << getEnemyId() << std::endl;
+	//std::cout << "x,y " << _positionOnGrid.x << " " << _positionOnGrid.y << std::endl;
+
+	//std::cout << "new pos " << newPos.x << " " << newPos.y << std::endl;
+	_positionOnGrid = newPos;
+
+	//std::cout << "x,y " << _positionOnGrid.x << " " << _positionOnGrid.y << std::endl;
+	_positionOnMap = (sf::Vector2f)_positionOnGrid * 32.f;
+
+
+	_isNeedToMoveSprite = true;
+}
+
+bool Enemy::checkIfThereIsNeedToAnimate()
+{
+	return _isNeedToMoveSprite;
+}
+
+void Enemy::moveSprite(float change)
+{
+
+	sf::Vector2f changeToSprite;
+	switch (_direction){
+	case 0:
+		changeToSprite = sf::Vector2f(0, -change);
+		break;
+	case 1:
+		changeToSprite = sf::Vector2f(change, 0);
+		break;
+	case 2:
+		changeToSprite = sf::Vector2f(0, change);
+		break;
+	case 3:
+		changeToSprite = sf::Vector2f(-change, 0);
+		break;
+	}
+
+
+
+	_enemyShape.setPosition(_enemyShape.getPosition() + changeToSprite);
+	_hpBar.setPosition(sf::Vector2f(_enemyShape.getPosition().x + 1.f, _enemyShape.getPosition().y + 25.f));
+	_underHpBar.setPosition(_hpBar.getPosition());
+
+
+	//std::cout << "Shape pos: " << _enemyShape.getPosition().x << ":" << _enemyShape.getPosition().y << " TargetPos: " << _positionOnMap.x << ":" << _positionOnMap.y << std::endl;
+	if (_positionOnMap == _enemyShape.getPosition()){
+		_isNeedToMoveSprite = false;
+	}
+
+
+}
+/////////
+//Other//
+/////////
+void Enemy::increaseTicks(int &amount)
+{
+}
+
+void Enemy::decreaseTicks()
+{
+}
+
+bool Enemy::checkIfCanTakeAction()
+{
+	return _canTakeAction;
 }

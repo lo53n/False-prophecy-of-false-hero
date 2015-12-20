@@ -15,6 +15,13 @@
 class Enemy : public sf::Drawable {
 public:
 
+	enum MOVEMENT{
+		UP,
+		RIGHT,
+		DOWN,
+		LEFT
+	};
+
 	///////////
 	//Getters//
 	///////////
@@ -31,6 +38,8 @@ public:
 	Enemy_Stats getEnemyStats();
 	//Get enemy rating
 	int getEnemyRating();
+	//Get enemy class
+	int getEnemyClass();
 	///////////
 	//Setters//
 	///////////
@@ -40,13 +49,25 @@ public:
 	//Set enemy position on map (x,y)
 	void setEnemyPositionOnGrid(sf::Vector2i newPositionOnGrid);
 	//Set tile underneath the enemy on map
-	void SetTileUnderneathEnemy(char newTile);
+	void setTileUnderneathEnemy(char newTile);
 
+
+	/////////////
+	//Animation//
+	/////////////
+	bool checkIfThereIsNeedToAnimate();
+	void moveSprite(float change);
+	void checkDirection(sf::Vector2i newPos);
+	/////////////
 
 	char swapTileUnderneathToNextOne(char newTile);
 
 	void takeHit(int damage);
 
+	void increaseTicks(int &amount);
+	void decreaseTicks();
+	bool checkIfCanTakeAction();
+	void moveEnemy(sf::Vector2i newPos); 
 
 	void killEnemy();
 	void resurrectEnemy();
@@ -69,6 +90,9 @@ private:
 	Enemy_Stats _stats;
 	Enemy_Stats _baseStats;
 
+	int _ticksForActions = 0;
+	bool _canTakeAction = false;
+
 	char _tile_underneath;
 
 	bool isAlive = true;
@@ -78,12 +102,19 @@ private:
 
 	sf::Texture _enemyTexture;
 	sf::RectangleShape _enemyShape;
+	sf::Sprite _enemySprite;
 
 	sf::Texture _enemyCorpseTexture;
 	sf::RectangleShape _enemyCorpseShape;
+	sf::Sprite _enemyCorpseSprite;
 
 	sf::RectangleShape _hpBar;
 	sf::RectangleShape _underHpBar;
+
+
+	int _direction;
+	bool _isNeedToMoveSprite = false;
+
 
 	////////////////
 	//Magic Number//
@@ -91,6 +122,13 @@ private:
 
 	const float __ENEMY_HEIGHT__ = 32.f;
 	const float __ENEMY_WIDTH__ = 32.f;
+
+	const std::string __ENEMY_DEFAULT_BEAST__ = "data\\img\\enemy\\defaultbeast.png";
+	const std::string __ENEMY_DEFAULT_DEMON__ = "data\\img\\enemy\\defaultdemon.png";
+	const std::string __ENEMY_DEFAULT_UNDEAD__ = "data\\img\\enemy\\defaultundead.png";
+	const std::string __ENEMY_DEFAULT_GOLEM__ = "data\\img\\enemy\\defaultgolem.png";
+	const std::string __ENEMY_DEFAULT_HUMANOID__ = "data\\img\\enemy\\defaulthumanoid.png";
+	const std::string __ENEMY_DEFAULT_HUMAN__ = "data\\img\\enemy\\defaulthuman.png";
 
 private:
 

@@ -30,7 +30,10 @@ private:
 	//////////////////
 
 
-	std::string __DEFAULT_CHAINMAIL_BODY_IMAGE__ = "data\\img\\armour\\chainmailbodydefault.png";
+	std::string __DEFAULT_HELMET_IMAGE__ = "data\\img\\armour\\defaulthelmet.png";
+	std::string __DEFAULT_CHEST_IMAGE__ = "data\\img\\armour\\defaultchest.png";
+	std::string __DEFAULT_LEGS_IMAGE__ = "data\\img\\armour\\defaultlegs.png";
+	std::string __DEFAULT_SHIELD_IMAGE__ = "data\\img\\armour\\defaultshield.png";
 private:
 
 

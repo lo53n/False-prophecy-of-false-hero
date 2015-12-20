@@ -40,7 +40,6 @@ private:
 		DEFENCE,
 		DODGE,
 		BLOCK,
-		SPEED,
 		MIN_DMG,
 		MAX_DMG,
 		STR_REQ,

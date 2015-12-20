@@ -25,8 +25,6 @@ void WeaponsLoader::prepareStruct()
 	_currentData.secondary_multiplier = -1;
 	_currentData.secondary_multiplier_value = -1;
 
-	_currentData.speed = -1;
-
 	_currentData.min_dmg = -1;
 	_currentData.max_dmg = -1;
 
@@ -59,8 +57,6 @@ void WeaponsLoader::showStruct()
 	std::cout << "Prim_mult_val: " << _currentData.primary_multiplier_value << std::endl;
 	std::cout << "Sec_mult: " << _currentData.secondary_multiplier << std::endl;
 	std::cout << "Sec_mult_val: " << _currentData.secondary_multiplier_value << std::endl;
-
-	std::cout << "Speed: " << _currentData.speed << std::endl;
 
 	std::cout << "Min dmg: " << _currentData.min_dmg << std::endl;
 	std::cout << "Max dmg: " << _currentData.max_dmg << std::endl;
@@ -258,17 +254,6 @@ void WeaponsLoader::parseTag(std::vector<std::string> &output)
 		_currentData.secondary_multiplier_value = value;
 		break;
 
-	//parse weapon speed
-	case TAGVALUE::SPEED:
-		try{
-			value = std::stoi(output[1]);
-		}
-		catch (const std::invalid_argument&){
-			value = -1;
-		}
-		_currentData.speed = value;
-		break;
-
 	//parse weapon min - max dmg
 
 	case TAGVALUE::MIN_DMG:
@@ -369,7 +354,6 @@ int WeaponsLoader::checkTag(std::string tag)
 	else if (tag == "PRIMARY_MULTIPLIER_VALUE") return TAGVALUE::PRIMARY_MULTIPLIER_VALUE;
 	else if (tag == "SECONDARY_MULTIPLIER") return TAGVALUE::SECONDARY_MULTIPLIER;
 	else if (tag == "SECONDARY_MULTIPLIER_VALUE") return TAGVALUE::SECONDARY_MULTIPLIER_VALUE;
-	else if (tag == "SPEED") return TAGVALUE::SPEED;
 	else if (tag == "MIN_DMG") return TAGVALUE::MIN_DMG;
 	else if (tag == "MAX_DMG") return TAGVALUE::MAX_DMG;
 	else if (tag == "STR_REQ") return TAGVALUE::STR_REQ;
@@ -405,9 +389,6 @@ bool WeaponsLoader::checkStructCorrectness()
 		_errorMsg += "\n   Invalid weapon size and handle.";
 	}
 
-	if (_currentData.speed == -1) {
-		_errorMsg += "\n   Invalid weapon speed.";
-	}
 	if (_currentData.min_dmg == -1 || _currentData.max_dmg == -1) {
 		_errorMsg += "\n   Invalid damage range.";
 	}
@@ -479,15 +460,15 @@ bool WeaponsLoader::correctStruct(int tag)
 				switch (_currentData.size){
 				case WEAPON_SIZE::SMALL:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::DEXTERITY;
-					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 2)) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 2) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
 					break;
 				case WEAPON_SIZE::MEDIUM:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 2)) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 2) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
 					break;
 				}
 				break;
@@ -496,15 +477,15 @@ bool WeaponsLoader::correctStruct(int tag)
 				switch (_currentData.size){
 				case WEAPON_SIZE::SMALL:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.primary_multiplier_value = (int)((rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed)) * 1.5f) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = (int)((rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ )) * 1.5f) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = -1;
 					_currentData.secondary_multiplier_value = -1;
 					break;
 				case WEAPON_SIZE::MEDIUM:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__);
+					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ /  __BASE_PRIMARY_ONEHANDED_MULTIPLIER__);
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::ENDURANCE;
-					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 2)) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ /2) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
 					break;
 				}
 				break;
@@ -513,15 +494,15 @@ bool WeaponsLoader::correctStruct(int tag)
 				switch (_currentData.size){
 				case WEAPON_SIZE::SMALL:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::DEXTERITY;
-					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 2)) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 2) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
 					break;
 				case WEAPON_SIZE::MEDIUM:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::DEXTERITY;
-					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 2)) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 2) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
 					break;
 				}
 				break;
@@ -530,15 +511,15 @@ bool WeaponsLoader::correctStruct(int tag)
 				switch (_currentData.size){
 				case WEAPON_SIZE::SMALL:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 0.75f)) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ /  0.75f) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::DEXTERITY;
-					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 0.75f)) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 0.75f) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
 					break;
 				case WEAPON_SIZE::MEDIUM:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 0.6f)) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 0.6f) + __BASE_PRIMARY_ONEHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 1.4f)) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 1.4f) + __BASE_SECONDARY_ONEHANDED_MULTIPLIER__;
 					break;
 				}
 				break;
@@ -553,15 +534,15 @@ bool WeaponsLoader::correctStruct(int tag)
 				switch (_currentData.size){
 				case WEAPON_SIZE::MEDIUM:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ ) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 2.25f)) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ /2.25f) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
 					break;
 				case WEAPON_SIZE::LARGE:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::ENDURANCE;
-					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 2)) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 2) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
 					break;
 				}
 				break;
@@ -570,15 +551,15 @@ bool WeaponsLoader::correctStruct(int tag)
 				switch (_currentData.size){
 				case WEAPON_SIZE::MEDIUM:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.primary_multiplier_value = (int)((rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed)) * 0.5f) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = (int)((rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ )) * 0.5f) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::ENDURANCE;
-					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
 					break;
 				case WEAPON_SIZE::LARGE:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::ENDURANCE;
-					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 1.25f)) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ /  1.25f) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 1.25f)) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 1.25f) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
 					break;
 				}
 				break;
@@ -587,15 +568,15 @@ bool WeaponsLoader::correctStruct(int tag)
 				switch (_currentData.size){
 				case WEAPON_SIZE::MEDIUM:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 1.25f)) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 1.25f) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::DEXTERITY;
-					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 1.25f)) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ /  1.25f) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
 					break;
 				case WEAPON_SIZE::LARGE:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / _currentData.speed) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ ) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::AGILITY;
-					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 2)) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 2) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
 					break;
 				}
 				break;
@@ -604,15 +585,15 @@ bool WeaponsLoader::correctStruct(int tag)
 				switch (_currentData.size){
 				case WEAPON_SIZE::MEDIUM:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::DEXTERITY;
-					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 0.9f)) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 0.9f) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 0.9f)) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 0.9f) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
 					break;
 				case WEAPON_SIZE::LARGE:
 					_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
-					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 0.6f)) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
+					_currentData.primary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 0.6f) + __BASE_PRIMARY_TWOHANDED_MULTIPLIER__;
 					_currentData.secondary_multiplier = HERO_STATS_NAMES::DEXTERITY;
-					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / (_currentData.speed * 1.4f)) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
+					_currentData.secondary_multiplier_value = rand() % (int)(__UPPER_LIMIT_TO_COMPUTE_MULTIPLIERS__ / 1.4f) + __BASE_SECONDARY_TWOHANDED_MULTIPLIER__;
 					break;
 				}
 				break;

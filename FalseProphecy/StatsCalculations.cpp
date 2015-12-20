@@ -2,7 +2,7 @@
 
 namespace Calculations{
 
-	void calculateBaseRating(Weapon_struct &stats, bool second_calc)
+	void calculateBaseRating(Weapon_struct &stats, bool second_calc) 
 	{
 
 		int rating = 0;
@@ -103,9 +103,9 @@ namespace Calculations{
 			rat_multip = 1;
 		}
 		rat_multip1 = (float)(rand() % 20) / 100.0f;
-		std::cout << "Old EnemyRating: " << enemyRating;
+		//std::cout << "Old EnemyRating: " << enemyRating;
 		enemyRating += (int)((float)enemyRating * rat_multip * rat_multip1);
-		std::cout << " New EnemyRating: " << enemyRating << std::endl;
+		//std::cout << " New EnemyRating: " << enemyRating << std::endl;
 
 
 		//strenghen new item//
@@ -166,9 +166,9 @@ namespace Calculations{
 			rat_multip = 1;
 		}
 		rat_multip1 = (float)(rand() % 20) / 100.0f;
-		std::cout << "Old EnemyRating: " << enemyRating;
+		//std::cout << "Old EnemyRating: " << enemyRating;
 		enemyRating += (int)((float)enemyRating * rat_multip * rat_multip1);
-		std::cout << " New EnemyRating: " << enemyRating << std::endl;
+		//std::cout << " New EnemyRating: " << enemyRating << std::endl;
 
 
 		//strenghen new item//
@@ -196,7 +196,7 @@ namespace Calculations{
 			percentage_difference = 1 + ((float)rating_difference / (float)enemyRating);
 		}
 
-		std::cout << percentage_difference << std::endl;
+		//std::cout << percentage_difference << std::endl;
 
 
 		switch (stats.armour_class){
@@ -223,7 +223,7 @@ namespace Calculations{
 
 
 		float req_inc = percentage_difference *multiplier;
-		std::cout << "Req_inc: " << req_inc << std::endl;
+		//std::cout << "Req_inc: " << req_inc << std::endl;
 
 		stats.agi_req = (int)((float)stats.agi_req * req_inc);
 		stats.dex_req = (int)((float)stats.dex_req * req_inc);
@@ -254,9 +254,9 @@ namespace Calculations{
 			rat_multip = 1;
 		}
 		rat_multip1 = (float)(rand() % 20) / 100.0f;
-		std::cout << "Old HeroRAting: " << heroRating;
+		//std::cout << "Old HeroRAting: " << heroRating;
 		heroRating += (int)((float)heroRating * rat_multip * rat_multip1);
-		std::cout << " New HeroRAting: " << heroRating << std::endl;
+		//std::cout << " New HeroRAting: " << heroRating << std::endl;
 
 
 		//strenghen new enemy//
@@ -287,58 +287,17 @@ namespace Calculations{
 		//aplly enemy class multiplier
 		percentage_difference *= multiplier;
 
-		float hp_mod, atk_mod, def_mod, exp_mod;
-
-		hp_mod = atk_mod = def_mod = exp_mod = 1.0f;
-
-		if (rand() % 15 > 10){
-			switch (stats.type){
-			case ENEMY_TYPE::BEAST_ENEMY:
-				hp_mod -= 0.3f;
-				atk_mod += 0.3f;
-				exp_mod += 0.3f;
-				break;
-			case ENEMY_TYPE::UNDEAD_ENEMY:
-				hp_mod += 0.1f;
-				exp_mod += 0.1f;
-				break;
-			case ENEMY_TYPE::HUMAN_ENEMY:
-				hp_mod += 0.1f;
-				def_mod += 0.2f;
-				atk_mod += 0.2f;
-				exp_mod += 0.6f;
-				break;
-			case ENEMY_TYPE::HUMANOID_ENEMY:
-				hp_mod += 0.2f;
-				def_mod -= 0.2f;
-				atk_mod -= 0.2f;
-				exp_mod += 0.5f;
-				break;
-			case ENEMY_TYPE::DEMON_ENEMY:
-				atk_mod += 1.0f;
-				def_mod -= 0.4f;
-				hp_mod -= 0.2f;
-				exp_mod += 1.2f;
-				break;
-			case ENEMY_TYPE::GOLEM_ENEMY:
-				hp_mod += 0.5f;
-				atk_mod += 0.5f;
-				def_mod += 0.3f;
-				exp_mod += 1.3f;
-				break;
-			}
-		}
-
+		
 
 		//HP will be added in Enemy class. DOn't forget it.
-		stats.max_hitpoints = (int)(((float)stats.max_hitpoints * percentage_difference) * hp_mod);
-		stats.attack = (int)(((float)stats.attack * percentage_difference)* atk_mod);
-		stats.defence = (int)(((float)stats.defence * percentage_difference)* def_mod);
-		stats.experience = (int)(((float)stats.experience* percentage_difference)* exp_mod);
+		stats.max_hitpoints = (int)((float)stats.max_hitpoints * percentage_difference);
+		stats.attack = (int)((float)stats.attack * percentage_difference);
+		stats.defence = (int)((float)stats.defence * percentage_difference);
+		stats.experience = (int)((float)stats.experience* percentage_difference);
 
 
 		calculateBaseRating(stats, true);
-		std::cout << "Base Rating: " << stats.base_rating << "Curr Rating: " << stats.current_rating << " class: " << stats.enemy_class << std::endl;
+		//std::cout << "Base Rating: " << stats.base_rating << "Curr Rating: " << stats.current_rating << " class: " << stats.enemy_class << std::endl;
 
 	}
 
@@ -369,31 +328,31 @@ namespace Calculations{
 					if (random >= 75){ //50% chance of becoming "boss" or better
 						//boss
 						enemy_class = ENEMY_CLASS::BOSS_ENEMY;
-						rating = (int)(rating * 3);
+						rating = (int)((float)rating * 3);
 						multiplier += 0.5f;
 						return;
 					}
 					//minibos
 					enemy_class = ENEMY_CLASS::MINIBOSS_ENEMY;
-					rating = (int)(rating * 2.5);
+					rating = (int)((float)rating * 2.5);
 					multiplier += 0.4f;
 					return;
 				}
 				//elite
 				enemy_class = ENEMY_CLASS::ELITE_ENEMY;
-				rating = (int)(rating * 2);
+				rating = (int)((float)rating * 2);
 				multiplier += 0.3f;
 				return;
 			}
 			//magic
 			enemy_class = ENEMY_CLASS::MAGIC_ENEMY;
-			rating = (int)(rating * 1.66);
+			rating = (int)((float)rating * 1.66);
 			multiplier += 0.2f;
 			return;
 		}
 		//rare
 		enemy_class = ENEMY_CLASS::RARE_ENEMY;
-		rating = (int)(rating * 1.25);
+		rating = (int)((float)rating * 1.25);
 		multiplier += 0.1f;
 		return;
 	}

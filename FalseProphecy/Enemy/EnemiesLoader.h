@@ -36,10 +36,8 @@ private:
 		HP,
 		ATTACK,
 		DEFENCE,
-		SPEED,
 		TYPE,
-		BASE_EXP,
-		BASE_VALUE
+		BASE_EXP
 	};
 
 	Enemy_Stats _currentData;

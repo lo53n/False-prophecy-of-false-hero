@@ -30,10 +30,10 @@ private:
 	//////////////////
 
 
-	std::string __DEFAULT_AXE_IMAGE__ = "data\\img\\weapon\\axedefault.png";
-	std::string __DEFAULT_SWORD_IMAGE__ = "data\\img\\weapon\\sworddefault.png";
-	std::string __DEFAULT_SPEAR_IMAGE__ = "data\\img\\weapon\\speardefault.png";
-	std::string __DEFAULT_MACE_IMAGE__ = "data\\img\\weapon\\macedefault.png";
+	std::string __DEFAULT_AXE_IMAGE__ = "data\\img\\weapon\\defaultaxe.png";
+	std::string __DEFAULT_SWORD_IMAGE__ = "data\\img\\weapon\\defaultsword.png";
+	std::string __DEFAULT_SPEAR_IMAGE__ = "data\\img\\weapon\\defaultspear.png";
+	std::string __DEFAULT_MACE_IMAGE__ = "data\\img\\weapon\\defaultmace.png";
 private:
 
 

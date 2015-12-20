@@ -92,7 +92,7 @@ void InventoryWindow::drawOnRenderTexture()
 		_renderTexture.draw(*(_player->getPlayerArmour(ARMOUR_TYPE::TORSO)));
 
 	_renderTexture.draw(_legsTile);
-	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr)
+	if (_player->getPlayerArmour(ARMOUR_TYPE::GREAVES) != nullptr)
 		_renderTexture.draw(*(_player->getPlayerArmour(ARMOUR_TYPE::GREAVES)));
 
 	if (_isItemHighlit) _renderTexture.draw(_itemStats);
@@ -191,14 +191,14 @@ void InventoryWindow::putItemsOnTiles()
 	if (_player->getPlayerArmour(ARMOUR_TYPE::TORSO) != nullptr)
 		_player->getPlayerArmour(ARMOUR_TYPE::TORSO)->setImagesPosition(_torsoTile.getPosition());
 
-	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr)
-		_player->getPlayerArmour(ARMOUR_TYPE::SHIELD)->setImagesPosition(_legsTile.getPosition());
+	if (_player->getPlayerArmour(ARMOUR_TYPE::GREAVES) != nullptr)
+		_player->getPlayerArmour(ARMOUR_TYPE::GREAVES)->setImagesPosition(_legsTile.getPosition());
 
 	checkIfItemExists();
 
 }
 
-void InventoryWindow::handleInput(int key, bool isPressed)
+void InventoryWindow::handleInput(int key, bool isPressed, bool& isItemsManipulated)
 {
 	if (key >= sf::Keyboard::Left && key <= sf::Keyboard::Down && isPressed){
 		highlightNextItem(key);
@@ -219,11 +219,13 @@ void InventoryWindow::handleInput(int key, bool isPressed)
 				if (_player->getPlayerBackpack().at(item) != nullptr){
 					if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::ARMOUR){
 						std::shared_ptr<Armour> item1 = (std::dynamic_pointer_cast <Armour>(_player->getPlayerBackpack()[item]));
-						_player->equipItem(item1);
+						if (_player->checkRequirements(item1))
+							_player->equipItem(item1);
 					}
 					else if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::WEAPON){
 						std::shared_ptr<Weapon> item1 = (std::dynamic_pointer_cast <Weapon>(_player->getPlayerBackpack()[item]));
-						_player->equipItem(item1);
+						if (_player->checkRequirements(item1))
+							_player->equipItem(item1);
 					}
 					else{
 						_player->getPlayerBackpack()[item]->getItemStats();
@@ -241,6 +243,7 @@ void InventoryWindow::handleInput(int key, bool isPressed)
 		}
 		catch (std::exception e){
 		}
+		isItemsManipulated = true;
 		putItemsOnTiles();
 	}
 	checkIfItemExists();
@@ -274,7 +277,7 @@ void InventoryWindow::highlightNextItem(int direction){
 
 		_highlight.setPosition((int)__FIRST_TILE_POSITION_X__ + 35.f * _highlightPosition.x, (int)__FIRST_TILE_POSITION_Y__ + 35.f * _highlightPosition.y);
 		_highlitItem = _highlightPosition.x + (_highlightPosition.y * __MAX_TILE_COLUMN_INV__);
-		std::cout << "Item No.: " << _highlitItem << std::endl;
+		//std::cout << "Item No.: " << _highlitItem << std::endl;
 	}
 	else{
 
@@ -293,7 +296,7 @@ void InventoryWindow::highlightNextItem(int direction){
 
 		_highlight.setPosition((int)__FIRST_EQ_TILE_POS_X__ + 35.f * _highlightPosition.x, (int)__FIRST_EQ_TILE_POS_Y__ + 35.f * _highlightPosition.y);
 		_highlitItem = _highlightPosition.x;
-		std::cout << "Item No.: " << _highlitItem << std::endl;
+		//std::cout << "Item No.: " << _highlitItem << std::endl;
 
 	}
 }
@@ -466,9 +469,6 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 		descriptionString += "\n\nBase attack: " + std::to_string(stats.min_dmg);
 		descriptionString += " - " + std::to_string(stats.max_dmg);
 
-		//Show item base speed
-		descriptionString += "\nBase speed: " + std::to_string(stats.speed);
-
 
 		//Show weapon multipliers
 		descriptionString += "\n\nPrimary multiplier:\n    ";
@@ -517,7 +517,12 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 			}
 		}
 		//Item requirements
-		if (stats.agi_req == stats.dex_req == stats.end_req == stats.int_req == stats.str_req == stats.wil_req == 0){
+		if (stats.agi_req == 0 &&
+			stats.dex_req == 0 &&
+			stats.end_req == 0 &&
+			stats.int_req == 0 &&
+			stats.str_req == 0 &&
+			stats.wil_req == 0){
 			descriptionString += "\n\nNo requirements";
 		}
 		else{
@@ -599,10 +604,14 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 		//Show item base speed
 		int modifier = 1;
 		if (stats.armour_class == ARMOUR_CLASS::CLOTH) modifier = -1;
-		descriptionString += "\nBase speed: " + std::to_string(stats.speed * modifier);
 
 		//Item requirements
-		if (stats.agi_req == stats.dex_req == stats.end_req == stats.int_req == stats.str_req == stats.wil_req == 0){
+		if (stats.agi_req == 0 &&
+			stats.dex_req == 0 &&
+			stats.end_req == 0 &&
+			stats.int_req == 0 &&
+			stats.str_req == 0 &&
+			stats.wil_req == 0){
 			descriptionString += "\n\nNo requirements";
 		}
 		else{

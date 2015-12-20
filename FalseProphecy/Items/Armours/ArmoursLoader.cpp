@@ -29,7 +29,6 @@ void ArmoursLoader::prepareStruct()
 	_currentData.defence = -1;
 	_currentData.dodge = -1;
 	_currentData.block = -1;
-	_currentData.speed = -1;
 
 
 	_currentData.str_req = 0;
@@ -51,8 +50,6 @@ void ArmoursLoader::showStruct()
 	std::cout << "Class: " << _currentData.armour_class << std::endl;
 
 	std::cout << "isMagic?: " << _currentData.isMagic << std::endl;
-
-	std::cout << "Speed: " << _currentData.speed << std::endl;
 
 	std::cout << "Str req: " << _currentData.str_req << std::endl;
 	std::cout << "End req: " << _currentData.end_req << std::endl;
@@ -122,7 +119,6 @@ int ArmoursLoader::checkTag(std::string tag)
 	if (tag == "IMG") return TAGVALUE::IMG;
 	else if (tag == "CLASS") return TAGVALUE::CLASS;
 	else if (tag == "TYPE") return TAGVALUE::TYPE;
-	else if (tag == "SPEED") return TAGVALUE::SPEED;
 	else if (tag == "DEFENCE") return TAGVALUE::DEFENCE;
 	else if (tag == "DODGE") return TAGVALUE::DODGE;
 	else if (tag == "BLOCK") return TAGVALUE::BLOCK;
@@ -219,17 +215,6 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 		_currentData.block = value;
 		break;
 
-		//parse armour speed boost
-	case TAGVALUE::SPEED:
-		try{
-			value = std::stoi(output[1]);
-		}
-		catch (const std::invalid_argument&){
-			value = -1;
-		}
-		_currentData.speed = value;
-		break;
-
 
 		//parse armour requirement
 	case TAGVALUE::STR_REQ:
@@ -319,9 +304,6 @@ bool ArmoursLoader::checkStructCorrectness()
 
 	if (_currentData.armour_class == -1)    {
 		_errorMsg += "\n   Invalid armour class.";
-	}
-	if (_currentData.speed == -1)    {
-		_errorMsg += "\n   Invalid armour speed.";
 	}
 	if (_currentData.block == -1 && _currentData.type == ARMOUR_TYPE::SHIELD)    {
 		_errorMsg += "\n   Invalid shield block chance.";

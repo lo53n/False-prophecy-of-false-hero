@@ -14,7 +14,7 @@ class InventoryWindow : public sf::Drawable{
 
 public:
 
-	void handleInput(int key, bool isPressed);
+	void handleInput(int key, bool isPressed, bool& isItemsManipulated);
 	void highlightNextItem(int direction);
 
 

@@ -16,6 +16,11 @@ Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::Ren
 {
 	checkMaxSizes(); 
 	findAllExitPoints();
+
+
+	_wallTile.setTexture(_resHolder->getWallTexture());
+	_floorTile.setTexture(_resHolder->getTileTexture());
+	_doorTile.setTexture(_resHolder->getDoorTexture());
 }
 Map::~Map()
 {
@@ -39,6 +44,7 @@ void Map::updateMap()
 	}
 	for (auto item : _itemsOnMap){
 		_renderTextureDisplayed->draw(*(item.second));
+		break;
 	}
 
 	for (auto enemy : _enemies){
@@ -157,34 +163,43 @@ void Map::drawMap()
 //Wall//
 void Map::drawWall(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
-	sf::RectangleShape tile;
+	/*sf::RectangleShape tile;
 	//std::cout << "1";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
-	tile.setFillColor(sf::Color::Blue);
-	mapRenderTexture.draw(tile);
+	tile.setFillColor(sf::Color::Blue);*/
+	_wallTile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
+	mapRenderTexture.draw(_wallTile);
 }
 
 //Floor//
 void Map::drawFloor(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
-	sf::RectangleShape tile;
+	/*sf::RectangleShape tile;
 	//std::cout << "0";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
-	tile.setFillColor(sf::Color::Yellow);
-	mapRenderTexture.draw(tile);
+	tile.setFillColor(sf::Color::Yellow);*/
+
+	_floorTile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
+
+	mapRenderTexture.draw(_floorTile);
 }
 
 //Entry/Exit. In short: doorway! Or long, lol.//
 void Map::drawEntry(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
-	sf::RectangleShape tile;
+	/*sf::RectangleShape tile;
 	//std::cout << "E";
 	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
 	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
-	tile.setFillColor(sf::Color::Color(122,100,23,255));
-	mapRenderTexture.draw(tile);
+	tile.setFillColor(sf::Color::Color(122,100,23,255));*/
+
+	_wallTile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
+	mapRenderTexture.draw(_wallTile);
+
+	_doorTile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
+	mapRenderTexture.draw(_doorTile);
 }
 
 //Empty space//
@@ -349,6 +364,54 @@ void Map::killOffEnemy(int enemy_id)
 	}
 }
 
+void Map::increaseEnemyTicks(int &amount)
+{
+	for (auto enemy : _enemies){
+		enemy->increaseTicks(amount);
+	}
+}
+
+
+void Map::moveEnemy(std::shared_ptr<Enemy> &enemy, sf::Vector2i newPos)
+{
+	/*
+	while (enemy->checkIfCanTakeAction()){
+		sf::Vector2i position = enemy->getEnemyPositionOnGrid();
+
+		//std::cout << "Move Enemy ID " << enemy->getEnemyId() << std::endl;
+		//std::cout << "x,y " << position.x << " " << position.y << std::endl;
+
+		changeMapTile(enemy->getTileUnderneathEnemy(), position.x, position.y);
+
+		position += sf::Vector2i(0, 1);
+		//std::cout << "x,y " << position.x << " " << position.y << std::endl;
+		enemy->setTileUnderneathEnemy(_mapTemplate[position.y][position.x]);
+
+		changeMapTile(__ENEMY_ON_MAP__, position.x, position.y);
+
+		enemy->moveEnemy(position);
+		if (position == playerPos){
+			std::cout << "Attacked player!" << std::endl;
+		}
+	}
+	*/
+
+	sf::Vector2i position = enemy->getEnemyPositionOnGrid();
+
+	//std::cout << "Move Enemy ID " << enemy->getEnemyId() << std::endl;
+	//std::cout << "x,y " << position.x << " " << position.y << std::endl;
+
+	changeMapTile(enemy->getTileUnderneathEnemy(), position.x, position.y);
+
+
+	enemy->setTileUnderneathEnemy(_mapTemplate[newPos.y][newPos.x]);
+	changeMapTile(__ENEMY_ON_MAP__, newPos.x, newPos.y);
+
+	enemy->moveEnemy(newPos);
+
+}
+
+
 ///////////////////////
 //Move around entites//
 ///////////////////////
@@ -392,8 +455,37 @@ void Map::takeEnemiesFromMap()
 void Map::generateItemAtPosition(sf::Vector2i position, int enemyRating)
 {
 	//std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0], _ratings.hero_rating));
-	std::shared_ptr<Item> item(std::make_shared<Armour>(_resHolder->getAllArmours()[0], enemyRating));
-	pushItemToMapStorage(position, item);
+	//std::shared_ptr<Item> item(std::make_shared<Armour>(_resHolder->getAllArmours()[0], enemyRating));
+	int itemNumber, size;
+
+	std::uniform_int_distribution<int> item_type_rand(0, 5);
+	switch (item_type_rand(_generator)){
+	case 0:
+	case 2:
+	case 4:
+	case 5:
+		size = _resHolder->getAllArmours().size();
+		{
+		std::uniform_int_distribution<int> randomize(0, size - 1);
+		itemNumber = randomize(_generator);
+		std::shared_ptr<Item> item(std::make_shared<Armour>(_resHolder->getAllArmours()[itemNumber], enemyRating));
+		pushItemToMapStorage(position, item);
+		}
+		break;
+	case 1:
+		//here put consumables
+	case 3:
+		size = _resHolder->getAllWeapons().size();
+		{
+		std::uniform_int_distribution<int> randomize(0, size - 1);
+		itemNumber = randomize(_generator);
+		std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[itemNumber], enemyRating));
+		pushItemToMapStorage(position, item);
+		}
+		break;
+	}
+
+
 	updateMap();
 }
 
