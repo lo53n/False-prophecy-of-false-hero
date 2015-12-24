@@ -13,6 +13,7 @@
 
 #include "../Items/Armours/Armour.h"
 #include "../Items/Weapons/Weapon.h"
+#include "../Items/Consumables/Consumable.h"
 
 #include "../Interface/GameWindowInterface.h"
 
@@ -98,6 +99,8 @@ public:
 	void equipItem(std::shared_ptr<Weapon> item);
 	void equipItem(std::shared_ptr<Armour> item);
 
+	void useItem(std::shared_ptr<Consumable> item);
+
 	void unequipItem(int slot, bool drop_item = false);
 
 	std::shared_ptr<Item> dropSelectedItem(int itemNumber, bool inBag);
@@ -112,6 +115,9 @@ public:
 	void regenStamina(bool forced = false);
 	void drainStaminaAttack(int amount);
 	bool hasStaminaToAttack();
+
+	void increaseHealth(int amount);
+	void increaseStamina(int amount);
 
 	///////////
 	//Battle!//
@@ -216,7 +222,7 @@ private:
 
 	const int __BASE_PROFICIENCY_WEAPON_EXP__ = 125;
 	const int __BASE_PROFICIENCY_HANDLE_EXP__ = 175;
-	const int __BASE_PROFICIENCY_BODY_EXP__ = 130;
+	const int __BASE_PROFICIENCY_BODY_EXP__ = 100;
 
 	const float __PROFICIENCY_LVL_INCREASE__ = 1.25f;
 

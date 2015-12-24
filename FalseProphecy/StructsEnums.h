@@ -90,6 +90,38 @@ struct Armour_struct{
 };
 
 
+enum CONSUMABLE_TYPE{
+	FOOD_TYPE,
+	POTION_TYPE,
+	PILL_TYPE
+};
+
+enum CONSUMABLE_EFFECT{
+	BODY_UP,
+	REFLEX_UP,
+	MIND_UP,
+	EXP_UP,
+	HP_REGEN,
+	SP_REGEN,
+	REGENERATE_TICK,
+	STR_UP,
+	END_UP,
+	DEX_UP,
+	AGI_UP,
+	INT_UP,
+	WIL_UP
+};
+
+struct Consumable_struct{
+	std::string name;
+	std::string img_path;
+	int texture_id;
+	bool isDefault;
+	int type;
+	int effect_type;
+	int effect_strength;
+	int base_rating;
+};
 
 enum HERO_STATS_NAMES{
 	STRENGTH,

@@ -227,6 +227,10 @@ void InventoryWindow::handleInput(int key, bool isPressed, bool& isItemsManipula
 						if (_player->checkRequirements(item1))
 							_player->equipItem(item1);
 					}
+					else if (_player->getPlayerBackpack()[item]->getItemType() == ITEM_TYPE::CONSUMABLE){
+						std::shared_ptr<Consumable> item1 = (std::dynamic_pointer_cast <Consumable>(_player->getPlayerBackpack()[item]));
+						_player->useItem(item1);
+					}
 					else{
 						_player->getPlayerBackpack()[item]->getItemStats();
 					}
@@ -637,6 +641,140 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 		}
 		descriptionString += "\n\nRating: " + std::to_string(stats.current_rating);
 
+	}
+	else if (item_generic->getItemType() == ITEM_TYPE::CONSUMABLE){
+
+		std::shared_ptr<Consumable> consumable = (std::dynamic_pointer_cast <Consumable>(item_generic));
+
+		Consumable_struct stats = consumable->getStatsStruct();
+		descriptionString += "Name: " + stats.name;
+		//TODO: put to next line if name string too long
+
+
+		//Set consumable type in patter <effect> <consumable type>
+		descriptionString += "\n\nType: ";
+
+
+		switch (stats.effect_type){
+		case CONSUMABLE_EFFECT::AGI_UP:
+			descriptionString += "Agility";
+			break;
+		case CONSUMABLE_EFFECT::STR_UP:
+			descriptionString += "Strength";
+			break;
+		case CONSUMABLE_EFFECT::END_UP:
+			descriptionString += "Endurance";
+			break;
+		case CONSUMABLE_EFFECT::DEX_UP:
+			descriptionString += "Dexterity";
+			break;
+		case CONSUMABLE_EFFECT::WIL_UP:
+			descriptionString += "Willpower";
+			break;
+		case CONSUMABLE_EFFECT::INT_UP:
+			descriptionString += "Intelligence";
+			break;
+		case CONSUMABLE_EFFECT::BODY_UP:
+			descriptionString += "Body";
+			break;
+		case CONSUMABLE_EFFECT::REFLEX_UP:
+			descriptionString += "Reflex";
+			break;
+		case CONSUMABLE_EFFECT::MIND_UP:
+			descriptionString += "Mind";
+			break;
+		case CONSUMABLE_EFFECT::EXP_UP:
+			descriptionString += "Experience";
+			break;
+		case CONSUMABLE_EFFECT::HP_REGEN:
+			descriptionString += "Health";
+			break;
+		case CONSUMABLE_EFFECT::SP_REGEN:
+			descriptionString += "Stamina";
+			break;
+		case CONSUMABLE_EFFECT::REGENERATE_TICK:
+			descriptionString += "Regeneration";
+			break;
+		}
+
+
+		switch (stats.type){
+		case CONSUMABLE_TYPE::PILL_TYPE:
+			descriptionString += " pill.";
+			break;
+		case CONSUMABLE_TYPE::FOOD_TYPE:
+			descriptionString += " food.";
+			break;
+		case CONSUMABLE_TYPE::POTION_TYPE:
+			descriptionString += " potion.";
+			break;
+		}
+
+		//Show as in "Effect: <effect>"
+
+		descriptionString += "\n\nEffect: ";
+		if (stats.effect_strength >= 0){
+			descriptionString += "+" + std::to_string(stats.effect_strength);
+		}
+		else{
+			descriptionString += "-" + std::to_string(stats.effect_strength);
+		}
+
+		if (stats.effect_type == CONSUMABLE_EFFECT::HP_REGEN ||
+			stats.effect_type == CONSUMABLE_EFFECT::SP_REGEN ||
+			stats.effect_type == CONSUMABLE_EFFECT::REGENERATE_TICK){
+			descriptionString += "%";
+			switch (stats.effect_type){
+			case CONSUMABLE_EFFECT::HP_REGEN:
+				descriptionString += " health.";
+				break;
+			case CONSUMABLE_EFFECT::SP_REGEN:
+				descriptionString += " stamina.";
+				break;
+			case CONSUMABLE_EFFECT::REGENERATE_TICK:
+				descriptionString += " healt and stamina.";
+				break;
+			}
+		}
+		else{
+			switch (stats.effect_type){
+			case CONSUMABLE_EFFECT::AGI_UP:
+				descriptionString += " to agility.";
+				break;
+			case CONSUMABLE_EFFECT::STR_UP:
+				descriptionString += " to strength.";
+				break;
+			case CONSUMABLE_EFFECT::END_UP:
+				descriptionString += " to endurance.";
+				break;
+			case CONSUMABLE_EFFECT::DEX_UP:
+				descriptionString += " to dexterity.";
+				break;
+			case CONSUMABLE_EFFECT::WIL_UP:
+				descriptionString += " to willpower.";
+				break;
+			case CONSUMABLE_EFFECT::INT_UP:
+				descriptionString += " to intelligence.";
+				break;
+			case CONSUMABLE_EFFECT::BODY_UP:
+				descriptionString += " to strength and\n endurance.";
+				break;
+			case CONSUMABLE_EFFECT::REFLEX_UP:
+				descriptionString += " to dexterity and\n agility.";
+				break;
+			case CONSUMABLE_EFFECT::MIND_UP:
+				descriptionString += " to intelligence and\n willpower";
+				break;
+			case CONSUMABLE_EFFECT::EXP_UP:
+				descriptionString += " to experience.";
+				break;
+
+			}
+
+
+			descriptionString += "\n\nRating: " + std::to_string(stats.base_rating);
+
+		}
 	}
 	else _isItemHighlit = false;
 

@@ -44,7 +44,6 @@ void Map::updateMap()
 	}
 	for (auto item : _itemsOnMap){
 		_renderTextureDisplayed->draw(*(item.second));
-		break;
 	}
 
 	for (auto enemy : _enemies){
@@ -459,28 +458,55 @@ void Map::generateItemAtPosition(sf::Vector2i position, int enemyRating)
 	int itemNumber, size;
 
 	std::uniform_int_distribution<int> item_type_rand(0, 5);
-	switch (item_type_rand(_generator)){
-	case 0:
+	std::uniform_int_distribution<int> percentage_dice(0, 99);
+	std::vector<Consumable_struct> regens, stat_increase;
+	int number = item_type_rand(_generator);
+	switch (number){
 	case 2:
-	case 4:
 	case 5:
 		size = _resHolder->getAllArmours().size();
 		{
-		std::uniform_int_distribution<int> randomize(0, size - 1);
-		itemNumber = randomize(_generator);
-		std::shared_ptr<Item> item(std::make_shared<Armour>(_resHolder->getAllArmours()[itemNumber], enemyRating));
-		pushItemToMapStorage(position, item);
+			std::uniform_int_distribution<int> randomize(0, size - 1);
+			itemNumber = randomize(_generator);
+			std::shared_ptr<Item> item(std::make_shared<Armour>(_resHolder->getAllArmours()[itemNumber], enemyRating));
+			pushItemToMapStorage(position, item);
 		}
 		break;
 	case 1:
-		//here put consumables
+	case 4:
+		for (auto stat : _resHolder->getAllConsumables()){
+			if (stat.effect_type == CONSUMABLE_EFFECT::HP_REGEN ||
+				stat.effect_type == CONSUMABLE_EFFECT::SP_REGEN ||
+				stat.effect_type == CONSUMABLE_EFFECT::REGENERATE_TICK){
+				regens.push_back(stat);
+			}
+			else{
+				stat_increase.push_back(stat);
+			}
+		}
+		if (percentage_dice(_generator) >= 80){
+			std::uniform_int_distribution<int> randomize(0, stat_increase.size() - 1);
+			itemNumber = randomize(_generator);
+			std::shared_ptr<Item> item(std::make_shared<Consumable>(stat_increase[itemNumber]));
+			pushItemToMapStorage(position, item);
+		}
+		else{
+			std::uniform_int_distribution<int> randomize(0, regens.size() - 1);
+			itemNumber = randomize(_generator);
+			std::shared_ptr<Item> item(std::make_shared<Consumable>(regens[itemNumber]));
+			pushItemToMapStorage(position, item);
+		}
+
+		break;
+	case 0:
 	case 3:
+		std::cout << "Here goes weapon, lol" << std::endl;
 		size = _resHolder->getAllWeapons().size();
 		{
-		std::uniform_int_distribution<int> randomize(0, size - 1);
-		itemNumber = randomize(_generator);
-		std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[itemNumber], enemyRating));
-		pushItemToMapStorage(position, item);
+			std::uniform_int_distribution<int> randomize(0, size - 1);
+			itemNumber = randomize(_generator);
+			std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[itemNumber], enemyRating));
+			pushItemToMapStorage(position, item);
 		}
 		break;
 	}

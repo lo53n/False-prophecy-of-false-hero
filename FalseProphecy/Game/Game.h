@@ -13,10 +13,13 @@
 
 #include "../Items/Weapons/Weapon.h"
 #include "../Items/Armours/Armour.h"
+#include "../Items/Consumables/Consumable.h"
 
 #include "../Interface/GameWindowInterface.h"
 #include "../Interface/InventoryWindow.h"
 #include "../Interface/StatusWindow.h"
+
+#include "../Events/EventsHandler.h"
 
 #include "../DevMode/DevMode.h"
 
@@ -59,6 +62,11 @@ private:
 	//////////////////
 	std::shared_ptr<ErrorHandler> _errorHandler;
 
+
+	///////////////////
+	//Events Handling//
+	///////////////////
+	std::shared_ptr<EventsHandler> _eventsHandler;
 
 
 	///////////////////////
@@ -154,6 +162,12 @@ private:
 
 	//check, if player can move into specific place
 	bool checkMovement(int direction);
+
+
+	////////////////
+	//Events stuff//
+	////////////////
+	void updateEvents();
 
 
 	/////////////

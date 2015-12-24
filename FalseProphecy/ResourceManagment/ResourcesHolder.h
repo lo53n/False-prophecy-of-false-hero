@@ -31,6 +31,7 @@ public:
 	std::vector<Enemy_Stats> getAllEnemies();
 	std::vector<Weapon_struct> getAllWeapons();
 	std::vector<Armour_struct> getAllArmours();
+	std::vector<Consumable_struct> getAllConsumables();
 
 	//get one specific item
 	std::vector<std::vector<char>> getMapFromHolder(int mapIndex);
@@ -39,6 +40,7 @@ public:
 	void setData(std::vector<Enemy_Stats> externalData);
 	void setData(std::vector<Weapon_struct> externalData);
 	void setData(std::vector<Armour_struct> externalData);
+	void setData(std::vector<Consumable_struct> externalData);
 	void setData(std::vector<std::vector<std::vector<char>>> externalData);
 
 
@@ -70,6 +72,7 @@ private:
 	std::vector<Enemy_Stats> _enemiesData;
 	std::vector<Weapon_struct> _weaponsData;
 	std::vector<Armour_struct> _armoursData;
+	std::vector<Consumable_struct> _consumablesData;
 	std::vector<std::vector<std::vector<char>>> _mapsData;
 
 

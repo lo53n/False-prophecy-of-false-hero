@@ -15,6 +15,7 @@
     <ClCompile Include="Enemy\Enemy.cpp" />
     <ClCompile Include="Enemy\EnemiesLoader.cpp" />
     <ClCompile Include="Errors\ErrorHandler.cpp" />
+    <ClCompile Include="Events\EventsHandler.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\GameState.cpp" />
     <ClCompile Include="Interface\GameWindowInterface.cpp" />
@@ -22,6 +23,8 @@
     <ClCompile Include="Interface\StatusWindow.cpp" />
     <ClCompile Include="Items\Armours\Armour.cpp" />
     <ClCompile Include="Items\Armours\ArmoursLoader.cpp" />
+    <ClCompile Include="Items\Consumables\Consumable.cpp" />
+    <ClCompile Include="Items\Consumables\ConsumablesLoader.cpp" />
     <ClCompile Include="Items\Item.cpp" />
     <ClCompile Include="Items\Weapons\Weapon.cpp" />
     <ClCompile Include="Items\Weapons\WeaponsLoader.cpp" />
@@ -39,6 +42,7 @@
     <ClInclude Include="Enemy\Enemy.h" />
     <ClInclude Include="Enemy\EnemiesLoader.h" />
     <ClInclude Include="Errors\ErrorHandler.h" />
+    <ClInclude Include="Events\EventsHandler.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameState.h" />
     <ClInclude Include="Interface\GameWindowInterface.h" />
@@ -46,6 +50,8 @@
     <ClInclude Include="Interface\StatusWindow.h" />
     <ClInclude Include="Items\Armours\Armour.h" />
     <ClInclude Include="Items\Armours\ArmoursLoader.h" />
+    <ClInclude Include="Items\Consumables\Consumable.h" />
+    <ClInclude Include="Items\Consumables\ConsumablesLoader.h" />
     <ClInclude Include="Items\Item.h" />
     <ClInclude Include="Items\Weapons\Weapon.h" />
     <ClInclude Include="Items\Weapons\WeaponsLoader.h" />

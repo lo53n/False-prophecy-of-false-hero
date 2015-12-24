@@ -8,6 +8,7 @@ namespace Calculations{
 
 	void calculateBaseRating(Weapon_struct &stats, bool second_calc = false);
 	void calculateBaseRating(Armour_struct &stats, bool second_calc = false);
+	void calculateBaseRating(Consumable_struct &stats);
 	void calculateBaseRating(Enemy_Stats &stats, bool second_calc = false);
 
 

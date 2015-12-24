@@ -13,6 +13,7 @@
 #include "../Enemy/EnemiesLoader.h"
 #include "../Items/Weapons/WeaponsLoader.h"
 #include "../Items/Armours/ArmoursLoader.h"
+#include "../Items/Consumables/ConsumablesLoader.h"
 
 
 class ResourcesLoader{

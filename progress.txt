@@ -1,8 +1,8 @@
 [MODIFICATION]
-	- items:
+	+ items:
 		++ weapons
 		++ armors
-		-- consumables
+		++ consumables
 	+ maps
 	+ enemies
 	- textures:
@@ -12,35 +12,27 @@
 				-- sword
 				-- mace
 				-- spear
-			-- armours:
-				-- head:
-					-- cloth
-					-- leather
-					-- metal
-				-- torso:
-					-- cloth
-					-- leather
-					-- metal
-				-- legs:
-					-- cloth
-					-- leather
-					-- metal
-				-- shield:
-					-- light
-					-- medium
-					-- heavy
-			-- consumables:
-					-- TBD
+			++ armours:
+				++ head
+				++ torso
+				++ legs
+				++ shield
+			++ consumables:
+				++ pills
+				++ food
+				++ potion
+			-+ enemies
 		-- normal for eq
 		-- terrain
-		-- walls
-		-- hero
+		++ walls
+		++ hero
 
 [EQUIPMENT]
 	+ picking up items
 	+ dropping items
 	+ equip items
 	+ unequip items
+	+ using consumables
 	+ calculate stats for new piece of gear depending on player strenght
 	+ refresh player stats for each equipment change
 	+ maybe item tiers - hidden item rarity "normal -> rare -> unique"
@@ -73,13 +65,10 @@
 	+ infinite dungeon
 	- spawn random enemies:
 		++ normal enemies
-		-- elite enemies
-		-- boss enemies
+		++ elite enemies
+		++ boss enemies
 		-- better balance of spawn
 	+ enemy respawning
-	- environmental stuff:
-		-- barrels
-		-- chests
 	- special maps:
 		-- boss maps
 		-- story maps
@@ -91,18 +80,18 @@
 		-- angry
 		-- calm
 		-- TBD
-	- movement
-	- attacking
-	- loot drop
+	+- movement
+	+ attacking
+	+ loot drop
 		++ drop item after death
-		-- generate item with some formula
-	- respawn:
+		++ generate item with some formula
+	+ respawn:
 		++ respawn
-		-- stregthen after dead
-	- class:
-		-- normal
-		-- elite
-		-- boss
+		++ stregthen after dead
+	+ class:
+		++ normal
+		++ elite
+		++ boss
 
 [INTERFACE]
 	+ Main Window:

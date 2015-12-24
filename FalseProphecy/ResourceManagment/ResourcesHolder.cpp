@@ -41,6 +41,11 @@ std::vector<Armour_struct> ResourcesHolder::getAllArmours()
 	return _armoursData;
 }
 
+std::vector<Consumable_struct> ResourcesHolder::getAllConsumables()
+{
+	return _consumablesData;
+}
+
 
 //get single item
 std::vector<std::vector<char>> ResourcesHolder::getMapFromHolder(int mapIndex)
@@ -60,6 +65,10 @@ void ResourcesHolder::setData(std::vector<Weapon_struct> externalData)
 void ResourcesHolder::setData(std::vector<Armour_struct> externalData)
 {
 	_armoursData = externalData;
+}
+void ResourcesHolder::setData(std::vector<Consumable_struct> externalData)
+{
+	_consumablesData = externalData;
 }
 void ResourcesHolder::setData(std::vector<std::vector<std::vector<char>>> externalData)
 {

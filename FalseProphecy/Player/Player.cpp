@@ -702,6 +702,75 @@ void Player::unequipItem(int slot, bool drop_item)
 
 }
 
+void Player::useItem(std::shared_ptr<Consumable> item)
+{
+
+	Consumable_struct stats = item->getStatsStruct();
+	int regen;
+
+	switch (stats.effect_type){
+		//ONE STAT UP
+	case CONSUMABLE_EFFECT::STR_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::STRENGTH);
+		break;
+	case CONSUMABLE_EFFECT::END_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::ENDURANCE);
+		break;
+	case CONSUMABLE_EFFECT::AGI_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::AGILITY);
+		break;
+	case CONSUMABLE_EFFECT::DEX_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::DEXTERITY);
+		break;
+	case CONSUMABLE_EFFECT::INT_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::INTELLIGENCE);
+		break;
+	case CONSUMABLE_EFFECT::WIL_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::WILLPOWER);
+		break;
+		//TWO STATS UP
+	case CONSUMABLE_EFFECT::BODY_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::STRENGTH);
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::ENDURANCE);
+		break;
+	case CONSUMABLE_EFFECT::REFLEX_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::AGILITY);
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::DEXTERITY);
+		break;
+	case CONSUMABLE_EFFECT::MIND_UP:
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::INTELLIGENCE);
+		addStatistic(stats.effect_strength, HERO_STATS_NAMES::WILLPOWER);
+		break;
+		//EXP UP
+	case CONSUMABLE_EFFECT::EXP_UP:
+		increaseExperience(stats.effect_strength);
+		break;
+		//REGENERATIONS
+	case CONSUMABLE_EFFECT::HP_REGEN:
+		regen = (int)((float)_stats.max_hp * ((float)stats.effect_strength / 100));
+		increaseHealth(regen);
+		break;
+	case CONSUMABLE_EFFECT::SP_REGEN:
+		regen = (int)((float)_stats.max_stam * ((float)stats.effect_strength / 100));
+		increaseHealth(regen);
+		break;
+	case CONSUMABLE_EFFECT::REGENERATE_TICK:
+		regen = (int)((float)_stats.max_hp * ((float)stats.effect_strength / 100));
+		increaseHealth(regen);
+		regen = (int)((float)_stats.max_stam * ((float)stats.effect_strength / 100));
+		increaseStamina(regen);
+		break;
+	}
+
+	for (int i = 0, len = _backpack.size(); i < len; i++){
+		if (std::dynamic_pointer_cast<Item>(item) == _backpack[i]){
+			_backpack.erase(_backpack.begin() + i);
+			break;
+		}
+	}
+
+}
+
 void Player::setAsUnarmed()
 {
 	_heroWeaponType = WEAPON_TYPE::UNARMED;
@@ -888,7 +957,7 @@ void Player::calculateProficientyEffectivness(int id)
 
 void Player::increaseExperience(int value)
 {
-	_stats.exp += (int)(value * (1.0f + (float)(_stats.intelligence / 200)));
+	_stats.exp += (int)(value * (1.0f + (float)(_stats.intelligence / 100)));
 	while (_stats.exp >= _stats.max_exp){
 		advanceToNextLevel();
 	}
@@ -1147,7 +1216,7 @@ void Player::calculateChances()
 	//std::cout << "dmg_Red: " << _stats.damage_reduction << "math " << (float)_stats.defence * pow(0.80f, _stats.level) / 100 << std::endl;
 	if (_stats.damage_reduction >= _stats.max_reduction){
 		_stats.damage_reduction = _stats.max_reduction;
-	}
+	} 
 
 
 	_stats.dodge_chance = (((float)_stats.dodge * (1.f + _proficiences.at(DEFENCE_PROFICIENCY).effectiveness)) * pow(0.80f, _stats.level)) / 100;
@@ -1265,4 +1334,20 @@ bool Player::hasStaminaToAttack()
 void Player::drainStaminaAttack(int amount)
 {
 	_stats.stam -= amount;
+}
+
+void Player::increaseHealth(int amount)
+{
+	if (amount >= 0){
+		_stats.hp += amount;
+		if (_stats.hp > _stats.max_hp) _stats.hp = _stats.max_hp;
+	}
+}
+void Player::increaseStamina(int amount)
+{
+	if (amount >= 0){
+		_stats.stam += amount;
+		if (_stats.stam > _stats.max_stam) _stats.stam = _stats.max_stam;
+	}
+
 }

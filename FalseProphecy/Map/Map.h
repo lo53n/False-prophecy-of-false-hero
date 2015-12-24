@@ -14,6 +14,7 @@
 #include "../Items/Item.h"
 #include "../Items/Weapons/Weapon.h"
 #include "../Items/Armours/Armour.h"
+#include "../Items/Consumables/Consumable.h"
 
 #include "../ResourceManagment/ResourcesHolder.h"
 

@@ -69,6 +69,49 @@ namespace Calculations{
 		}
 	}
 
+
+	void calculateBaseRating(Consumable_struct &stats)
+	{
+
+		int rating = 0;
+
+		switch (stats.effect_type){
+		case CONSUMABLE_EFFECT::AGI_UP:
+		case CONSUMABLE_EFFECT::STR_UP:
+		case CONSUMABLE_EFFECT::END_UP:
+		case CONSUMABLE_EFFECT::DEX_UP:
+		case CONSUMABLE_EFFECT::WIL_UP:
+		case CONSUMABLE_EFFECT::INT_UP:
+			rating = 100 * stats.effect_strength;
+			break;
+
+		case CONSUMABLE_EFFECT::BODY_UP:
+		case CONSUMABLE_EFFECT::MIND_UP:
+		case CONSUMABLE_EFFECT::REFLEX_UP:
+			rating = 175 * stats.effect_strength;
+			break;
+
+		case CONSUMABLE_EFFECT::HP_REGEN:
+			rating = 5 * stats.effect_strength;
+			break;
+		case CONSUMABLE_EFFECT::SP_REGEN:
+			rating = 10 * stats.effect_strength;
+			break;
+		case CONSUMABLE_EFFECT::REGENERATE_TICK:
+			rating = 15 * stats.effect_strength;
+			break;
+
+		case CONSUMABLE_EFFECT::EXP_UP:
+			rating = 10 * stats.effect_strength;
+			break;
+
+
+
+		}
+
+		stats.base_rating = rating;
+	}
+
 	void calculateBaseRating(Enemy_Stats &stats, bool second_calc)
 	{
 		int rating = 0;
@@ -177,7 +220,7 @@ namespace Calculations{
 		}
 
 		rating_difference = enemyRating - stats.base_rating;
-		std::cout << rating_difference << std::endl;
+		//std::cout << rating_difference << std::endl;
 		//difference < 0 weapon better than hero, needs nerf
 		//difference > 0 weapon worse than hero, needs buff
 		//difference = 0 weapon as good as hero, no change
@@ -185,7 +228,7 @@ namespace Calculations{
 		//Nerfing//
 		if (rating_difference < 0){
 			percentage_difference = 1 - ((float)(rating_difference * -1) / (float)enemyRating);
-			std::cout << percentage_difference << std::endl;
+			//std::cout << percentage_difference << std::endl;
 			if (percentage_difference < 0.05f){
 				percentage_difference = 0.05f;
 			}
@@ -231,6 +274,7 @@ namespace Calculations{
 		stats.end_req = (int)((float)stats.end_req * req_inc);
 		stats.int_req = (int)((float)stats.int_req * req_inc);
 		stats.wil_req = (int)((float)stats.wil_req * req_inc);
+
 
 		calculateBaseRating(stats, true);
 

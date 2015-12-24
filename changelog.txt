@@ -1,4 +1,20 @@
 [-----]
+2015-12-23
+
+What is done?
+
+	- started works on Events Handler
+
+[-----]
+2015-12-20
+
+What is done?
+
+	- consumables, textures and their loader
+
+	- using consumables
+
+[-----]
 2015-12-19
 
 What is done?

@@ -17,7 +17,14 @@ Game::Game()
 	//Set error handler//
 	/////////////////////
 	_errorHandler = std::make_shared<ErrorHandler>();
-		
+	
+
+	//////////////////////
+	//Set events handler//
+	//////////////////////
+	_eventsHandler = std::make_shared<EventsHandler>();
+
+
 	///////////////////////
 	//Load game resources//
 	///////////////////////
@@ -64,6 +71,7 @@ Game::Game()
 	_statusWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 
 	_errorHandler->resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
+	_eventsHandler->resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 
 
 
@@ -104,6 +112,14 @@ void Game::run(){
 	std::shared_ptr<Armour> armour3(std::make_shared<Armour>(_resHolder->getAllArmours()[4]));
 	_player->putItemInBackpack(armour3);
 
+	std::shared_ptr<Consumable> cons0(std::make_shared<Consumable>(_resHolder->getAllConsumables()[0]));
+	_player->putItemInBackpack(cons0);
+	std::shared_ptr<Consumable> cons1(std::make_shared<Consumable>(_resHolder->getAllConsumables()[1]));
+	_player->putItemInBackpack(cons1);
+	std::shared_ptr<Consumable> cons2(std::make_shared<Consumable>(_resHolder->getAllConsumables()[2]));
+	_player->putItemInBackpack(cons2);
+	std::shared_ptr<Consumable> cons3(std::make_shared<Consumable>(_resHolder->getAllConsumables()[3]));
+	_player->putItemInBackpack(cons3);
 
 	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
 
@@ -112,6 +128,8 @@ void Game::run(){
 	//_currentMap = _maps[0];
 
 	generateNewMap();
+
+	_eventsHandler->triggerEvent(EventsHandler::EVENT_TYPE::START_OF_GAME);
 
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
@@ -140,7 +158,7 @@ void Game::run(){
 void Game::processEvents()
 {
 	sf::Vector2i coords;
-	sf::Vector2f visible;
+	sf::Vector2f visible, currSize;
 	sf::Event event;
 	while (_window.pollEvent(event))
 	{
@@ -159,10 +177,15 @@ void Game::processEvents()
 		//RESIZE//
 		case sf::Event::Resized:
 			visible = sf::Vector2f((float)event.size.width, (float)event.size.height);
-			if (visible.x < 640.f || visible.y < 480){
-				visible = sf::Vector2f(640, 480);
+			if (visible.x < 640.f){
+				visible = sf::Vector2f(640, visible.y);
 				_window.setSize((sf::Vector2u)visible);
 			}
+			if (visible.y < 480.f){
+				visible = sf::Vector2f(visible.x, 480);
+				_window.setSize((sf::Vector2u)visible);
+			}
+
 
 			_gameView.setSize(visible);
 			_interfaceView.setSize(visible);
@@ -172,6 +195,7 @@ void Game::processEvents()
 			_statusWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 
 			_errorHandler->resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
+			_eventsHandler->resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 
 			_window.setView(_gameView);
 
@@ -218,7 +242,8 @@ void Game::draw()
 	if (_isInventoryWindowOpen) _window.draw(_inventoryWindow);
 	if (_isStatusWindowOpen) _window.draw(_statusWindow);
 	if (_isDevModeActive) _window.draw(_devMode);
-	if (_isErrorMessageActive) _window.draw(*_errorHandler);
+	if (_errorHandler->getErrorStatus()) _window.draw(*_errorHandler);
+	if (_eventsHandler->getEventStatus()) _window.draw(*_eventsHandler);
 	_window.display();
 }
 
@@ -278,6 +303,14 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		return;
 	}
 
+
+	//////////////////
+	//Events handler//
+	//////////////////
+	if (_eventsHandler->getEventStatus()){
+		_eventsHandler->handleInput(key, isPressed);
+		return;
+	}
 
 	/////////////////////////////////
 	//Switch interfaces and windows//
@@ -451,6 +484,13 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 }
 
 
+////////////////
+//Events stuff//
+////////////////
+void Game::updateEvents()
+{
+	_eventsHandler->updateEventTracker(_player->getPlayerStats(), _player->getPlayerPositionOnGrid());
+}
 
 bool Game::checkMovement(int direction)
 {
@@ -761,6 +801,9 @@ void Game::takeTurn()
 	}
 	_isEnemyTurn = true;
 	_player->takeTurn();
+	
+	updateEvents();
+
 	_gameWindowInterface->refreshBars(_player->getPlayerStats());
 }
 
@@ -908,7 +951,7 @@ void Game::generateDrop(sf::Vector2i position, std::shared_ptr<Enemy> enemy)
 {
 
 
-	int generated_items = (rand() % (enemy->getEnemyClass() + 3)) + enemy->getEnemyClass();
+	int generated_items = (rand() % (enemy->getEnemyClass() + 3)) + enemy->getEnemyClass()/2 + 20;
 	std::cout << "Generated items: " << generated_items << std::endl;
 
 	for (int i = 0; i < generated_items; i++){

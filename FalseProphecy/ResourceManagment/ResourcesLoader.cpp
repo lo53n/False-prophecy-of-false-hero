@@ -30,4 +30,8 @@ void ResourcesLoader::loadGameData()
 	ArmoursLoader armoursLoader(_errorHandler);
 	armoursLoader.loadFromFile();
 	_resHolder->setData(armoursLoader.getArmoursData());
+
+	ConsumablesLoader consumablesLoader(_errorHandler);
+	consumablesLoader.loadFromFile();
+	_resHolder->setData(consumablesLoader.getConsumablesData());
 }

@@ -93,6 +93,12 @@
     <Filter Include="Header Files\ResManage">
       <UniqueIdentifier>{4933573c-bce1-4a11-ab51-89811e553a0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Events">
+      <UniqueIdentifier>{136be176-2e5a-4d2c-9843-e1d7c86bc00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{130de513-51fb-4d0c-8b19-bf1d850d3b4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -160,6 +166,15 @@
     </ClCompile>
     <ClCompile Include="StatsCalculations.cpp">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Consumables\ConsumablesLoader.cpp">
+      <Filter>Resource Files\ResManage</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Consumables\Consumable.cpp">
+      <Filter>Resource Files\Items\Consumables</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\EventsHandler.cpp">
+      <Filter>Resource Files\Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +246,15 @@
     </ClInclude>
     <ClInclude Include="StatsCalculations.h">
       <Filter>Header Files\----Data----</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Consumables\ConsumablesLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Consumables\Consumable.h">
+      <Filter>Header Files\Items\Consumables</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\EventsHandler.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
