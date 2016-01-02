@@ -20,6 +20,7 @@
     <ClCompile Include="Game\GameState.cpp" />
     <ClCompile Include="Interface\GameWindowInterface.cpp" />
     <ClCompile Include="Interface\InventoryWindow.cpp" />
+    <ClCompile Include="Interface\HelpWindow.cpp" />
     <ClCompile Include="Interface\StatusWindow.cpp" />
     <ClCompile Include="Items\Armours\Armour.cpp" />
     <ClCompile Include="Items\Armours\ArmoursLoader.cpp" />
@@ -32,9 +33,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Map.cpp" />
     <ClCompile Include="Map\MapLoader.cpp" />
+    <ClCompile Include="Menu\Menu.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="ResourceManagment\ResourcesHolder.cpp" />
     <ClCompile Include="ResourceManagment\ResourcesLoader.cpp" />
+    <ClCompile Include="Save\SaveState.cpp" />
     <ClCompile Include="StatsCalculations.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +49,7 @@
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameState.h" />
     <ClInclude Include="Interface\GameWindowInterface.h" />
+    <ClInclude Include="Interface\HelpWindow.h" />
     <ClInclude Include="Interface\InventoryWindow.h" />
     <ClInclude Include="Interface\StatusWindow.h" />
     <ClInclude Include="Items\Armours\Armour.h" />
@@ -58,9 +62,11 @@
     <ClInclude Include="LoadFromResource.h" />
     <ClInclude Include="Map\Map.h" />
     <ClInclude Include="Map\MapLoader.h" />
+    <ClInclude Include="Menu\Menu.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="ResourceManagment\ResourcesHolder.h" />
     <ClInclude Include="ResourceManagment\ResourcesLoader.h" />
+    <ClInclude Include="Save\SaveState.h" />
     <ClInclude Include="StatsCalculations.h" />
     <ClInclude Include="StructsEnums.h" />
     <ClInclude Include="UIResource.h" />
@@ -75,6 +81,8 @@
     <Text Include="Z:\False-prophecy-of-false-hero\progress.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
   </ItemGroup>
   <ItemGroup>
@@ -85,11 +93,14 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\arial.ttf" />
+    <Font Include="Z:\False-prophecy-of-false-hero\FalseProphecy\Resources\times.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BD41A94C-FAC9-49DC-9D40-9167D3604BDE}</ProjectGuid>
     <RootNamespace>Project1</RootNamespace>
     <ProjectName>False prophecy of false hero</ProjectName>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -116,7 +127,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <NuGetPackageImportStamp>29dbc6b3</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>bb0f4e84</NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,12 +135,16 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>F:\biblioteki\SFML-2.2\include</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>F:\biblioteki\SFML-2.2\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -151,5 +166,17 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\boost.1.60.0.0\build\native\boost.targets" Condition="Exists('..\packages\boost.1.60.0.0\build\native\boost.targets')" />
+    <Import Project="..\packages\boost_serialization.1.60.0.0\build\native\boost_serialization.targets" Condition="Exists('..\packages\boost_serialization.1.60.0.0\build\native\boost_serialization.targets')" />
+    <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\boost.1.60.0.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.60.0.0\build\native\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_serialization.1.60.0.0\build\native\boost_serialization.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_serialization.1.60.0.0\build\native\boost_serialization.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>

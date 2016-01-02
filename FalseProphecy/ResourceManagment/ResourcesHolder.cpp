@@ -28,22 +28,42 @@ std::vector<std::vector<std::vector<char>>> ResourcesHolder::getAllMaps()
 {
 	return _mapsData;
 }
+std::vector<std::vector<std::vector<char>>> ResourcesHolder::getSpecialMaps()
+{
+	return _specialMapsData;
+}
 std::vector<Enemy_Stats> ResourcesHolder::getAllEnemies()
 {
 	return _enemiesData;
+}
+std::vector<Enemy_Stats> ResourcesHolder::getSpecialEnemies()
+{
+	return _specialEnemiesData;
 }
 std::vector<Weapon_struct> ResourcesHolder::getAllWeapons()
 {
 	return _weaponsData;
 }
+std::vector<Weapon_struct> ResourcesHolder::getSpecialWeapons()
+{
+	return _specialWeaponsData;
+}
 std::vector<Armour_struct> ResourcesHolder::getAllArmours()
 {
 	return _armoursData;
+}
+std::vector<Armour_struct> ResourcesHolder::getSpecialArmours()
+{
+	return _specialArmoursData;
 }
 
 std::vector<Consumable_struct> ResourcesHolder::getAllConsumables()
 {
 	return _consumablesData;
+}
+std::vector<Consumable_struct> ResourcesHolder::getSpecialConsumables()
+{
+	return _specialConsumablesData;
 }
 
 
@@ -54,25 +74,30 @@ std::vector<std::vector<char>> ResourcesHolder::getMapFromHolder(int mapIndex)
 }
 
 //set whole containers
-void ResourcesHolder::setData(std::vector<Enemy_Stats> externalData)
+void ResourcesHolder::setData(std::vector<Enemy_Stats> externalData, bool special)
 {
-	_enemiesData = externalData;
+	if (!special)	_enemiesData = externalData;
+	else _specialEnemiesData = externalData;
 }
-void ResourcesHolder::setData(std::vector<Weapon_struct> externalData)
+void ResourcesHolder::setData(std::vector<Weapon_struct> externalData, bool special)
 {
-	_weaponsData = externalData;
+	if (!special)	_weaponsData = externalData;
+	else _specialWeaponsData = externalData;
 }
-void ResourcesHolder::setData(std::vector<Armour_struct> externalData)
+void ResourcesHolder::setData(std::vector<Armour_struct> externalData, bool special)
 {
-	_armoursData = externalData;
+	if (!special)	_armoursData = externalData;
+	else _specialArmoursData = externalData;
 }
-void ResourcesHolder::setData(std::vector<Consumable_struct> externalData)
+void ResourcesHolder::setData(std::vector<Consumable_struct> externalData, bool special)
 {
-	_consumablesData = externalData;
+	if (!special)	_consumablesData = externalData;
+	else _specialConsumablesData = externalData;
 }
-void ResourcesHolder::setData(std::vector<std::vector<std::vector<char>>> externalData)
+void ResourcesHolder::setData(std::vector<std::vector<std::vector<char>>> externalData, bool special)
 {
-	_mapsData = externalData;
+	if (!special)	_mapsData = externalData;
+	else _specialMapsData = externalData;
 }
 
 void ResourcesHolder::loadData()

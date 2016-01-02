@@ -43,13 +43,65 @@ class Enemy;
 
 class Map : public sf::Drawable{
 
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive &ar, const unsigned int version)
+	{
+
+		takeEnemiesFromMap();
+
+		ar  & _mapIdentifier;
+		ar  & _respawn_counter;
+		ar  & _mapTemplate;
+		ar  & _maxDimensionX;
+		ar  & _maxDimensionY;
+
+		//try{
+		//	ar  & _exitPoints;
+		//}
+		//catch (boost::archive::archive_exception){}
+
+		//try{
+		//	ar  & _notPairedExitPoints;
+		//}
+		//catch (boost::archive::archive_exception){}
+
+		//try{
+		//	ar  & _mapExits;
+		//}
+		//catch (boost::archive::archive_exception){}
+
+		//try{
+		//	ar  & _enemies;
+		//}
+		//catch (boost::archive::archive_exception){}
+		//try{
+		//	ar  & _deadenemies;
+		//}
+		//catch (boost::archive::archive_exception){}
+		//try{
+		//	ar  & _itemsOnMap;
+		//}
+		//catch (boost::archive::archive_exception){}
+
+		putEnemiesOnMap();
+	}
+
 public:
 
 
 	Map();
+
+	Map(int id, int resCount, std::vector<std::vector<char>> mapTemplate, int maxX, int maxY/*, std::vector<sf::Vector2i> exitPoints, std::vector<sf::Vector2i> notPairedExits,
+		std::unordered_map<sf::Vector2i, std::shared_ptr<Map>> mapExits, std::vector<std::shared_ptr<Enemy>> enemies, std::vector<std::shared_ptr<Enemy>> deadenemies,
+		std::unordered_multimap<sf::Vector2i, std::shared_ptr<Item>> itemsOnMap*/);
+
 	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed, Hero_Ratings ratings);
 	~Map();
 
+
+	void restoreMap(sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed);
 
 
 	///////////
@@ -278,7 +330,6 @@ private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 };
-
 
 
 #endif //!MAP_MAP

@@ -99,15 +99,25 @@ x......x.....x...E
 x................x
 xxxxxExxxxxxxxExxx
 [---]
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+E....................x......E
+xxxxxxxxxxxxxxx..xx......xxxx
+              xExxxxxxExxxx
+[---]
+xxxxExxxxxxxxxxxxx
+x......x.....x...E
+x................x
+xxxxxExxxxxxxxExxx
+[---]
 xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 E....................x.....E
 xxxxxxxxxxxxxxx..xx......xxx
-              xExxxxxxExxx
+x      xx    xxExxxxxxExxxx
 [---]
-xxxxxxxEx
-E.......E
+xxxxxxxxxxEx
+E..........E
+xxxxxxxExxxx
+[---]
 xxxxExxxx
-[---]
-xxxExxx
-E.....E
-xxxExxx
+E.......E
+xxxExxxxx

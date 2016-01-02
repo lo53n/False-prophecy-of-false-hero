@@ -13,6 +13,23 @@
 
 
 class Enemy : public sf::Drawable {
+
+
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive &ar, const unsigned int version)
+	{
+		ar & _enemy_id;
+		ar & _tile_underneath;
+		ar & _stats;
+		ar & _baseStats;
+		ar & _positionOnGrid;
+		ar & _positionOnMap;
+	}
+
+
+
 public:
 
 	enum MOVEMENT{
@@ -75,6 +92,11 @@ public:
 	void resurrectAndReinforce(int heroRating);
 
 	bool checkIfAlive();
+
+	void restoreData();
+
+	Enemy();
+	Enemy(int id, char tile, Enemy_Stats stats, Enemy_Stats base_stats, sf::Vector2i posOnGrid, sf::Vector2f posOnMap);
 
 	Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGrid, char newTile, int heroRating);
 	~Enemy();
@@ -139,6 +161,24 @@ private:
 };
 
 
+namespace boost{
+	namespace serialization{
+
+		template<class Archive>
+		void serialize(Archive & ar, sf::Vector2i & v, const unsigned int version)
+		{
+			ar & v.x;
+			ar & v.y;
+		}
+		template<class Archive>
+		void serialize(Archive & ar, sf::Vector2f & v, const unsigned int version)
+		{
+			ar & v.x;
+			ar & v.y;
+		}
+	}
+
+}
 
 
 #endif //!ENEMY_ENEMY

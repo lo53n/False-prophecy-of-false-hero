@@ -35,6 +35,23 @@ Player::Player()
 
 }
 
+Player::Player(std::vector<std::shared_ptr<Item>> backpack, std::vector<Ability_Proficiencies> proficiences, Hero_Profile stats,
+	std::shared_ptr<Weapon> mainHand, std::shared_ptr<Armour> offHand, std::shared_ptr<Armour> head, std::shared_ptr<Armour> torso, std::shared_ptr<Armour> legs,
+	float turnTillRegen)
+	:
+	_backpack(backpack),
+	_proficiences(proficiences),
+	_stats(stats),
+	_mainHand(mainHand),
+	_offHand(offHand),
+	_head(head),
+	_torso(torso),
+	_legs(legs),
+	_turnsTillNaturalRegen(turnTillRegen)
+{
+
+}
+
 Player::~Player()
 {
 
@@ -51,6 +68,64 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 /////////////////////
 //Preset structures//
 /////////////////////
+
+void Player::restoreData()
+{
+
+	setPlayerPositionOnGrid(sf::Vector2i(_stats.posx, _stats.posy));
+
+
+
+	if (_mainHand != nullptr){
+		_heroWeaponHandle = _mainHand->getStatsStruct().weapon_handle;
+		_heroWeaponType = _mainHand->getStatsStruct().type;
+		_mainHand->restoreData();
+	}
+	if (_offHand != nullptr){
+		_heroOffhandType = _offHand->getStatsStruct().type;
+		_heroOffhandClass = _offHand->getStatsStruct().armour_class;
+		_offHand->restoreData();
+	}
+
+	if (_head != nullptr){
+		_heroHelmetType = _head->getStatsStruct().type;
+		_heroHelmetClass = _head->getStatsStruct().armour_class;
+		_head->restoreData();
+	}
+
+	if (_torso != nullptr){
+		_heroTorsoType = _torso->getStatsStruct().type;
+		_heroTorsoClass = _torso->getStatsStruct().armour_class;
+		_torso->restoreData();
+	}
+
+	if (_legs != nullptr){
+		_heroLegsType = _legs->getStatsStruct().type;
+		_heroLegsClass = _legs->getStatsStruct().armour_class;
+		_legs->restoreData();
+	}
+
+
+
+	for (auto item : _backpack){
+		switch (item->getItemType()){
+		case ITEM_TYPE::WEAPON:
+			std::dynamic_pointer_cast <Weapon>(item)->restoreData();
+			break;
+		case ITEM_TYPE::ARMOUR:
+			std::dynamic_pointer_cast <Armour>(item)->restoreData();
+			break;
+		case ITEM_TYPE::CONSUMABLE:
+			std::dynamic_pointer_cast <Consumable>(item)->restoreData();
+			break;
+			
+		}
+	}
+	
+
+}
+
+
 
 void Player::presetHeroStructure()
 {
@@ -117,7 +192,7 @@ void Player::presetProficiences()
 	for (int i = 0; i < 10; i++){
 		Ability_Proficiencies ability;
 		ability.id = i;
-		ability.level = 0;
+		ability.level = 1;
 		ability.effectiveness = 0.f;
 
 		if (i < 2)	ability.experience_needed = __BASE_PROFICIENCY_HANDLE_EXP__;
@@ -222,6 +297,8 @@ void Player::setPlayerPositionOnMap(sf::Vector2f newPositionOnMap)
 	_positionOnMap = newPositionOnMap;
 	_positionOnGrid = (sf::Vector2i)(_positionOnMap / __PLAYER_HEIGHT__);
 	_playerShape.setPosition(_positionOnMap);
+	_stats.posx = _positionOnGrid.x;
+	_stats.posy = _positionOnGrid.y;
 }
 
 void Player::setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid)
@@ -229,7 +306,10 @@ void Player::setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid)
 	_positionOnGrid = newPositionOnGrid;
 	_positionOnMap = (sf::Vector2f)(_positionOnGrid * (int)__PLAYER_HEIGHT__);
 	_playerShape.setPosition(_positionOnMap);
+	_stats.posx = _positionOnGrid.x;
+	_stats.posy = _positionOnGrid.y;
 }
+
 
 void Player::setGameWindowInterface(std::shared_ptr<GameWindowInterface> GWI)
 {
@@ -268,6 +348,9 @@ void Player::movePlayer(int direction)
 	_positionOnMap += (sf::Vector2f)(movement * (int)__PLAYER_HEIGHT__);
 
 	_isNeedToMoveSprite = true;
+
+	_stats.posx = _positionOnGrid.x;
+	_stats.posy = _positionOnGrid.y;
 	//std::cout << "My position on grid: " << _positionOnGrid.x << " " << _positionOnGrid.y << std::endl;
 	//std::cout << "My position on map: " << _positionOnMap.x << " " << _positionOnMap.y << std::endl;
 }
@@ -805,7 +888,7 @@ void Player::calculateChallengeRating()
 	_ratings.overral_rating += _ratings.legs_rating;
 
 
-	std::cout << "Challenge rating: " << _ratings.overral_rating << std::endl;
+	//std::cout << "Challenge rating: " << _ratings.overral_rating << std::endl;
 
 }
 
@@ -906,12 +989,13 @@ void Player::increaseProficiency(int id, int amount)
 
 		calculateProficientyEffectivness(id);
 
-		std::cout << _proficiences[id].name << " lvl up to " << _proficiences[id].level << " eff: " << _proficiences[id].effectiveness << std::endl;
+		//std::cout << _proficiences[id].name << " lvl up to " << _proficiences[id].level << " eff: " << _proficiences[id].effectiveness << std::endl;
 	}
 }
 
 void Player::calculateProficientyEffectivness(int id)
 {
+	_proficiences[id].effectiveness = 0;
 	//handle
 	if (id < 2){
 		for (int i = 1; i < _proficiences[id].level; i++){
@@ -1007,8 +1091,8 @@ void Player::addStatistic(int amount, int type)
 		_stats.hp += amount * 10;
 		_stats.max_hp += amount * 10;
 
-		_stats.stam += amount * 2;
-		_stats.max_stam += amount * 2;
+		_stats.stam += amount;
+		_stats.max_stam += amount;
 
 		break;
 	case HERO_STATS_NAMES::DEXTERITY:
@@ -1252,16 +1336,10 @@ void Player::regenHealth(bool forced)
 {
 	int regeneration;
 	if (!forced){
-		regeneration = (int)((float)_stats.max_hp * 0.15f);
-		if (regeneration > 15){
-			_stats.hp += regeneration;
-		}
-		else{
-			_stats.hp += 15;
-		}
+		_stats.hp += 15 + _stats.willpower / 5;
 	}
 	else{
-		_stats.hp += (int)((float)_stats.max_hp * 0.05f);
+		_stats.hp += 5 + _stats.willpower / 10;
 	}
 	if (_stats.hp > _stats.max_hp) _stats.hp = _stats.max_hp;
 
@@ -1270,16 +1348,10 @@ void Player::regenStamina(bool forced)
 {
 	int regeneration;
 	if (!forced){
-		regeneration = (int)((float)_stats.max_stam * 0.15f);
-		if (regeneration > 15){
-			_stats.stam += regeneration;
-		}
-		else{
-			_stats.stam += 15;
-		}
+		_stats.stam += 15 + _stats.willpower / 5;
 	}
 	else{
-		_stats.stam += 5;
+		_stats.stam += 6 + _stats.willpower / 10;
 	}
 	if (_stats.stam > _stats.max_stam) _stats.stam = _stats.max_stam;
 }

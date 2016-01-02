@@ -99,6 +99,21 @@
     <Filter Include="Header Files\Events">
       <UniqueIdentifier>{130de513-51fb-4d0c-8b19-bf1d850d3b4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SaveAndLoad">
+      <UniqueIdentifier>{3df9d636-3aea-47f8-a048-cd8acd455511}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\SaveAndLoad">
+      <UniqueIdentifier>{c2f3f388-0d7d-450d-8d58-bb10ba8e0039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\zboost">
+      <UniqueIdentifier>{295a9522-7ee1-4f79-9ec5-ea4ac48abe18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Menu">
+      <UniqueIdentifier>{a95fbab6-6ca5-4d06-be93-fe4ef8af93d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Menu">
+      <UniqueIdentifier>{e9fb36b7-8687-4c4a-a3e1-2a5ee9f997dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -175,6 +190,129 @@
     </ClCompile>
     <ClCompile Include="Events\EventsHandler.cpp">
       <Filter>Resource Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Save\SaveState.cpp">
+      <Filter>Resource Files\SaveAndLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.archive_exception.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_archive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_iarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_iserializer.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_oarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_oserializer.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_pointer_iserializer.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_pointer_oserializer.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_serializer_map.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_text_iprimitive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_text_oprimitive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_text_wiprimitive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_text_woprimitive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.basic_xml_archive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.binary_iarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.binary_oarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.binary_wiarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.binary_woarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.codecvt_null.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.extended_type_info.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.extended_type_info_no_rtti.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.extended_type_info_typeid.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.polymorphic_iarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.polymorphic_oarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.stl_port.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.text_iarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.text_oarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.text_wiarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.text_woarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.utf8_codecvt_facet.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.void_cast.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.xml_archive_exception.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.xml_grammar.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.xml_iarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.xml_oarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.xml_wgrammar.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.xml_wiarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_serialization.xml_woarchive.cpp">
+      <Filter>Resource Files\zboost</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu\Menu.cpp">
+      <Filter>Resource Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\HelpWindow.cpp">
+      <Filter>Resource Files\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +394,15 @@
     <ClInclude Include="Events\EventsHandler.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
+    <ClInclude Include="Save\SaveState.h">
+      <Filter>Header Files\SaveAndLoad</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu\Menu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\HelpWindow.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\changelog.txt" />
@@ -278,9 +425,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Z:\False-prophecy-of-false-hero\README.md" />
+    <None Include="packages.config" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\arial.ttf">
+      <Filter>Resource Files\----Data----\Resources\Interfaces</Filter>
+    </Font>
+    <Font Include="Z:\False-prophecy-of-false-hero\FalseProphecy\Resources\times.ttf">
       <Filter>Resource Files\----Data----\Resources\Interfaces</Filter>
     </Font>
   </ItemGroup>

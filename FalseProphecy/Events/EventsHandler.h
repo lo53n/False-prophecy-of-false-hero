@@ -14,8 +14,14 @@
 class EventsHandler : public sf::Drawable{
 
 public:
+	GameEvents getEventsStructure();
+	void restoreEventData(GameEvents &events);
+	
+	void printStruct();
 
 	bool getEventStatus();
+
+
 
 	void resizeByGameWindow(sf::Vector2f center);
 
@@ -30,27 +36,10 @@ public:
 
 	void triggerEvent(int event_number);
 
+	void resetEvents();
+
 	void updateEventTracker(Hero_Profile hero_stats, sf::Vector2i hero_pos, int curr_map = -1);
 
-	enum EVENT_TYPE{
-		START_OF_GAME,		//start of plot
-		FIRST_INSTRUCTIONS, //about movement
-		FIRST_STEP,			//info about laying items
-		ITEMS_FIRST_LOOKOUT,//lookout for items
-		ITEMS_INSTRUCTIONS	//instuctions about items
-
-
-
-	};
-	struct GameEvents{
-		bool start_of_game = false;
-		bool first_instructions = false;
-		bool first_step = false;
-		bool items_first_lookout = false;
-		bool items_instructions = false;
-
-
-	};
 
 private:
 
@@ -95,6 +84,12 @@ private:
 	void triggerItemsFirstLookoutEvent();
 	//trigger instructions for inventory
 	void triggerItemsInstructionEvent();
+	//trigger meeting the first enemy (bones?)
+	void triggerFirstEnemyEvent();
+	//trigger killing the first enemy (bones?)
+	void triggerKilledFirstEnemyEvent();
+	//trigger first boss
+	void triggerFirstBossEvent();
 
 
 };

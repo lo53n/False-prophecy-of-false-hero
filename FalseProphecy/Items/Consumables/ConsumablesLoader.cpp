@@ -231,7 +231,7 @@ bool ConsumablesLoader::checkStructCorrectness()
 
 	//calculate rating//
 	Calculations::calculateBaseRating(_currentData);
-	std::cout << "Consumable Rating: " << _currentData.base_rating << std::endl;
+	//std::cout << "Consumable Rating: " << _currentData.base_rating << std::endl;
 
 	return isSuccessful;
 }

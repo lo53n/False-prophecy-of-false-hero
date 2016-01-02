@@ -42,6 +42,18 @@ GameWindowInterface::GameWindowInterface()
 
 	sf::Vector2f upperSize = _upperInterface.getSize();
 
+	_helpIconBackground.setPosition(upperSize.x - 160, __ICON_PLACEMENT_Y__);
+	_helpIconBackground.setSize(sf::Vector2f(32.f, 32.f));
+	_helpIconBackground.setFillColor(sf::Color(90, 90, 30, 255));
+	_helpIconBackground.setOutlineThickness(3.f);
+	_helpIconBackground.setOutlineColor(sf::Color(90, 90, 30, 50));
+
+	_helpIconTexture.loadFromImage(LoadImageFromResource("HELP_ICON"));
+
+	_helpIcon.setPosition(upperSize.x - 160, __ICON_PLACEMENT_Y__);
+	_helpIcon.setSize(sf::Vector2f(32.f, 32.f));
+	_helpIcon.setTexture(&_helpIconTexture);
+
 	_inventoryIconBackground.setPosition(upperSize.x - 120, __ICON_PLACEMENT_Y__);
 	_inventoryIconBackground.setSize(sf::Vector2f(32.f, 32.f));
 	_inventoryIconBackground.setFillColor(sf::Color(90, 90, 30, 255));
@@ -79,8 +91,14 @@ GameWindowInterface::GameWindowInterface()
 	_menuIcon.setTexture(&_menuIconTexture);
 
 
-
 	_font = LoadFontFromResource("arialfont");
+
+	_helpText.setString("[F1]");
+	_helpText.setCharacterSize(14);
+	_helpText.setFont(_font);
+	_helpText.setStyle(sf::Text::Bold);
+	_helpText.setColor(sf::Color::Black);
+	_helpText.setPosition(upperSize.x - 110, __TEXT_PLACEMENT_Y__);
 
 	_inventoryText.setString("[I]");
 	_inventoryText.setCharacterSize(14);
@@ -150,14 +168,17 @@ void GameWindowInterface::draw(sf::RenderTarget& target, sf::RenderStates states
 	target.draw(_staminaBar);
 	target.draw(_staminaBarText);
 
+	target.draw(_helpIconBackground);
 	target.draw(_inventoryIconBackground);
 	target.draw(_statusIconBackground);
 	target.draw(_menuIconBackground);
 
+	target.draw(_helpIcon);
 	target.draw(_inventoryIcon);
 	target.draw(_statusIcon);
 	target.draw(_menuIcon);
 
+	target.draw(_helpText);
 	target.draw(_inventoryText);
 	target.draw(_statusText);
 	target.draw(_menuText);
@@ -171,17 +192,20 @@ void GameWindowInterface::setGameWindowInterfaceSizeByResize(sf::Vector2f newSiz
 
 	sf::Vector2f upperSize = _upperInterface.getSize();
 
+	_helpIconBackground.setPosition(upperSize.x - 160, __ICON_PLACEMENT_Y__);
 	_inventoryIconBackground.setPosition(upperSize.x - 120, __ICON_PLACEMENT_Y__);
 	_statusIconBackground.setPosition(upperSize.x - 80, __ICON_PLACEMENT_Y__);
 	_menuIconBackground.setPosition(upperSize.x - 40, __ICON_PLACEMENT_Y__);
 
+	_helpIcon.setPosition(upperSize.x - 160, __ICON_PLACEMENT_Y__);
 	_inventoryIcon.setPosition(upperSize.x - 120, __ICON_PLACEMENT_Y__);
 	_statusIcon.setPosition(upperSize.x - 80, __ICON_PLACEMENT_Y__);
 	_menuIcon.setPosition(upperSize.x - 40, __ICON_PLACEMENT_Y__);
 
-	_inventoryText.setPosition(upperSize.x - 110, __TEXT_PLACEMENT_Y__);
-	_statusText.setPosition(upperSize.x - 73, __TEXT_PLACEMENT_Y__);
-	_menuText.setPosition(upperSize.x - 43, __TEXT_PLACEMENT_Y__);
+	_helpText.setPosition(upperSize.x - 158, __TEXT_PLACEMENT_Y__);
+	_inventoryText.setPosition(upperSize.x - 112, __TEXT_PLACEMENT_Y__);
+	_statusText.setPosition(upperSize.x - 75, __TEXT_PLACEMENT_Y__);
+	_menuText.setPosition(upperSize.x - 45, __TEXT_PLACEMENT_Y__);
 
 }
 

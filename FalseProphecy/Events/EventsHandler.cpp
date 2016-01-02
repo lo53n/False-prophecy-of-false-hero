@@ -3,19 +3,19 @@
 EventsHandler::EventsHandler()
 {
 
-	sf::Vector2f size(404.f, 404.0f);
+	sf::Vector2f size(464.f, 394.0f);
 	_renderTexture.create((unsigned int)size.x, (unsigned int)size.y);
 
 	_font = LoadFontFromResource("Arialfont");
 	_eventMsg.setFont(_font);
-	_eventMsg.setCharacterSize(14);
-	_eventMsg.setPosition(5.0f, 5.0f);
+	_eventMsg.setCharacterSize(18);
+	_eventMsg.setPosition(7.0f, 7.0f);
 	_eventMsg.setColor(sf::Color(0, 0, 0));
 
 	_eventConfirmUpper.setFont(_font);
-	_eventConfirmUpper.setCharacterSize(13);
+	_eventConfirmUpper.setCharacterSize(15);
 	_eventConfirmUpper.setString("[Enter] to close.");
-	_eventConfirmUpper.setPosition((int)(size.x / 2 - _eventConfirmUpper.getGlobalBounds().width / 2), 370.0f);
+	_eventConfirmUpper.setPosition((int)(size.x / 2 - _eventConfirmUpper.getGlobalBounds().width / 2), 3650.0f);
 	_eventConfirmUpper.setColor(sf::Color(0, 0, 0));
 
 	_eventConfirmLower.setFont(_font);
@@ -25,11 +25,11 @@ EventsHandler::EventsHandler()
 	_eventConfirmLower.setColor(sf::Color(0, 0, 0));
 
 
-	_eventWindow.setSize(sf::Vector2f(400.0f, 400.0f));
+	_eventWindow.setSize(sf::Vector2f(460.0f, 390.0f));
 	_eventWindow.setPosition(sf::Vector2f(2.0f, 2.0f));
 	_eventWindow.setOutlineThickness(2.0f);
-	_eventWindow.setOutlineColor(sf::Color(240, 240, 240));
-	_eventWindow.setFillColor(sf::Color(255, 255, 255));
+	_eventWindow.setOutlineColor(sf::Color(150, 150, 240));
+	_eventWindow.setFillColor(sf::Color(110,110, 255));
 
 
 	_hero_pos = sf::Vector2i(0, 0);
@@ -45,6 +45,21 @@ bool EventsHandler::getEventStatus()
 	return isEventMessage;
 }
 
+GameEvents EventsHandler::getEventsStructure()
+{
+	return _events;
+}
+
+void EventsHandler::restoreEventData(GameEvents &events)
+{
+	_events = events;
+}
+
+
+void EventsHandler::printStruct()
+{
+
+}
 void EventsHandler::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(_sprite);
@@ -155,6 +170,27 @@ void EventsHandler::triggerEvent(int event_number)
 		triggerItemsInstructionEvent();
 
 		break;
+
+	case EVENT_TYPE::FIRST_ENEMY_MEET:
+		_events.first_enemy_meet = true;
+		isEventMessage = true;
+		triggerFirstEnemyEvent();
+
+		break;
+
+	case EVENT_TYPE::FIRST_ENEMY_KILLED:
+		_events.first_enemy_killed = true;
+		isEventMessage = true;
+		triggerKilledFirstEnemyEvent();
+
+		break;
+
+	case EVENT_TYPE::FIRST_BOSS:
+		_events.first_boss = true;
+		isEventMessage = true;
+		triggerFirstBossEvent();
+
+		break;
 	
 	}
 
@@ -180,17 +216,30 @@ void EventsHandler::updateEventTracker(Hero_Profile hero_stats, sf::Vector2i her
 
 }
 
+void EventsHandler::resetEvents()
+{
+
+	_events.start_of_game = false;
+	_events.first_instructions = false;
+	_events.first_step = false;
+	_events.items_first_lookout = false;
+	_events.items_instructions = false;
+	_events.first_enemy_meet = false;
+	_events.first_enemy_killed = false;
+
+	_events.first_boss = false;
+}
 void EventsHandler::triggerStartOfGameEvent()
 {
 
 	std::string msg = "";
 
-	msg += "\tYou slowly come back to your senses. You don't even \nremember how many times you fainted. ";
-	msg += "Hell, you don't \neven know how long you are here, wandering aimlessly in \nthis labirynth. ";
-	msg += "Like some kind of abomination, with no need \nof food or water to live through another hours and days.";
-	msg += "\n\tWhat is it...? Swelling your mind from inside... \n\tRegret? Anger? Loneliness? \n\tMaybe awareness of long lost humanity?";
-	msg += "\n\tHas everyone who entered this labirynth ended same as \nyou? One can't help but wonder. Is it fate? Or curse? ";
-	msg += "\n\tDeep inside of this monstrous construction should be \nsanctuary. Prohpecy said the priestess will find solution \nto Kingdom's problems. ";
+	msg += "\tYou slowly came back to your senses. You didn't even \nremember how many times you fainted. ";
+	msg += "Hell, you didn't \neven know how long you were here, wandering aimlessly in \nthis labirynth. ";
+	msg += "Like some kind of abomination with no need \nof food or water to live through another hours and days.";
+	msg += "\n\tWhat was it...? It was swelling your mind from inside... \n\tRegret? Anger? Loneliness? \n\tMaybe awareness of long lost humanity?";
+	msg += "\n\tHas everyone who entered this labirynth ended same as \nyou? One couldn't help but wonder. Was it fate? Was it curse? ";
+	msg += "\n\tDeep inside of this monstrous construction should be \nsanctuary. Prohpecy said the Priestess will find solution \nto Kingdom's problems. ";
 	msg += "But... \n\tWhat if? What if Kingdom's problem is this labirynth? \n\tWill she help you?";
 	msg += "\n\tSince long ago you had none but one choice.";
 	msg += "\n\tPry forward. To once again see the sun.";
@@ -203,9 +252,9 @@ void EventsHandler::triggerFirstInstructionsEvent()
 {
 	std::string msg = "";
 
-	msg += "\n\n\n\n\n                                   [INSTRUCTIONS]\n";
-	msg += "\tTo move around character, use arrow keys. Each step is \none turn. You can move only up, down, left or right.";
-	msg += "\n\tTo move around camera, use keypad. It's free action, you \ncan do it any moment without using turn. Use it to \nfind exits or assess situation.";
+	msg += "\n\n\n\n\n                                 [INSTRUCTIONS]\n";
+	msg += "\tTo move around character use arrow keys. Each step is \none turn. You can move only up, down, left or right.";
+	msg += "\n\tTo move around camera use keypad. It's free action, you \ncan do it any moment without using turn. Use it to find \nexits or assess situation.";
 	
 	
 	//msg += "\n\tThree bars in the upper left corner are your hit points, \nstamina and experience points indicators. You can find more \ndetails on character in [C]haracter Screen.";
@@ -222,9 +271,9 @@ void EventsHandler::triggerFirstStepEvent()
 	std::string msg = "";
 
 	msg += "\n\tYou took a good look around. You noticed big, crumbled \nhole in the ceiling.";
-	msg += "\n\tThere was no way you could climb back, ceiling was five \nor six meters high. \n\tYou suddenly remembered reason behind fainting. ";
+	msg += "There was no way you could climb back, \nceiling was five or six meters high. \n\tYou suddenly remembered reason behind fainting. ";
 	msg += "\n\tWhen you were checking one of rooms, floor suddenly \nstarted to crumble and finally colapsed with you. Last thing \nyou vaguely remember is slamming hard on cold, stone floor.";
-	msg += "\n\tFeeling of unfamiliarity assaulted you from every side. It \nwasn't bad sign, however. You never was here, and it seems \nlike nobody was here either.";
+	msg += "\n\tFeeling of unfamiliarity assaulted you from every side. It \nwasn't bad sign, however. You never was here and it seems \nlike nobody was here either.";
 	msg += "\n\tYou found new path, a path you never saw before. Air was \nstrangely filled power, prickling subtly your skin. You didn't \nfelt this before. ";
 	msg += "\n\tHope arose once more. \n\tSanctuary might be here, in this lower level of labirynth.";
 
@@ -235,9 +284,9 @@ void EventsHandler::triggerItemsFirstLookoutEvent()
 {
 	std::string msg = "";
 
-	msg += "\tYou noticed your old, rusted sword laying few meters from \nyou. It looks unreliable and dull, but it's a weapon nonetheless. \nA weapon you spent days with as only companion in your \nmisery. ";
-	msg += "\n\tYou wielded many weapons in your past. It was natural for \na soldier. You felt strange sense of security, when you had \none in hand or sheathed in scabbard. ";
-	msg += "Now, without it, scary \nand suffocating vulnerability was filling your body. \n\tYou needed it. \n\tA weapon. Any will do. \n\tAs it was part of your body.";
+	msg += "\n\n\tYou noticed old, rusted sword laying few meters farther. \nIt looked chipped and dull, but it was a weapon nonetheless. \nA weapon you spent days with as only companion in your \nmisery. ";
+	msg += "\n\tYou wielded many weapons in your past. It was natural \nfor soldier. You always felt strange sense of security with \none in hand or sheathed by waist. ";
+	msg += "Now, without it, scary and \nsuffocating vulnerability was filling your body. \n\tYou needed it. \n\tA weapon. Any will do. \n\tAs it was part of your body.";
 
 	_eventMsg.setString(msg);
 
@@ -247,12 +296,47 @@ void EventsHandler::triggerItemsInstructionEvent()
 {
 	std::string msg = "";
 
-	msg += "\n\n\n\n\n                                   [INSTRUCTIONS]\n";
-	msg += "\tTo pick up item, walk on it and press [D] key. It will be placed \nin your [I]nventory.";
+	msg += "\n\n\n\n\n                              [INSTRUCTIONS]\n";
+	msg += "\tTo pick up item, walk on it and press [D] key. It will be \nplaced in your [I]nventory.";
 	msg += "\n\tWhen in Inventory window, press [Return] to equip or use \nselected item. Press [Tab] to switch between your equipment \nand bag. When in equipment tab, [Return] will unequip item.";
-	msg += "\n\tIf you want to drop item, press [D] while in Inventory. That \nmight prove useful since you can carry limited amout of \nitems.";
+	msg += "\n\tIf you want to drop item, press [D] while in Inventory. \nThat might prove useful since you can carry limited amout of \nitems.";
 	
 
 	_eventMsg.setString(msg);
 
 }
+
+void EventsHandler::triggerFirstEnemyEvent()
+{
+	std::string msg = "";
+
+	msg += "\n\n\n\n\tIt was something unholy. Abomination you never met \nbefore in your short life.";
+	msg += "\n\tIt's rattling bones made blood-chilling noise. Yet it didn't \nnoticed you yet. Or maybe it didn't want to notice you?";
+	msg += "\n\tThe skeleton was on your way, on the only path on your \nholy mission. You didn't meet previously any enemy in this \nlabirynth. ";
+	msg += "\n\tThat could mean something. Down there could be either \nSanctuary you need to find or your demise.";
+	msg += "\n\tBut still, only option for you was to fight.";
+
+	_eventMsg.setString(msg);
+}
+
+void EventsHandler::triggerKilledFirstEnemyEvent()
+{
+	std::string msg = "";
+
+	msg += "\n\n\n\n\tIt was strange feeling. Very different from fighting flesh \nand blood humans, as you did in academy.";
+	msg += "\n\tThe living dead made no noise besides rattling, it didn't \nscreamed from pain nor agony. It was so unsettling, you \nhad troubles with concentrating on fight.";
+	msg += "\n\tYet stranger was the feeling of power which came after \nturning skeleton to pile of bones. You felt a little stronger.";
+	msg += "\nNot much. Only by a bit. But you certainly felt it. Where did \nthat power came from?";
+	msg += "\n\tAnd again, was it curse or blessing?";
+
+	_eventMsg.setString(msg);
+}
+void EventsHandler::triggerFirstBossEvent()
+{
+	std::string msg = "";
+
+
+	_eventMsg.setString(msg);
+}
+
+

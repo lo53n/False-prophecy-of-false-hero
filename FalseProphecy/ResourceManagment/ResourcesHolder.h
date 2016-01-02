@@ -28,20 +28,29 @@ public:
 
 	//get containers
 	std::vector<std::vector<std::vector<char>>> getAllMaps();
+	std::vector<std::vector<std::vector<char>>> getSpecialMaps();
+
 	std::vector<Enemy_Stats> getAllEnemies();
+	std::vector<Enemy_Stats> getSpecialEnemies();
+
 	std::vector<Weapon_struct> getAllWeapons();
+	std::vector<Weapon_struct> getSpecialWeapons();
+
 	std::vector<Armour_struct> getAllArmours();
+	std::vector<Armour_struct> getSpecialArmours();
+
 	std::vector<Consumable_struct> getAllConsumables();
+	std::vector<Consumable_struct> getSpecialConsumables();
 
 	//get one specific item
 	std::vector<std::vector<char>> getMapFromHolder(int mapIndex);
 
 	//set whole containers
-	void setData(std::vector<Enemy_Stats> externalData);
-	void setData(std::vector<Weapon_struct> externalData);
-	void setData(std::vector<Armour_struct> externalData);
-	void setData(std::vector<Consumable_struct> externalData);
-	void setData(std::vector<std::vector<std::vector<char>>> externalData);
+	void setData(std::vector<Enemy_Stats> externalData, bool special = false);
+	void setData(std::vector<Weapon_struct> externalData, bool special = false);
+	void setData(std::vector<Armour_struct> externalData, bool special = false);
+	void setData(std::vector<Consumable_struct> externalData, bool special = false);
+	void setData(std::vector<std::vector<std::vector<char>>> externalData, bool special = false);
 
 
 	//load data
@@ -70,10 +79,19 @@ private:
 
 	//containers
 	std::vector<Enemy_Stats> _enemiesData;
+	std::vector<Enemy_Stats> _specialEnemiesData;
+
 	std::vector<Weapon_struct> _weaponsData;
+	std::vector<Weapon_struct> _specialWeaponsData;
+
 	std::vector<Armour_struct> _armoursData;
+	std::vector<Armour_struct> _specialArmoursData;
+
 	std::vector<Consumable_struct> _consumablesData;
+	std::vector<Consumable_struct> _specialConsumablesData;
+
 	std::vector<std::vector<std::vector<char>>> _mapsData;
+	std::vector<std::vector<std::vector<char>>> _specialMapsData;
 
 
 	std::vector<std::shared_ptr<sf::Texture>> _tilesTextures;

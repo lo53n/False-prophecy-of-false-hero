@@ -22,6 +22,7 @@ public:
 	~EnemiesLoader();
 
 	std::vector<Enemy_Stats>& getEnemiesData();
+	std::vector<Enemy_Stats>& getSpecialEnemiesData();
 
 private:
 

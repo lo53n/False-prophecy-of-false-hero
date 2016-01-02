@@ -43,7 +43,7 @@ InventoryWindow::InventoryWindow()
 	//position set in setInventoryWindowTiles()
 	_font = LoadFontFromResource("Arialfont");
 	_itemStats.setFont(_font);
-	_itemStats.setCharacterSize(12);
+	_itemStats.setCharacterSize(13);
 
 	_itemStats.setString("asdasd");
 
@@ -550,7 +550,6 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 				descriptionString += "\n     " + std::to_string(stats.wil_req) + " Willpower";
 			}
 		}
-		descriptionString += "\n\nRating: " + std::to_string(stats.current_rating);
 
 	}
 	else if (item_generic->getItemType() == ITEM_TYPE::ARMOUR){
@@ -639,7 +638,6 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 				descriptionString += "\n     " + std::to_string(stats.wil_req) + " Willpower";
 			}
 		}
-		descriptionString += "\n\nRating: " + std::to_string(stats.current_rating);
 
 	}
 	else if (item_generic->getItemType() == ITEM_TYPE::CONSUMABLE){
@@ -770,9 +768,6 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 				break;
 
 			}
-
-
-			descriptionString += "\n\nRating: " + std::to_string(stats.base_rating);
 
 		}
 	}

@@ -25,6 +25,9 @@ public:
 	ArmoursLoader(std::shared_ptr<ErrorHandler> errorHandler);
 	~ArmoursLoader();
 	std::vector<Armour_struct>& getArmoursData();
+
+	std::vector<Armour_struct> loadSpecialMaps();
+
 private:
 
 	std::shared_ptr<ErrorHandler> _errorHandler;
@@ -53,6 +56,7 @@ private:
 	//Current loaded armour
 
 	Armour_struct _currentData;
+	std::vector<Armour_struct> _allArmour;
 	int _armourCount = 0;
 
 private:

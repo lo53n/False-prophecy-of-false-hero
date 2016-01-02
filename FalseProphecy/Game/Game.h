@@ -18,16 +18,33 @@
 #include "../Interface/GameWindowInterface.h"
 #include "../Interface/InventoryWindow.h"
 #include "../Interface/StatusWindow.h"
-
+#include "../Interface/HelpWindow.h"
+#include "../Menu/Menu.h"
 #include "../Events/EventsHandler.h"
 
 #include "../DevMode/DevMode.h"
+
+#include "../Save/SaveState.h"
 
 
 class Game {
 public:
 	Game();
 	void run();
+
+
+
+	///////////////////
+	//Events Handling//
+	///////////////////
+	std::shared_ptr<EventsHandler> _eventsHandler;
+
+
+	//fix it later
+	ResourcesHolder *_resHolder = &ResourcesHolder::getResourcesHolder();
+	std::shared_ptr<Player> _player;
+
+	int _currentMapNumber = 0;
 
 
 private:
@@ -45,7 +62,9 @@ private:
 	/////////////////////////////
 	//Some bool to check events//
 	/////////////////////////////
-	bool _isPlaying = true;
+	bool _isPlaying = false;
+	bool _isMenu = true;
+	bool _isHelp = false;
 	bool _isStatusWindowOpen = false;
 	bool _isInventoryWindowOpen = false;
 	bool _isDevModeActive = false;
@@ -63,10 +82,11 @@ private:
 	std::shared_ptr<ErrorHandler> _errorHandler;
 
 
-	///////////////////
-	//Events Handling//
-	///////////////////
-	std::shared_ptr<EventsHandler> _eventsHandler;
+	/////////////////
+	//Save and load//
+	/////////////////
+	std::shared_ptr<SaveState> _saveState;
+
 
 
 	///////////////////////
@@ -77,6 +97,8 @@ private:
 	InventoryWindow _inventoryWindow;
 	StatusWindow _statusWindow;
 	DevMode _devMode;
+	Menu _menu;
+	HelpWindow _help;
 
 	///////////////////////
 	//Items related stuff//
@@ -95,15 +117,14 @@ private:
 
 	std::shared_ptr<Map> _newMap;
 	std::shared_ptr<Map> _currentMap;
+	int _currentMapTemplate;
 
-
-	int _currentMapNumber;
 
 	/////////////////////////
 	//Stuff holders/loaders//
 	/////////////////////////
 
-	ResourcesHolder *_resHolder = &ResourcesHolder::getResourcesHolder();
+	//ResourcesHolder *_resHolder = &ResourcesHolder::getResourcesHolder();
 
 	/*MapsHolder *_mapsHolder = &MapsHolder::getMapsHolder();
 	ItemsHolder *_itemsHolder = &ItemsHolder::getItemsHolder();
@@ -114,7 +135,7 @@ private:
 	////////////////////////
 	//Player related stuff//
 	////////////////////////
-	std::shared_ptr<Player> _player;
+//	std::shared_ptr<Player> _player;
 
 
 	int _ticks = 0;
@@ -223,6 +244,12 @@ private:
 	void generateDrop(sf::Vector2i position, std::shared_ptr<Enemy> enemy);
 	void checkForObjectsAtPlayerPosition();
 
+
+	///////////////////
+	//Save management//
+	///////////////////
+	void newGame();
+	void restoreData();
 };
 
 

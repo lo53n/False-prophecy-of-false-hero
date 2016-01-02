@@ -1,7 +1,25 @@
 #include "Enemy.h"
 
+Enemy::Enemy()
+{
+
+}
+
+Enemy::Enemy(int id, char tile, Enemy_Stats stats, Enemy_Stats base_stats, sf::Vector2i posOnGrid, sf::Vector2f posOnMap)
+	:
+	_stats(stats),
+	_enemy_id(id),
+	_tile_underneath(tile),
+	_baseStats(base_stats),
+	_positionOnGrid(posOnGrid),
+	_positionOnMap(posOnMap)
+{
+
+}
+
 Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGrid, char newTile, int heroRating)
-	: _enemy_id(enemy_id),
+	:
+	_enemy_id(enemy_id),
 	_stats(enemy_template),
 	_baseStats(enemy_template),
 	_positionOnGrid(positionOnGrid),
@@ -89,9 +107,6 @@ Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGr
 	}
 
 
-
-
-
 }
 
 Enemy::~Enemy()
@@ -99,6 +114,82 @@ Enemy::~Enemy()
 
 }
 
+void Enemy::restoreData()
+{
+	if (!_enemyTexture.loadFromFile(_stats.img_path, sf::IntRect(0, 0, 32, 32))){
+		switch (_stats.type){
+		case ENEMY_TYPE::BEAST_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_BEAST__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_BEAST__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::UNDEAD_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_UNDEAD__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_UNDEAD__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::DEMON_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_DEMON__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_DEMON__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::HUMANOID_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_HUMANOID__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_HUMANOID__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::HUMAN_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_HUMAN__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_HUMAN__, sf::IntRect(32, 0, 32, 32));
+			break;
+		case ENEMY_TYPE::GOLEM_ENEMY:
+			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_GOLEM__, sf::IntRect(0, 0, 32, 32));
+			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_GOLEM__, sf::IntRect(32, 0, 32, 32));
+			break;
+		}
+	}
+	else{
+		_enemyCorpseTexture.loadFromFile(_stats.img_path, sf::IntRect(32, 0, 32, 32));
+	}
+
+
+	_enemyShape.setSize(sf::Vector2f(__ENEMY_WIDTH__, __ENEMY_HEIGHT__));
+	_enemyShape.setPosition(_positionOnMap);
+	//_enemyShape.setFillColor(sf::Color(15, 200, 100, 255));
+	_enemyShape.setTexture(&_enemyTexture);
+
+	_enemyCorpseShape.setSize(sf::Vector2f(__ENEMY_WIDTH__, __ENEMY_HEIGHT__));
+	_enemyCorpseShape.setPosition(_positionOnMap);
+	_enemyCorpseShape.setFillColor(sf::Color(150, 200, 100, 255));
+
+	_hpBar.setSize(sf::Vector2f(30.f, 3.f));
+	_hpBar.setPosition(sf::Vector2f(_enemyShape.getPosition().x + 1.f, _enemyShape.getPosition().y + 25.f));
+	_hpBar.setFillColor(sf::Color(0, 255, 0, 255));
+
+	_underHpBar.setSize(_hpBar.getSize());
+	_underHpBar.setPosition(_hpBar.getPosition());
+	_underHpBar.setFillColor(sf::Color());
+	_underHpBar.setOutlineThickness(1.f);
+	_underHpBar.setOutlineColor(sf::Color::Black);
+
+
+	//Set coloring based on monster class
+	switch (_stats.enemy_class)
+	{
+	case ENEMY_CLASS::RARE_ENEMY:
+		_enemyShape.setFillColor(sf::Color(15, 150, 50, 255));
+		break;
+	case ENEMY_CLASS::MAGIC_ENEMY:
+		_enemyShape.setFillColor(sf::Color(15, 15, 200, 255));
+		break;
+	case ENEMY_CLASS::ELITE_ENEMY:
+		_enemyShape.setFillColor(sf::Color(100, 200, 100, 255));
+		break;
+	case ENEMY_CLASS::MINIBOSS_ENEMY:
+		_enemyShape.setFillColor(sf::Color(15, 15, 100, 255));
+		break;
+	case ENEMY_CLASS::BOSS_ENEMY:
+		_enemyShape.setFillColor(sf::Color(40, 40, 40, 255));
+		break;
+
+	}
+}
 
 ///////////
 //Getters//

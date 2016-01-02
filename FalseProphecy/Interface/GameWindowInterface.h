@@ -42,18 +42,22 @@ private:
 	sf::Text _staminaBarText;
 	sf::Text _expBarText;
 
+	sf::RectangleShape _helpIconBackground;
 	sf::RectangleShape _inventoryIconBackground;
 	sf::RectangleShape _statusIconBackground;
 	sf::RectangleShape _menuIconBackground;
 
+	sf::Texture _helpIconTexture;
 	sf::Texture _inventoryIconTexture;
 	sf::Texture _statusIconTexture;
 	sf::Texture _menuIconTexture;
 
+	sf::RectangleShape _helpIcon;
 	sf::RectangleShape _inventoryIcon;
 	sf::RectangleShape _statusIcon;
 	sf::RectangleShape _menuIcon;
 
+	sf::Text _helpText;
 	sf::Text _inventoryText;
 	sf::Text _statusText;
 	sf::Text _menuText;

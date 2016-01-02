@@ -9,8 +9,6 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "../Items/Item.h"
-
 #include "../Items/Armours/Armour.h"
 #include "../Items/Weapons/Weapon.h"
 #include "../Items/Consumables/Consumable.h"
@@ -22,10 +20,32 @@
 
 class Player : public sf::Drawable{
 
-public:
 
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive &ar, const unsigned int version)
+	{
+		//register serializable types of derived classes
+		ar.register_type(static_cast<Weapon*>(NULL));
+		ar.register_type(static_cast<Armour*>(NULL));
+		ar.register_type(static_cast<Consumable*>(NULL));
+
+		//proceed with serialization
+		ar & _backpack;
+		ar & _proficiences;
+		ar & _stats;
+		ar & _mainHand & _offHand & _head & _torso & _head;
+		ar & _turnsTillNaturalRegen;
+	}
+
+
+public:
+	std::shared_ptr<Item> _item;
 
 	Player();
+	Player(std::vector<std::shared_ptr<Item>> backpack, std::vector<Ability_Proficiencies> proficiences, Hero_Profile stats,
+		std::shared_ptr<Weapon> mainHand, std::shared_ptr<Armour> offHand, std::shared_ptr<Armour> head, std::shared_ptr<Armour> torso, std::shared_ptr<Armour> legs,
+		float turnTillRegen);
 	~Player();
 
 	enum MOVEMENT{
@@ -157,6 +177,10 @@ public:
 	void addStatsByOffhand();
 	void addStatsByArmour();
 	void calculateChances();
+
+
+
+	void restoreData();
 
 private:
 	sf::Texture _playerTexture;

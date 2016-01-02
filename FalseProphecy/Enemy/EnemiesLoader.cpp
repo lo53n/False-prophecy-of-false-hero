@@ -50,6 +50,38 @@ void EnemiesLoader::showStruct()
 	std::cout << "Exp: " << _currentData.experience << std::endl;
 }
 
+
+std::vector<Enemy_Stats>& EnemiesLoader::getSpecialEnemiesData()
+{
+	_enemiesData.clear();
+	prepareStruct();
+
+	_currentData.name = "Rattling bones";
+	_currentData.img_path = "data\\img\\enemy\\rb.png";
+	_currentData.type = ENEMY_TYPE::UNDEAD_ENEMY;
+	_currentData.hitpoints = 5;
+	_currentData.max_hitpoints = 5;
+	_currentData.attack = 5;
+	_currentData.defence = 3;
+	_currentData.experience = 10;
+	_enemiesData.push_back(_currentData);
+
+	prepareStruct();
+	_currentData.name = "Blazing Ravager";
+	_currentData.img_path = "data\\img\\enemy\\blazing.png";
+	_currentData.type = ENEMY_TYPE::HUMAN_ENEMY;
+	_currentData.hitpoints = 5000;
+	_currentData.max_hitpoints = 5000;
+	_currentData.attack = 500;
+	_currentData.defence = 300;
+	_currentData.experience = 10000;
+	_enemiesData.push_back(_currentData);
+
+
+	return _enemiesData;
+
+}
+
 void EnemiesLoader::saveStruct()
 {
 	bool isSuccessful = checkStructCorrectness();
@@ -251,7 +283,7 @@ bool EnemiesLoader::checkStructCorrectness()
 
 	//calculate rating//
 	Calculations::calculateBaseRating(_currentData);
-	std::cout << "Enemy Rating: " << _currentData.current_rating << std::endl;
+	//std::cout << "Enemy Rating: " << _currentData.current_rating << std::endl;
 
 	return isSuccessful;
 }

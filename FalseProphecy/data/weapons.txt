@@ -1,15 +1,15 @@
-[[NAME::Kraken Slayer]]
-[[IMG::axe.png]]
-[[TYPE::AXE]]
-[[SIZE::LARGE]]
-[[HANDLE::ONEHANDED]]
-[[PRIMARY_MULTIPLIER::STR]]
-[[PRIMARY_MULTIPLIER_VALUE::111]]
-[[MIN_DMG::102]]
-[[MAX_DMG::203]]
-[[STR_REQ::20]]
-[[END_REQ::0]]
-[---]
+[[NAME::Kraken Slayer]]           -- nazwa
+[[IMG::axe.png]]		  -- œcie¿ka do obrazu
+[[TYPE::AXE]]			  -- typ broni
+[[SIZE::LARGE]]			  -- rozmiar broni
+[[HANDLE::ONEHANDED]]		  -- typ rêkojeœci
+[[PRIMARY_MULTIPLIER::STR]]	  -- g³ówny mno¿nik obra¿eñ
+[[PRIMARY_MULTIPLIER_VALUE::111]] -- wartoœæ g³ównego mno¿nika
+[[MIN_DMG::102]]		  -- minimalny zakres obra¿eñ
+[[MAX_DMG::203]]		  -- maksymalny zakres obra¿eñ
+[[STR_REQ::20]]			  -- wymagania si³y
+[[END_REQ::0]]			  -- wymagania wytrzymyma³oœci
+[---]				  -- koniec obecnego szablonu
 [[NAME::Kroczker]]
 [[IMG::sword.png]]
 [[TYPE::SWORD]]

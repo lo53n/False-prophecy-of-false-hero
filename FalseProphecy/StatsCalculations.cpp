@@ -117,9 +117,9 @@ namespace Calculations{
 		int rating = 0;
 
 		rating += stats.max_hitpoints / 5;
-		rating += stats.attack * 2;
-		rating += stats.defence * 2;
-		rating += stats.experience / 10;
+		rating += stats.attack;
+		rating += stats.defence;
+		rating += stats.experience / 20;
 
 		if (!second_calc){
 			stats.base_rating = stats.current_rating = rating;

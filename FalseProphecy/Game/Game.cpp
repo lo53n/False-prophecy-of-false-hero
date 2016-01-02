@@ -24,6 +24,11 @@ Game::Game()
 	//////////////////////
 	_eventsHandler = std::make_shared<EventsHandler>();
 
+	//////////////////
+	//Set save state//
+	//////////////////
+	_saveState = std::make_shared<SaveState>(*this);
+	//std::cout << this << std::endl;
 
 	///////////////////////
 	//Load game resources//
@@ -34,7 +39,6 @@ Game::Game()
 
 	_resHolder->loadData();
 
-	//_player->setPlayerPositionOnGrid(sf::Vector2i(5, 5));
 
 	//////////////////////////////////////////////
 	//Set player on inventory window and DevMode//
@@ -69,6 +73,8 @@ Game::Game()
 
 	_inventoryWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 	_statusWindow.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
+	_menu.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
+	_help.resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 
 	_errorHandler->resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
 	_eventsHandler->resizeByGameWindow(sf::Vector2f((float)_window.getSize().x / 2, (float)_window.getSize().y / 2));
@@ -76,9 +82,9 @@ Game::Game()
 
 
 
-	/////////
-	//Test stuff
-	////////
+	//////////////
+	//Test stuff//
+	//////////////
 
 
 }
@@ -90,46 +96,8 @@ Game::Game()
 void Game::run(){
 
 	_currentMapNumber = 0;
-
-	
-	//for (int i = 0; i < 29; i++){
-		std::shared_ptr<Item> weapon0(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0]));
-		_player->putItemInBackpack(weapon0);
-	//}
-/*	for (int i = 0; i < 19; i++){
-		std::shared_ptr<Item> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
-		_player->putItemInBackpack(asd);
-	}*/
-
-	std::shared_ptr<Item> weapon1(std::make_shared<Weapon>(_resHolder->getAllWeapons()[1]));
-	_player->putItemInBackpack(weapon1);
-	std::shared_ptr<Armour> armour0(std::make_shared<Armour>(_resHolder->getAllArmours()[0]));
-	_player->putItemInBackpack(armour0);
-	std::shared_ptr<Armour> armour1(std::make_shared<Armour>(_resHolder->getAllArmours()[2]));
-	_player->putItemInBackpack(armour1);
-	std::shared_ptr<Armour> armour2(std::make_shared<Armour>(_resHolder->getAllArmours()[3]));
-	_player->putItemInBackpack(armour2);
-	std::shared_ptr<Armour> armour3(std::make_shared<Armour>(_resHolder->getAllArmours()[4]));
-	_player->putItemInBackpack(armour3);
-
-	std::shared_ptr<Consumable> cons0(std::make_shared<Consumable>(_resHolder->getAllConsumables()[0]));
-	_player->putItemInBackpack(cons0);
-	std::shared_ptr<Consumable> cons1(std::make_shared<Consumable>(_resHolder->getAllConsumables()[1]));
-	_player->putItemInBackpack(cons1);
-	std::shared_ptr<Consumable> cons2(std::make_shared<Consumable>(_resHolder->getAllConsumables()[2]));
-	_player->putItemInBackpack(cons2);
-	std::shared_ptr<Consumable> cons3(std::make_shared<Consumable>(_resHolder->getAllConsumables()[3]));
-	_player->putItemInBackpack(cons3);
-
-	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
-
-	//_newMap->drawMap();
-	//_maps.push_back(_newMap);
-	//_currentMap = _maps[0];
-
 	generateNewMap();
 
-	_eventsHandler->triggerEvent(EventsHandler::EVENT_TYPE::START_OF_GAME);
 
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
@@ -144,7 +112,9 @@ void Game::run(){
 		while (timeSinceLastUpdate > timePerFrame){
 			timeSinceLastUpdate -= timePerFrame;
 			processEvents();
-			update();
+			if (_isPlaying){
+				update();
+			}
 		}
 		draw();
 	}
@@ -193,6 +163,8 @@ void Game::processEvents()
 			_gameWindowInterface->setGameWindowInterfaceSizeByResize(visible);
 			_inventoryWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 			_statusWindow.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
+			_menu.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
+			_help.resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 
 			_errorHandler->resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 			_eventsHandler->resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
@@ -201,10 +173,7 @@ void Game::processEvents()
 
 			_devMode.resizeMenu(sf::Vector2f(visible.x, visible.y - _gameWindowInterface->getInterfaceHeight()));
 			break;
-		/*case::sf::Event::MouseButtonPressed:
-			coords = sf::Mouse::getPosition(_window);
-			std::cout << coords.x << " " << coords.y << std::endl;
-			break;*/
+
 		}
 	}
 }
@@ -222,28 +191,35 @@ void Game::draw()
 {
 	_window.clear();
 
+
 	/////////////
 	//draw game//
 	/////////////
-
 	_window.setView(_gameView);
-	//for (int i = 0, len = _maps.size(); i < len; i++) _window.draw(*_maps[i]);
-	_window.draw(*_currentMap);
-	for (auto item : _itemList)
-		_window.draw(*item);
+	
+	if (!_isMenu){
+		_window.draw(*_currentMap);
+		for (auto item : _itemList)
+			_window.draw(*item);
 
-	_window.draw(*_player);
-
+		_window.draw(*_player);
+	}
 	//////////////////
 	//draw interface//
 	//////////////////
 	_window.setView(_interfaceView);
-	_window.draw(*_gameWindowInterface);
-	if (_isInventoryWindowOpen) _window.draw(_inventoryWindow);
-	if (_isStatusWindowOpen) _window.draw(_statusWindow);
-	if (_isDevModeActive) _window.draw(_devMode);
-	if (_errorHandler->getErrorStatus()) _window.draw(*_errorHandler);
-	if (_eventsHandler->getEventStatus()) _window.draw(*_eventsHandler);
+	if (_isMenu){
+		_window.draw(_menu);
+	}
+	else{
+		_window.draw(*_gameWindowInterface);
+		if (_isInventoryWindowOpen) _window.draw(_inventoryWindow);
+		if (_isStatusWindowOpen) _window.draw(_statusWindow);
+		if (_isDevModeActive) _window.draw(_devMode);
+		if (_errorHandler->getErrorStatus()) _window.draw(*_errorHandler);
+		if (_eventsHandler->getEventStatus()) _window.draw(*_eventsHandler); 
+		if (_isHelp) _window.draw(_help);
+	}
 	_window.display();
 }
 
@@ -293,7 +269,14 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	////////////////////
 	//Some fast debugs//
 	////////////////////
-	//if (key == sf::Keyboard::Period && isPressed) _itemList[0]->setImagesPosition(sf::Vector2f(32.f, 32.f));
+
+	//////////////////////
+	//Toggle help window//
+	//////////////////////
+	if (key == sf::Keyboard::F1 && isPressed){
+		if (!_isHelp) _isHelp = true;
+		else _isHelp = false;
+	}
 
 	//////////////////
 	//Error handling//
@@ -338,23 +321,63 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		_isDevModeActive = false;
 	}
 	//DEVMODE//
-	if (key == sf::Keyboard::F1 && isPressed){
-		if (_isDevModeActive) _isDevModeActive = false;
-		else _isDevModeActive = true;
-
-		_isInventoryWindowOpen = false;
-		_isStatusWindowOpen = false;
-	}
 
 	//Exit all menus or enter game menu.//
 	if (key == sf::Keyboard::Escape && isPressed){
-		if (_isInventoryWindowOpen || _isStatusWindowOpen || _isDevModeActive){
+		if (!_isInventoryWindowOpen && !_isStatusWindowOpen && !_isDevModeActive ){
+			if (!_isMenu)	{
+				_isMenu = true;
+			}
+			else if(!_isPlaying) _window.close();
+		}
+		else if (_isInventoryWindowOpen || _isStatusWindowOpen || _isDevModeActive || _isMenu){
 			_isInventoryWindowOpen = false;
 			_isStatusWindowOpen = false;
 			_isDevModeActive = false;
+			_isMenu = false;
 		}
+		
 	}
 
+	/////////////////
+	//Menu handling//
+	/////////////////
+	if (_isMenu){
+		if (key == sf::Keyboard::Return && isPressed){
+			int selection = _menu.getHighlit();
+			switch (selection){
+			case 0:
+				if (!_isPlaying){
+					try{
+						restoreData();
+					}
+					catch (boost::archive::archive_exception &e){
+						newGame();
+					}
+				}
+				_isMenu = false;
+				_isPlaying = true;
+				return;
+				break;
+
+			case 1: newGame();
+				_isMenu = false;
+				_isPlaying = true;
+				return;
+				break;
+
+			case 2:
+				_saveState->saveGame();
+				_window.close();
+				return;
+				break;
+			}
+		}
+		else{
+			_menu.handleInput(key, isPressed);
+			return;
+		}
+	}
 
 	////////////////////////
 	//DevMode manipulation//
@@ -448,19 +471,15 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 				//centering view in animating
 
 		}
-		//Show next map//
-		if (key == sf::Keyboard::Return && isPressed){
-			//generateNewMap();
-			//_errorHandler->processError("Current map is " + std::to_string(_currentMap->getMapId()));
-			//_player->takeDamage(10);
-			takeTurn();
-		}
-		if (key == sf::Keyboard::F12 && isPressed){
-
-			_player->increaseExperience(100);
-		}
+		//pick up items
 		if (key == sf::Keyboard::D && isPressed && (_player->getPlayerBackpack().size() < (unsigned)__BACKPACK_CAPACITY__)){
 			checkForObjectsAtPlayerPosition();
+		}
+
+		//rest
+		if (key == sf::Keyboard::R && isPressed){
+			if (rand() % 100 > 50) _player->regenHealth(true);
+			_player->regenStamina(true);
 		}
 	}
 	else{
@@ -534,10 +553,7 @@ bool Game::checkMovement(int direction)
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] == __ENEMY_ON_MAP__){
 		for (auto enemy : _currentMap->getEnemies()){
 			if (enemy->getEnemyPositionOnGrid() == checkForPosition){
-				std::cout << "boom, enemy!" << std::endl;
-				//_currentMap->changeMapTile(__ENEMY_CORPSE_ON_MAP__, checkForPosition.x, checkForPosition.y);
 				heroAttacksEnemy(checkForPosition);
-				//_currentMap->printConsoleMap();
 				takeTurn();
 
 				//if dead, then calculate outcome
@@ -545,14 +561,22 @@ bool Game::checkMovement(int direction)
 					generateDrop(checkForPosition, enemy);
 
 					_player->increaseExperience(enemy->getEnemyStats().experience);
+
+					if (_currentMap->getMapId() == 1){
+						_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_ENEMY_KILLED);
+					}
 				}
 				_gameWindowInterface->refreshBars(_player->getPlayerStats());
 			}
 		}
 		return false;
 	}
+	//events
+	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] == 'E'){
+		if (_currentMap->getMapId() == 40)	return false;
 
-
+	}
+		
 	//Is it wall?
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] != 'x')
 		return true;
@@ -574,16 +598,37 @@ bool Game::checkMovement(int direction)
 
 bool Game::handleMapTraverse()
 {
-
+	//Let's save the game.
+	_saveState->saveGame();
 	//First, increace maps respawn counter
 	increaseMapsRespawnCounter(false);
 
 	//This one is for map traversing//
-	sf::Vector2i currentPosition((int)_player->getPlayerPositionOnGrid().y, (int)_player->getPlayerPositionOnGrid().x);
 	unsigned int previousMap = _currentMap->getMapId();
 
+	//then, events
+
+	if (_currentMapNumber == 1){
+		_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_ENEMY_MEET);
+	}
+	if (_currentMapNumber == 40){
+		_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_BOSS);
+	}
+
+
+
+	if (previousMap == 0 && _currentMapNumber == 1){
+		generateNewMap();
+		_player->setPlayerPositionOnGrid(sf::Vector2i(_currentMap->getNewPosition(previousMap).y, _currentMap->getNewPosition(previousMap).x));
+		_gameView.setCenter(_player->getPlayerSpritePosition()); //center view on player
+		_window.setView(_gameView); //refresh the view
+		return false;
+	}
+
+	sf::Vector2i currentPosition((int)_player->getPlayerPositionOnGrid().y, (int)_player->getPlayerPositionOnGrid().x);
+
 	//Check for existing maps. If not, create new or pair with new.
-	if (_currentMap->getMapExitPoints()[currentPosition] == NULL){
+	if (_currentMap->getMapExitPoints()[currentPosition] == NULL && previousMap != 0){
 		if (_mapsWithAvaiableExits.size() < 15 || rand() % 100 > 50)
 			generateNewMap(currentPosition);
 		else{
@@ -651,47 +696,79 @@ void Game::moveToMap(int mapNumber, bool needPair)
 //'Dis can be used for events!
 void Game::generateNewMap()
 {
-	unsigned int mapID = _maps.size();
-	_currentMapNumber = rand() % _resHolder->getMapsCount();
+	unsigned int mapID = _currentMapNumber;
+	//_currentMapTemplate = rand() % _resHolder->getMapsCount();
 
-	//if (_maps.size() > 0) _currentMap->clearMap();
-	//if (_currentMapNumber >= _mapsHolder->getMapCount()) _currentMapNumber = 0;
-	//_newMap = new Map(_mapsHolder->getMapFromHolder(_currentMapNumber));
+	sf::Vector2i position;
+	if (!_eventsHandler->getEventsStructure().start_of_game){
+		_currentMapTemplate = 0;
+		position = sf::Vector2i(4, 7);
+		_player->setPlayerPositionOnGrid(sf::Vector2i(position.y, position.x));
+	}
 
-	_newMap = createMapSharedPointer(mapID);
-	_newMap->drawMap();
+	if (mapID == 1){
+		_currentMapTemplate = 1;
+	}
+
+
+	_newMap = std::make_shared<Map>(_resHolder->getSpecialMaps().at(_currentMapTemplate), mapID, _mapTexture, _mapTextureDisplayed, _player->getPlayerRating());
 
 	_maps.push_back(_newMap);
 	_mapsWithAvaiableExits.push_back(_newMap);
 
-	_currentMap = _maps[_maps.size() - 1];
 
-	sf::Vector2i position = _currentMap->getExitPoints()[rand() % _currentMap->getExitPoints().size()];
-	_player->setPlayerPositionOnGrid(sf::Vector2i(position.y, position.x));
+	if (mapID == 1){
+
+		//Now, time pair exits
+		std::shared_ptr<Map> transferCurrentMap = _currentMap;
+		std::shared_ptr<Map> transferNextMap = _newMap;
+
+		sf::Vector2i currentPos((int)_player->getPlayerPositionOnGrid().y, (int)_player->getPlayerPositionOnGrid().x);
+
+		_currentMap->pairMapAndExitPoint(transferNextMap, currentPos);
+		transferNextMap->pairMapAndExitPoint(transferCurrentMap);
+
+		//Recount exits which wasn't paired yet
+		checkForExistingFreeExits(_currentMap);
+		checkForExistingFreeExits(_newMap);
+
+
+		Enemy_Stats enemy_template = _resHolder->getSpecialEnemies()[0];
+		std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(0, enemy_template, sf::Vector2i(5, 4), '.', _player->getPlayerRating().overral_rating));
+		_newMap->getEnemies().push_back(enemy);
+		_newMap->changeMapTile(__ENEMY_ON_MAP__, 5, 4);
+
+
+	}
+
+	_currentMap = _maps[_maps.size() - 1];
 
 	_gameView.setCenter(_player->getPlayerPositionOnMap()); //center view on player
 	_window.setView(_gameView); //refresh the view
 
-	//std::cout << _currentMapNumber << " Another! " << _maps.size() << " Map No_" << _currentMap->getMapId() << std::endl;
+	//increment maps id
+	_currentMapNumber++;
+	_currentMap->drawMap();
+
 }
 
 void Game::generateNewMap(sf::Vector2i currentPos)
 {
 
 	//Get new map identifier based on total maps generated
-	unsigned int mapID = _maps.size();
-	_currentMapNumber = rand() % _resHolder->getMapsCount();
+	unsigned int mapID = _currentMapNumber;
+	_currentMapNumber++;
+	_currentMapTemplate = rand() % _resHolder->getMapsCount();
 
 
 	//_currentMapNumber = 0;
-	if (_currentMapNumber >= _resHolder->getMapsCount()) _currentMapNumber = 0;
-
-	//if (_maps.size() > 0) _currentMap->clearMap();
-
+	if (_currentMapTemplate >= _resHolder->getMapsCount()) _currentMapTemplate = 0;
 
 	//Create new map and then draw it
-	_newMap = createMapSharedPointer(mapID);
-	//_newMap->drawMap();
+	if (mapID == 40){
+		_newMap = std::make_shared<Map>(_resHolder->getSpecialMaps().at(2), mapID, _mapTexture, _mapTextureDisplayed, _player->getPlayerRating());
+	}
+	else _newMap = createMapSharedPointer(mapID);
 
 	//Save map
 	_maps.push_back(_newMap);
@@ -709,37 +786,43 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 	checkForExistingFreeExits(_newMap);
 
 	//Set latest map as current
-	//std::cout << "Old map exits left: " << _currentMap->getNumberOfFreeExits();
 	_currentMap = _maps[_maps.size() - 1];
-	//std::cout << " New map exits left: " << _currentMap->getNumberOfFreeExits() << std::endl;
 
-	//std::cout << _currentMapNumber << " Another! " << _maps.size() << " >> Map No_" << _currentMap->getMapId() << " <<" << std::endl;
 
 	//Generate enemies!
-	int tiley = 0;
-	int enemy_id = 0;
-	std::uniform_int_distribution<int> randomize(0, _resHolder->getAllEnemies().size() - 1);
-	for (auto row : _currentMap->getMap()){
-		int tilex = 0;
-		for (auto tile : row){
-			if (tile == '.'){
-				int chance = rand() % 100;
-				if (chance > 90){
-					Enemy_Stats enemy_template = _resHolder->getAllEnemies()[randomize(_generator)];
-					std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, enemy_template, sf::Vector2i(tilex, tiley), tile, _player->getPlayerRating().overral_rating));
-					_currentMap->getEnemies().push_back(enemy);
-					_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
-					enemy_id++;
-					break;
-					break;
+	//Here for special maps:
+	if (mapID == 40){
+		Enemy_Stats enemy_template = _resHolder->getSpecialEnemies()[1];
+		std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(0, enemy_template, sf::Vector2i(4, 4), '.', _player->getPlayerRating().overral_rating));
+		_currentMap->getEnemies().push_back(enemy);
+		_currentMap->changeMapTile(__ENEMY_ON_MAP__, 4, 4);
+	}
+	//Regular ones
+	else {
+		int tiley = 0;
+		int enemy_id = 0;
+		std::uniform_int_distribution<int> randomize(0, _resHolder->getAllEnemies().size() - 1);
+		for (auto row : _currentMap->getMap()){
+			int tilex = 0;
+			for (auto tile : row){
+				if (tile == '.'){
+					int chance = rand() % 100;
+					if (chance > 90){
+						Enemy_Stats enemy_template = _resHolder->getAllEnemies()[randomize(_generator)];
+						std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, enemy_template, sf::Vector2i(tilex, tiley), tile, _player->getPlayerRating().overral_rating));
+						_currentMap->getEnemies().push_back(enemy);
+						_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
+						enemy_id++;
+						break;
+						break;
+					}
 				}
+				tilex++;
 			}
-			tilex++;
+			tiley++;
 		}
-		tiley++;
 	}
 	_currentMap->drawMap();
-	//_currentMap->printConsoleMap();
 
 }
 
@@ -829,7 +912,7 @@ void Game::enemyTurn()
 			bool canMove = false;
 			sf::Vector2i position = enemy->getEnemyPositionOnGrid();
 			if (isPlayerNearby(position)){
-				std::cout << "Player is close!" << std::endl;
+				//std::cout << "Player is close!" << std::endl;
 				int dmg = enemy->getEnemyStats().attack;
 				_player->takeDamage(dmg);
 				continue;
@@ -888,13 +971,6 @@ void Game::enemyTurn()
 
 				position += change;
 
-				/*if (position == _player->getPlayerPositionOnGrid()){
-					std::cout << "Attacked player!" << std::endl;
-					int dmg = enemy->getEnemyStats().attack;
-					_player->takeDamage(dmg);
-					continue;
-				}*/
-
 				_currentMap->moveEnemy(enemy, position);
 
 			}
@@ -905,7 +981,6 @@ void Game::enemyTurn()
 
 		_isEnemyTurn = false;
 		_currentMap->updateMap();
-		//_currentMap->printConsoleMap();
 	}
 }
 
@@ -951,8 +1026,7 @@ void Game::generateDrop(sf::Vector2i position, std::shared_ptr<Enemy> enemy)
 {
 
 
-	int generated_items = (rand() % (enemy->getEnemyClass() + 3)) + enemy->getEnemyClass()/2 + 20;
-	std::cout << "Generated items: " << generated_items << std::endl;
+	int generated_items = (rand() % (enemy->getEnemyClass()/3 + 3)) + enemy->getEnemyClass()/2;
 
 	for (int i = 0; i < generated_items; i++){
 		int enemyRating = 0;
@@ -962,15 +1036,6 @@ void Game::generateDrop(sf::Vector2i position, std::shared_ptr<Enemy> enemy)
 		_currentMap->generateItemAtPosition(position, enemyRating);
 	}
 
-
-	//Hero_Ratings new_rating = _player->getPlayerRating();
-	//_currentMap->generateItemAtPosition(position, enemyRating);
-
-	/*
-	std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0], new_rating.hero_rating));
-	_currentMap->pushItemToMapStorage(position, item);
-	_currentMap->updateMap();
-	*/
 }
 
 void Game::checkForObjectsAtPlayerPosition()
@@ -981,4 +1046,73 @@ void Game::checkForObjectsAtPlayerPosition()
 
 		takeTurn();
 	}
+}
+
+
+///////////////////
+//Save management//
+///////////////////
+void Game::restoreData()
+{
+	//first load game data for unusual exceptions
+	ResourcesLoader resload(_errorHandler);
+	resload.loadGameData();
+	_resHolder->loadData();
+
+
+	//now load game
+	_saveState->loadGame();
+	//restore player data
+	_player->restoreData();
+	//reset pointers to player
+	_inventoryWindow.setPlayer(_player);
+	_statusWindow.setPlayer(_player);
+	_devMode.setPlayer(_player);
+	_player->setGameWindowInterface(_gameWindowInterface);
+
+	//reset maps, but keep event progress!
+	_maps.clear();
+	_mapsWithAvaiableExits.clear();
+	generateNewMap();
+	
+	//center at player
+	_gameView.setCenter(_player->getPlayerPositionOnMap()); 
+}
+
+void Game::newGame()
+{
+
+
+
+	//for (int i = 0; i < 29; i++){
+	//}
+	/*	for (int i = 0; i < 19; i++){
+	std::shared_ptr<Item> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
+	_player->putItemInBackpack(asd);
+	}*/
+
+
+	std::shared_ptr<Item> weapon0(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0]));
+	_player->putItemInBackpack(weapon0);
+
+	_player->_item = weapon0;
+	
+	std::shared_ptr<Item> weapon1(std::make_shared<Weapon>(_resHolder->getAllWeapons()[1]));
+
+	std::shared_ptr<Consumable> cons0(std::make_shared<Consumable>(_resHolder->getAllConsumables()[0]));
+	_player->putItemInBackpack(cons0);
+	std::shared_ptr<Consumable> cons1(std::make_shared<Consumable>(_resHolder->getAllConsumables()[1]));
+	_player->putItemInBackpack(cons1);
+	std::shared_ptr<Consumable> cons2(std::make_shared<Consumable>(_resHolder->getAllConsumables()[2]));
+	_player->putItemInBackpack(cons2);
+	std::shared_ptr<Consumable> cons3(std::make_shared<Consumable>(_resHolder->getAllConsumables()[3]));
+	_player->putItemInBackpack(cons3);
+
+
+	_eventsHandler->resetEvents();
+	_maps.clear();
+	_currentMapNumber = 0;
+	generateNewMap();
+	_eventsHandler->triggerEvent(EVENT_TYPE::START_OF_GAME);
+
 }

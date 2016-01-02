@@ -7,10 +7,18 @@
 
 #include "SFML/Graphics.hpp"
 
+#include <boost/serialization/assume_abstract.hpp>
+#include <boost/serialization/base_object.hpp>
+
 
 class Item : public sf::Drawable{
 
-
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive &ar, const unsigned int version)
+	{
+		ar  & _itemType;
+	}
 public:
 
 	void setItemTexture();
@@ -21,9 +29,11 @@ public:
 	int getItemType();
 
 	Item();
+	Item(int item_type);
 	~Item();
 
 
+	void restoreData();
 	int _itemType;
 
 public:
@@ -55,6 +65,7 @@ private:
 
 };
 
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(Item)
 
 
 

@@ -9,6 +9,13 @@ Item::Item()
 	_isItemVisible = false;
 }
 
+Item::Item(int item_type)
+	:
+	_itemType(item_type)
+{
+	_isItemVisible = false;
+}
+
 
 Item::~Item()
 {
@@ -37,4 +44,8 @@ void Item::getItemStats()
 int Item::getItemType()
 {
 	return _itemType;
+}
+void Item::restoreData()
+{
+
 }

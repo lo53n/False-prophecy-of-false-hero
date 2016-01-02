@@ -11,14 +11,23 @@ class Armour : public Item{
 
 public:
 
+	void restoreData();
 	void getItemStats();
 	Armour_struct getStatsStruct();
 
 	Armour();
-	Armour(Armour_struct stats);
+	Armour(Armour_struct stats); 
+	Armour(int item_typ, Armour_struct stats);
 	Armour(Armour_struct stats, int hero_rating);
 	~Armour();
 
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive &ar, const unsigned int version)
+	{
+		ar  & boost::serialization::base_object<Item>(*this);
+		ar  & _stats;
+	}
 private:
 
 	Armour_struct _stats;

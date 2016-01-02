@@ -1,4 +1,28 @@
 [-----]
+2015-12-26
+
+What is done?
+
+	- game save/load. Need now menus for this. No maps info stored, it keeps crashing (I think I know why, but its too much hussle to fix it now)
+
+	- more work on events (special maps)
+
+[-----]
+2015-12-24
+
+What is done?
+
+	- started works on Save and Load with Boost library.
+
+	- most of game elements are serializable
+
+To do?
+
+	- end writing up serialization of player and maps
+
+	- implement actual loading items into game (atm its just loading to class, nothing more)
+
+[-----]
 2015-12-23
 
 What is done?

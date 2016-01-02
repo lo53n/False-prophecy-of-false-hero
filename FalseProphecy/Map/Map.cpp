@@ -6,6 +6,28 @@ Map::Map()
 	//_mapTexture.clear();
 
 }
+Map::Map(int id, int resCount, std::vector<std::vector<char>> mapTemplate, int maxX, int maxY/*, std::vector<sf::Vector2i> exitPoints,
+	std::vector<sf::Vector2i> notPairedExits,std::unordered_map<sf::Vector2i, std::shared_ptr<Map>> mapExits,
+	std::vector<std::shared_ptr<Enemy>> enemies, std::vector<std::shared_ptr<Enemy>> deadenemies, 
+	std::unordered_multimap<sf::Vector2i, std::shared_ptr<Item>> itemsOnMap*/)
+:
+_mapIdentifier(id),
+_respawn_counter(resCount),
+_mapTemplate(mapTemplate),
+_maxDimensionX(maxX),
+_maxDimensionY(maxY)/*,
+_exitPoints(exitPoints),
+_notPairedExitPoints(notPairedExits),
+_mapExits(mapExits),
+_enemies(enemies),
+_deadenemies(deadenemies),
+_itemsOnMap(itemsOnMap)*/
+
+{
+
+}
+
+
 
 Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed, Hero_Ratings ratings)
 	: _mapTemplate(mapTemplate),
@@ -21,10 +43,37 @@ Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::Ren
 	_wallTile.setTexture(_resHolder->getWallTexture());
 	_floorTile.setTexture(_resHolder->getTileTexture());
 	_doorTile.setTexture(_resHolder->getDoorTexture());
+
+	if (_mapIdentifier == 0){
+		sf::Vector2i position(6, 3);
+		std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[rand()%_resHolder->getAllWeapons().size()]));
+		pushItemToMapStorage(position, item);
+	}
 }
 Map::~Map()
 {
 }
+
+void Map::restoreMap(sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed)
+{
+	_renderTexture = &renderTexture;
+	_renderTextureDisplayed = &renderTextureDisplayed;
+
+	_wallTile.setTexture(_resHolder->getWallTexture());
+	_floorTile.setTexture(_resHolder->getTileTexture());
+	_doorTile.setTexture(_resHolder->getDoorTexture());
+
+
+	for (auto enemy : _enemies){
+		enemy->restoreData();
+	}
+	for (auto enemy : _deadenemies){
+		enemy->restoreData();
+	}
+	drawMap();
+
+}
+
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
@@ -128,8 +177,9 @@ void Map::setMapLayer(sf::RenderTexture& mapRenderTexture)
 void Map::drawMap()
 {
 	takeEnemiesFromMap();
-	_renderTexture->create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
-	_renderTextureDisplayed->create((unsigned int)(__TILE_SIZE_X__ * _maxDimensionX), (unsigned int)(__TILE_SIZE_Y__ * _maxDimensionY));
+
+	_renderTexture->create((static_cast<unsigned int>(__TILE_SIZE_X__ * _maxDimensionX)), (static_cast<unsigned int>(__TILE_SIZE_Y__ * _maxDimensionY)));
+	_renderTextureDisplayed->create((static_cast<unsigned int>(__TILE_SIZE_X__ * _maxDimensionX)), (static_cast<unsigned int>(__TILE_SIZE_Y__ * _maxDimensionY)));
 	_renderTexture->clear();
 	for (int i = 0, len = _mapTemplate.size(); i < len; i++){
 		for (int j = 0, len1 = _mapTemplate[i].size(); j < len1; j++){
@@ -373,27 +423,6 @@ void Map::increaseEnemyTicks(int &amount)
 
 void Map::moveEnemy(std::shared_ptr<Enemy> &enemy, sf::Vector2i newPos)
 {
-	/*
-	while (enemy->checkIfCanTakeAction()){
-		sf::Vector2i position = enemy->getEnemyPositionOnGrid();
-
-		//std::cout << "Move Enemy ID " << enemy->getEnemyId() << std::endl;
-		//std::cout << "x,y " << position.x << " " << position.y << std::endl;
-
-		changeMapTile(enemy->getTileUnderneathEnemy(), position.x, position.y);
-
-		position += sf::Vector2i(0, 1);
-		//std::cout << "x,y " << position.x << " " << position.y << std::endl;
-		enemy->setTileUnderneathEnemy(_mapTemplate[position.y][position.x]);
-
-		changeMapTile(__ENEMY_ON_MAP__, position.x, position.y);
-
-		enemy->moveEnemy(position);
-		if (position == playerPos){
-			std::cout << "Attacked player!" << std::endl;
-		}
-	}
-	*/
 
 	sf::Vector2i position = enemy->getEnemyPositionOnGrid();
 

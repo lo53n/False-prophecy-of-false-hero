@@ -11,13 +11,23 @@ class Consumable : public Item{
 
 public:
 
+	void restoreData();
+
 	void getItemStats();
 	Consumable_struct getStatsStruct();
 
 	Consumable();
+	Consumable(int item_typ, Consumable_struct stats);
 	Consumable(Consumable_struct stats);
 	~Consumable();
 
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive &ar, const unsigned int version)
+	{
+		ar  & boost::serialization::base_object<Item>(*this);
+		ar  & _stats;
+	}
 private:
 
 	Consumable_struct _stats;

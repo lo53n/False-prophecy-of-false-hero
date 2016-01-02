@@ -1,16 +1,16 @@
 #include "StatusWindow.h"
 StatusWindow::StatusWindow()
 {
-	_renderTexture.create(414, 414);
-	_sprite.setColor(sf::Color(255, 255, 255, 240));
+	_renderTexture.create(414, 343);
+	_sprite.setColor(sf::Color(255, 255, 255, 255));
 
-	_statusWindow.setSize(sf::Vector2f(410.f, 410.f));
+	_statusWindow.setSize(sf::Vector2f(410.f, 339.f));
 	_statusWindow.setPosition(2.f, 2.f);
 	_statusWindow.setFillColor(sf::Color(150, 150, 150));
 	_statusWindow.setOutlineThickness(2.f);
 	_statusWindow.setOutlineColor(sf::Color(190, 190, 190));
 
-	_statsPart.setSize(sf::Vector2f(200.f, 200.f));
+	_statsPart.setSize(sf::Vector2f(200.f, 335.f));
 	_statsPart.setPosition(5.f, 5.f);
 	_statsPart.setFillColor(sf::Color(90, 150, 50));
 	_statsPart.setOutlineThickness(2.f);
@@ -22,7 +22,7 @@ StatusWindow::StatusWindow()
 	_equipmentPart.setOutlineThickness(2.f);
 	_equipmentPart.setOutlineColor(sf::Color(60, 80, 180));
 
-	_proficiencesPart.setSize(sf::Vector2f(200.f, 405.f));
+	_proficiencesPart.setSize(sf::Vector2f(200.f, 335.f));
 	_proficiencesPart.setPosition(210.f, 5.f);
 	_proficiencesPart.setFillColor(sf::Color(150, 50, 90));
 	_proficiencesPart.setOutlineThickness(2.f);
@@ -33,33 +33,33 @@ StatusWindow::StatusWindow()
 
 
 	_expText.setFont(_font);
-	_expText.setCharacterSize(13);
+	_expText.setCharacterSize(15);
 	_expText.setPosition(_statsPart.getPosition() + sf::Vector2f(5.f, 3.f));
 
 	_healthText.setFont(_font);
-	_healthText.setCharacterSize(13);
+	_healthText.setCharacterSize(15);
 	_healthText.setPosition(_statsPart.getPosition() + sf::Vector2f(5.f, 53.f));
 
 	_healthNumbersText.setFont(_font);
-	_healthNumbersText.setCharacterSize(13);
+	_healthNumbersText.setCharacterSize(15);
 	_healthNumbersText.setPosition(_statsPart.getPosition() + sf::Vector2f(60.f, 53.f));
 
 	_statsText.setFont(_font);
-	_statsText.setCharacterSize(13);
+	_statsText.setCharacterSize(15);
 	_statsText.setPosition(_statsPart.getPosition() + sf::Vector2f(5.f, 94.f));
 
 	_statsNumbersText.setFont(_font);
-	_statsNumbersText.setCharacterSize(13);
+	_statsNumbersText.setCharacterSize(15);
 	_statsNumbersText.setPosition(_statsPart.getPosition() + sf::Vector2f(85.f, 94.f));
 
 
 	_equipmentText.setFont(_font);
-	_equipmentText.setCharacterSize(14);
-	_equipmentText.setPosition(_equipmentPart.getPosition() + sf::Vector2f(5.f, 5.f));
+	_equipmentText.setCharacterSize(15);
+	_equipmentText.setPosition(_statsText.getPosition() + sf::Vector2f(0.f, 115.f));
 
 
 	_proficiencesText.setFont(_font);
-	_proficiencesText.setCharacterSize(12);
+	_proficiencesText.setCharacterSize(14);
 	_proficiencesText.setPosition(_proficiencesPart.getPosition() + sf::Vector2f(5.f, 5.f));
 
 	
@@ -80,7 +80,7 @@ void StatusWindow::drawOnRenderTexture()
 	_renderTexture.clear();
 
 	_renderTexture.draw(_statusWindow);
-	_renderTexture.draw(_equipmentPart);
+	//_renderTexture.draw(_equipmentPart);
 	_renderTexture.draw(_statsPart);
 	_renderTexture.draw(_proficiencesPart);
 
@@ -202,21 +202,21 @@ void StatusWindow::refreshEquipmentStats()
 
 	string += "Damage: " + std::to_string(calc_min_dmg) + " - " + std::to_string(calc_max_dmg);
 	int reduction = (int)(stats.damage_reduction * 100);
-	string += "\nDamage reduction: " + std::to_string(reduction);
+	string += "\nDamage reduction: " + std::to_string(reduction) + '%';
 	int dodge_chance = (int)(stats.dodge_chance * 100);
-	string += "\nDodge chance: " + std::to_string(dodge_chance);
+	string += "\nDodge chance: " + std::to_string(dodge_chance) + '%';
 	if (_player->getPlayerArmour(ARMOUR_TYPE::SHIELD) != nullptr){
 		int block_chance = (int)(stats.block_chance * 100);
-		string += "\nBlock chance: " + std::to_string(block_chance);
+		string += "\nBlock chance: " + std::to_string(block_chance) + '%';
 	}
-
+	/*
 	string += "\n\nPlayer Rating: " + std::to_string(ratings.hero_rating);
 	string += "\nWeapon Rating: " + std::to_string(ratings.weapon_rating);
 	string += "\nOffand Rating: " + std::to_string(ratings.offhand_rating);
 	string += "\nHead Rating: " + std::to_string(ratings.head_rating);
 	string += "\nTorso Rating: " + std::to_string(ratings.torso_rating);
 	string += "\nLegs Rating: " + std::to_string(ratings.legs_rating);
-	string += "\nOverral Rating: " + std::to_string(ratings.overral_rating);
+	string += "\nOverral Rating: " + std::to_string(ratings.overral_rating);*/
 
 	_equipmentText.setString(string);
 
@@ -248,7 +248,7 @@ void StatusWindow::refreshProficiences()
 
 void StatusWindow::setProgressBars()
 {
-	sf::Vector2f position = _proficiencesText.getPosition() + sf::Vector2f(5, 19);
+	sf::Vector2f position = _proficiencesText.getPosition() + sf::Vector2f(5, 23);
 
 	for (int i = 0; i < 10; i++){
 		sf::RectangleShape empty(sf::Vector2f(180, 5));
@@ -260,8 +260,8 @@ void StatusWindow::setProgressBars()
 
 		full.setFillColor(sf::Color(30, 230, 50));
 
-		empty.setPosition(position.x, position.y + (i * 28.f));
-		full.setPosition(position.x, position.y + (i * 28.f));
+		empty.setPosition(position.x, position.y + (i * 32.f));
+		full.setPosition(position.x, position.y + (i * 32.f));
 		_proficienciesBarEmpty.push_back(empty);
 		_proficienciesBarFull.push_back(full);
 	}

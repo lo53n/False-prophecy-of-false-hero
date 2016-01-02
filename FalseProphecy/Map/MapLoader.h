@@ -15,6 +15,8 @@ public:
 	~MapLoader();
 	void loadFromFile();
 
+	std::vector<std::vector<std::vector<char>>> loadSpecialMaps();
+
 	std::vector<std::vector<std::vector<char>>>& getMapsData();
 
 private:
