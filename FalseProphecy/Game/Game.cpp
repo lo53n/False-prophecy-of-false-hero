@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game()
-	: _window(sf::VideoMode(800, 640), "SFML Application")
+	: _window(sf::VideoMode(800, 640), "Prophecy")
 	, _gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 640.0f))
 	, _interfaceView(sf::FloatRect(0.f, 0.f, 800.f, 640.f))
 	, _player(std::make_shared<Player>())
@@ -46,21 +46,9 @@ Game::Game()
 
 	_inventoryWindow.setPlayer(_player);
 	_statusWindow.setPlayer(_player);
-	_devMode.setPlayer(_player);
 
 
 	_player->setGameWindowInterface(_gameWindowInterface);
-
-	////////////////////////
-	//Set size of dev menu//
-	////////////////////////
-
-	sf::Vector2f size = (sf::Vector2f) _window.getSize();
-	sf::Vector2f position = sf::Vector2f(0, _gameWindowInterface->getInterfaceHeight());
-
-	size = sf::Vector2f(size.x, size.y - _gameWindowInterface->getInterfaceHeight());
-
-	_devMode.setPositionAndSize(position, size);
 
 	/////////////
 	//Set views//
@@ -170,8 +158,6 @@ void Game::processEvents()
 			_eventsHandler->resizeByGameWindow(sf::Vector2f(visible.x / 2, visible.y / 2));
 
 			_window.setView(_gameView);
-
-			_devMode.resizeMenu(sf::Vector2f(visible.x, visible.y - _gameWindowInterface->getInterfaceHeight()));
 			break;
 
 		}
@@ -215,7 +201,6 @@ void Game::draw()
 		_window.draw(*_gameWindowInterface);
 		if (_isInventoryWindowOpen) _window.draw(_inventoryWindow);
 		if (_isStatusWindowOpen) _window.draw(_statusWindow);
-		if (_isDevModeActive) _window.draw(_devMode);
 		if (_errorHandler->getErrorStatus()) _window.draw(*_errorHandler);
 		if (_eventsHandler->getEventStatus()) _window.draw(*_eventsHandler); 
 		if (_isHelp) _window.draw(_help);
@@ -367,6 +352,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 				break;
 
 			case 2:
+				_player->setCurrentMap(_currentMap->getMapId());
 				_saveState->saveGame();
 				_window.close();
 				return;
@@ -383,11 +369,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	//DevMode manipulation//
 	////////////////////////
 	
-	if (_isDevModeActive){
-		DevMode::Result result = _devMode.handlePlayerInput(key, isPressed);
 
-		return;
-	}
 	
 	////////////////
 	//Map Movement//
@@ -480,6 +462,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		if (key == sf::Keyboard::R && isPressed){
 			if (rand() % 100 > 50) _player->regenHealth(true);
 			_player->regenStamina(true);
+			takeTurn();
 		}
 	}
 	else{
@@ -555,6 +538,8 @@ bool Game::checkMovement(int direction)
 			if (enemy->getEnemyPositionOnGrid() == checkForPosition){
 				heroAttacksEnemy(checkForPosition);
 				takeTurn();
+				//set as aggroed
+				enemy->setAlarmStatus(true);
 
 				//if dead, then calculate outcome
 				if (!enemy->checkIfAlive()){
@@ -599,6 +584,7 @@ bool Game::checkMovement(int direction)
 bool Game::handleMapTraverse()
 {
 	//Let's save the game.
+	_player->setCurrentMap(_currentMap->getMapId());
 	_saveState->saveGame();
 	//First, increace maps respawn counter
 	increaseMapsRespawnCounter(false);
@@ -749,6 +735,7 @@ void Game::generateNewMap()
 	//increment maps id
 	_currentMapNumber++;
 	_currentMap->drawMap();
+	_player->setCurrentMap(_currentMap->getMapId());
 
 }
 
@@ -823,6 +810,7 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 		}
 	}
 	_currentMap->drawMap();
+	_player->setCurrentMap(_currentMap->getMapId());
 
 }
 
@@ -905,85 +893,420 @@ void Game::enemyTurn()
 {
 	if (_isEnemyTurn){
 		sf::Vector2i playerPos = _player->getPlayerPositionOnGrid();
-		std::uniform_int_distribution<int> randomize(0, 5);
+		//std::uniform_int_distribution<int> randomize(0, 5);
 		sf::Vector2i change;
 		for (auto enemy : _currentMap->getEnemies()){
+			//if dead, why even bother?
 			if (!enemy->checkIfAlive()) continue;
-			bool canMove = false;
-			sf::Vector2i position = enemy->getEnemyPositionOnGrid();
-			if (isPlayerNearby(position)){
-				//std::cout << "Player is close!" << std::endl;
+
+			sf::Vector2i enemyPos = enemy->getEnemyPositionOnGrid();
+
+			//if player is nearby, attack him
+			if (isPlayerNearby(enemyPos)){
 				int dmg = enemy->getEnemyStats().attack;
 				_player->takeDamage(dmg);
 				continue;
 			}
-			while (!canMove){
-				int direction = randomize(_generator);
-				switch (direction){
-				case Enemy::UP:
-					change = sf::Vector2i(0, -1);
-					break;
 
-				case Enemy::DOWN:
-					change = sf::Vector2i(0, 1);
-					break;
+			if (!enemy->isAlarmed() && enemy->getEnemyType() != ENEMY_TYPE::UNDEAD_ENEMY){
+				sf::Vector2i normalized = playerPos - enemyPos;
+				int range = sqrt(pow(normalized.x, 2) + pow(normalized.y, 2));
+				enemy->isPlayerInAggroRange(range);
+			}
 
-				case Enemy::RIGHT:
-					change = sf::Vector2i(1, 0);
-					break;
+			//bool canMove = false;
+			//if undead enemy, then set to unalarmed after attack. They are neutral
+			if (enemy->getEnemyType() == ENEMY_TYPE::UNDEAD_ENEMY){
+				enemy->setAlarmStatus(false);
+			}
 
-				case Enemy::LEFT:
-					change = sf::Vector2i(-1, 0);
-					break;
+			std::vector<std::vector<char>> mapTemplate = _currentMap->getMap();
+			int direction = checkEnemyMovement(enemyPos, enemy, mapTemplate);
 
-				default:
-					change = sf::Vector2i(0, 0);
-					//std::cout << "waitin'" << std::endl;
-					break;
+			switch (direction){
+			case Enemy::UP:
+				change = sf::Vector2i(0, -1);
+				break;
 
-				}
-				if (change == sf::Vector2i(0, 0)) break;
-				try{
-					if (_currentMap->getMap().at(change.y + position.y).at(change.x + position.x) == 'x'){
-						//std::cout << "Wall!" << std::endl;
-						continue;
-					}
-					else if (_currentMap->getMap().at(change.y + position.y).at(change.x + position.x) == '8'){
-						//std::cout << "Stuck on enemy!" << std::endl;
-						continue;
-					}
-					else if (_currentMap->getMap().at(change.y + position.y).at(change.x + position.x) == 'E'){
-						//std::cout << "Exit!" << std::endl;
-						continue;
-					}
-					else if (_currentMap->getMap().at(change.y + position.y).at(change.x + position.x) != '.'){
-						//std::cout << "Not walkable Tile!" << std::endl;
-						continue;
-					}
-					else{
-						canMove = true;
-					}
-				}
-				catch (std::exception){
-					continue;
-				}
-			
+			case Enemy::DOWN:
+				change = sf::Vector2i(0, 1);
+				break;
 
-				position += change;
+			case Enemy::RIGHT:
+				change = sf::Vector2i(1, 0);
+				break;
 
-				_currentMap->moveEnemy(enemy, position);
+			case Enemy::LEFT:
+				change = sf::Vector2i(-1, 0);
+				break;
+
+			default:
+				change = sf::Vector2i(0, 0);
+				//std::cout << "waitin'" << std::endl;
+				break;
 
 			}
 
+			enemyPos += change;
+
+			_currentMap->moveEnemy(enemy, enemyPos);
 
 		}
-
-
 		_isEnemyTurn = false;
 		_currentMap->updateMap();
 	}
 }
 
+int Game::checkEnemyMovement(sf::Vector2i enemy_pos, std::shared_ptr<Enemy> &enemy, std::vector<std::vector<char>> &mapTemplate)
+{
+	sf::Vector2i player_pos = _player->getPlayerPositionOnGrid();
+	sf::Vector2i temp_enemy_pos = enemy_pos;
+	int direction = 0;
+	if (!enemy->isAlarmed()){
+		std::uniform_int_distribution<int> randomize(0, 5);
+		//return randomize(_generator);
+		int direction = 0;
+		while (1){
+			direction = randomize(_generator);
+			temp_enemy_pos = enemy_pos;
+			switch (direction){
+			case Enemy::UP:
+				temp_enemy_pos += sf::Vector2i(0, -1);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x' 
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__ 
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+					return direction;
+				}
+				break;
+			case Enemy::DOWN:
+				temp_enemy_pos += sf::Vector2i(0, +1);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x' 
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+					return direction;
+				}
+				break;
+			case Enemy::LEFT:
+				temp_enemy_pos += sf::Vector2i(-1, 0);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+					return direction;
+				}
+				break;
+			case Enemy::RIGHT:
+				temp_enemy_pos += sf::Vector2i(+1, 0);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+					return direction;
+				}
+				break;
+			default: return direction;
+			}
+			
+		}
+	}
+	
+	if (enemy->isAlarmed()){
+		//enemy is on the right side of player
+		if (enemy_pos.x > player_pos.x){
+			//check if there is anything on the way
+			temp_enemy_pos = enemy_pos + sf::Vector2i(-1, 0);
+			if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'x'
+				|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == __ENEMY_ON_MAP__
+				|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'E'){
+				//move to the up or down
+				//but first move up
+				temp_enemy_pos = enemy_pos + sf::Vector2i(0, -1);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'
+					&& enemy->getPreviousDirection() != Enemy::UP
+					&& enemy->getActualDirection() != Enemy::DOWN){
+					return Enemy::UP;
+				}
+				//or move down
+				temp_enemy_pos = enemy_pos + sf::Vector2i(0, +1); 
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+					return Enemy::DOWN;
+				}
+				//or don't move.
+				else {
+					return 77;
+				}
+
+			}
+			//if nothin on the way, move left
+			else{
+				return Enemy::LEFT;
+			}
+
+		}
+		//enemy is on the left side of player
+		if (enemy_pos.x < player_pos.x){
+			//check if there is anything on the way
+			temp_enemy_pos = enemy_pos + sf::Vector2i(+1, 0);
+			if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'x' 
+				|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == __ENEMY_ON_MAP__
+				|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'E'){
+				//move to the up or down
+				//but first move up
+				temp_enemy_pos = enemy_pos + sf::Vector2i(0, -1);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'
+					&& enemy->getPreviousDirection() != Enemy::UP
+					&& enemy->getActualDirection() != Enemy::DOWN){
+					return Enemy::UP;
+				}
+				//or move down
+				temp_enemy_pos = enemy_pos + sf::Vector2i(0, +1);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+					return Enemy::DOWN;
+				}
+				//or don't move.
+				else {
+					return 77;
+				}
+				
+			}
+			//if nothin on the way, move right
+			else{
+				return Enemy::RIGHT;
+			}
+
+		}
+		//enemy is on the down side of player
+		if (enemy_pos.y > player_pos.y){
+			//check if there is anything on the way
+			temp_enemy_pos = enemy_pos + sf::Vector2i(0, -1);
+			if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'x'
+				|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == __ENEMY_ON_MAP__
+				|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'E'){
+				//move to the left or right
+				//but first move left
+				temp_enemy_pos = enemy_pos + sf::Vector2i(-1, 0);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'
+					&& enemy->getPreviousDirection() != Enemy::LEFT
+					&& enemy->getActualDirection() != Enemy::RIGHT){
+					return Enemy::LEFT;
+				}
+				//or then right
+				temp_enemy_pos = enemy_pos + sf::Vector2i(+1, 0);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+					return Enemy::RIGHT;
+				}
+				//or don't move
+				else{
+					return 77;
+				}
+
+			}
+			//if nothing on the way, move up
+			else{
+				return Enemy::UP;
+			}
+
+		}
+		//enemy is on the up side of player
+		if (enemy_pos.y < player_pos.y){
+			//check if there is anything on the way
+			temp_enemy_pos = enemy_pos + sf::Vector2i(0, +1);
+			if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'x'
+				|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == __ENEMY_ON_MAP__
+				|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'E'){
+				//move to the left or right
+				//but first move left
+				temp_enemy_pos = enemy_pos + sf::Vector2i(-1, 0);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'
+					&& enemy->getPreviousDirection() != Enemy::LEFT
+					&& enemy->getActualDirection() != Enemy::RIGHT){
+					return Enemy::LEFT;
+				}
+				//or then right
+				temp_enemy_pos = enemy_pos + sf::Vector2i(+1, 0);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+					&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+					return Enemy::RIGHT;
+				}
+				//or don't move
+				else{
+					return 77;
+				}
+
+			}
+			//if nothing on the way, move down
+			else{
+				return Enemy::DOWN;
+			}
+
+		}
+
+		//enemy is on the same XAxis as player
+		if (enemy_pos.x == player_pos.x){
+			//enemy is on the down side of player
+			if (enemy_pos.y > player_pos.y){
+				//check if there is anything on the way
+				temp_enemy_pos = enemy_pos + sf::Vector2i(0, -1);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'x'
+					|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == __ENEMY_ON_MAP__
+					|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'E'){
+					//move to the left or right
+					//but first move left
+					temp_enemy_pos = enemy_pos + sf::Vector2i(-1, 0);
+					if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+						return Enemy::LEFT;
+					}
+					//or then right
+					temp_enemy_pos = enemy_pos + sf::Vector2i(+1, 0);
+					if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+						return Enemy::RIGHT;
+					}
+					//or don't move
+					else{
+						return 77;
+					}
+
+				}
+				//if nothing on the way, move up
+				else{
+					return Enemy::UP;
+				}
+
+			}
+			//enemy is on the up side of player
+			if (enemy_pos.y < player_pos.y){
+				//check if there is anything on the way
+				temp_enemy_pos = enemy_pos + sf::Vector2i(0, +1);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'x'
+					|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == __ENEMY_ON_MAP__
+					|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'E'){
+					//move to the left or right
+					//but first move left
+					temp_enemy_pos = enemy_pos + sf::Vector2i(-1, 0);
+					if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+						return Enemy::LEFT;
+					}
+					//or then right
+					temp_enemy_pos = enemy_pos + sf::Vector2i(+1, 0);
+					if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+						return Enemy::RIGHT;
+					}
+					//or don't move
+					else{
+						return 77;
+					}
+
+				}
+				//if nothing on the way, move down
+				else{
+					return Enemy::DOWN;
+				}
+
+			}
+
+		}
+
+		//enemy is on the same YAxis as player
+		if (enemy_pos.y == player_pos.y){
+			//enemy is on the right side of player
+			if (enemy_pos.x > player_pos.x){
+				//check if there is anything on the way
+				temp_enemy_pos = enemy_pos + sf::Vector2i(-1, 0);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'x'
+					|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == __ENEMY_ON_MAP__
+					|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'E'){
+					//move to the up or down
+					//but first move up
+					temp_enemy_pos = enemy_pos + sf::Vector2i(0, -1);
+					if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+						return Enemy::UP;
+					}
+					//or move down
+					temp_enemy_pos = enemy_pos + sf::Vector2i(0, +1);
+					if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+						return Enemy::DOWN;
+					}
+					//or don't move.
+					else {
+						return 77;
+					}
+
+				}
+				//if nothin on the way, move left
+				else{
+					return Enemy::LEFT;
+				}
+
+			}
+			//enemy is on the left side of player
+			if (enemy_pos.x < player_pos.x){
+				//check if there is anything on the way
+				temp_enemy_pos = enemy_pos + sf::Vector2i(+1, 0);
+				if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'x'
+					|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == __ENEMY_ON_MAP__
+					|| mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] == 'E'){
+					//move to the up or down
+					//but first move up
+					temp_enemy_pos = enemy_pos + sf::Vector2i(0, -1);
+					if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+						return Enemy::UP;
+					}
+					//or move down
+					temp_enemy_pos = enemy_pos + sf::Vector2i(0, +1);
+					if (mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'x'
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != __ENEMY_ON_MAP__
+						&& mapTemplate[temp_enemy_pos.y][temp_enemy_pos.x] != 'E'){
+						return Enemy::DOWN;
+					}
+					//or don't move.
+					else {
+						return 77;
+					}
+
+				}
+				//if nothin on the way, move right
+				else{
+					return Enemy::RIGHT;
+				}
+
+			}
+		}
+		//return whatever, since it will sit in one place
+		return 77;
+	}
+
+
+
+	//likewise.
+	return 77;
+}
 
 bool Game::isPlayerNearby(sf::Vector2i position)
 {
@@ -1067,13 +1390,51 @@ void Game::restoreData()
 	//reset pointers to player
 	_inventoryWindow.setPlayer(_player);
 	_statusWindow.setPlayer(_player);
-	_devMode.setPlayer(_player);
 	_player->setGameWindowInterface(_gameWindowInterface);
 
 	//reset maps, but keep event progress!
-	_maps.clear();
-	_mapsWithAvaiableExits.clear();
-	generateNewMap();
+	//_maps.clear();
+	//_mapsWithAvaiableExits.clear();
+	//generateNewMap();
+
+	_currentMap = _maps[_player->getCurrentMap()];
+	for (auto map : _maps){
+		map->restoreMap(_mapTexture, _mapTextureDisplayed);
+
+		//Generate enemies!
+		//Here for special maps:
+		if (map->getMapId() == 40){
+			Enemy_Stats enemy_template = _resHolder->getSpecialEnemies()[1];
+			std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(0, enemy_template, sf::Vector2i(4, 4), '.', _player->getPlayerRating().overral_rating));
+			map->getEnemies().push_back(enemy);
+			map->changeMapTile(__ENEMY_ON_MAP__, 4, 4);
+		}
+		//Regular ones
+		else {
+			int tiley = 0;
+			int enemy_id = 0;
+			std::uniform_int_distribution<int> randomize(0, _resHolder->getAllEnemies().size() - 1);
+			for (auto row : map->getMap()){
+				int tilex = 0;
+				for (auto tile : row){
+					if (tile == '.'){
+						int chance = rand() % 100;
+						if (chance > 85){
+							Enemy_Stats enemy_template = _resHolder->getAllEnemies()[randomize(_generator)];
+							std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(enemy_id, enemy_template, sf::Vector2i(tilex, tiley), tile, _player->getPlayerRating().overral_rating));
+							map->getEnemies().push_back(enemy);
+							map->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
+							enemy_id++;
+							break;
+							break;
+						}
+					}
+					tilex++;
+				}
+				tiley++;
+			}
+		}
+	}
 	
 	//center at player
 	_gameView.setCenter(_player->getPlayerPositionOnMap()); 
@@ -1082,31 +1443,21 @@ void Game::restoreData()
 void Game::newGame()
 {
 
+	//std::shared_ptr<Item> weapon0(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0]));
+	//_player->putItemInBackpack(weapon0);
 
+	//_player->_item = weapon0;
+	//
+	//std::shared_ptr<Item> weapon1(std::make_shared<Weapon>(_resHolder->getAllWeapons()[1]));
 
-	//for (int i = 0; i < 29; i++){
-	//}
-	/*	for (int i = 0; i < 19; i++){
-	std::shared_ptr<Item> asd(std::make_shared<Armour>(_itemsHolder->_armoursData[0]));
-	_player->putItemInBackpack(asd);
-	}*/
-
-
-	std::shared_ptr<Item> weapon0(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0]));
-	_player->putItemInBackpack(weapon0);
-
-	_player->_item = weapon0;
-	
-	std::shared_ptr<Item> weapon1(std::make_shared<Weapon>(_resHolder->getAllWeapons()[1]));
-
-	std::shared_ptr<Consumable> cons0(std::make_shared<Consumable>(_resHolder->getAllConsumables()[0]));
-	_player->putItemInBackpack(cons0);
-	std::shared_ptr<Consumable> cons1(std::make_shared<Consumable>(_resHolder->getAllConsumables()[1]));
-	_player->putItemInBackpack(cons1);
-	std::shared_ptr<Consumable> cons2(std::make_shared<Consumable>(_resHolder->getAllConsumables()[2]));
-	_player->putItemInBackpack(cons2);
-	std::shared_ptr<Consumable> cons3(std::make_shared<Consumable>(_resHolder->getAllConsumables()[3]));
-	_player->putItemInBackpack(cons3);
+	//std::shared_ptr<Consumable> cons0(std::make_shared<Consumable>(_resHolder->getAllConsumables()[0]));
+	//_player->putItemInBackpack(cons0);
+	//std::shared_ptr<Consumable> cons1(std::make_shared<Consumable>(_resHolder->getAllConsumables()[1]));
+	//_player->putItemInBackpack(cons1);
+	//std::shared_ptr<Consumable> cons2(std::make_shared<Consumable>(_resHolder->getAllConsumables()[2]));
+	//_player->putItemInBackpack(cons2);
+	//std::shared_ptr<Consumable> cons3(std::make_shared<Consumable>(_resHolder->getAllConsumables()[3]));
+	//_player->putItemInBackpack(cons3);
 
 
 	_eventsHandler->resetEvents();

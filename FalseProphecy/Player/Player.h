@@ -36,6 +36,7 @@ class Player : public sf::Drawable{
 		ar & _stats;
 		ar & _mainHand & _offHand & _head & _torso & _head;
 		ar & _turnsTillNaturalRegen;
+		ar & _currentMap;
 	}
 
 
@@ -45,7 +46,7 @@ public:
 	Player();
 	Player(std::vector<std::shared_ptr<Item>> backpack, std::vector<Ability_Proficiencies> proficiences, Hero_Profile stats,
 		std::shared_ptr<Weapon> mainHand, std::shared_ptr<Armour> offHand, std::shared_ptr<Armour> head, std::shared_ptr<Armour> torso, std::shared_ptr<Armour> legs,
-		float turnTillRegen);
+		float turnTillRegen, int currentMap);
 	~Player();
 
 	enum MOVEMENT{
@@ -95,6 +96,8 @@ public:
 	std::vector<std::shared_ptr<Item>>& getPlayerBackpack();
 	//get player's challenge rating
 	Hero_Ratings getPlayerRating();
+	//get player 's current map localization
+	int getCurrentMap();
 
 	///////////
 	//Setters//
@@ -106,6 +109,8 @@ public:
 	void setPlayerPositionOnGrid(sf::Vector2i newPositionOnGrid);
 	//set game interface to be responsive
 	void setGameWindowInterface(std::shared_ptr<GameWindowInterface> GWI);
+	//set current ma player is on
+	void setCurrentMap(int mapID);
 
 	/////////////
 	//Inventory//
@@ -198,7 +203,7 @@ private:
 
 	int _direction;
 	bool _isNeedToMoveSprite = false;
-
+	int _currentMap;
 
 	std::default_random_engine _generator;
 
@@ -260,7 +265,7 @@ private:
 	const int __BASE_EXPERIENCE__ = 100;
 	const float __EXPIERIENCE_LVL_INCREASE__ = 1.20f;
 
-	const int __TURNS_FOR_REGEN__ = 10;
+	const int __TURNS_FOR_REGEN__ = 25;
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

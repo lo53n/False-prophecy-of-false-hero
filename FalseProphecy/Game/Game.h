@@ -22,7 +22,6 @@
 #include "../Menu/Menu.h"
 #include "../Events/EventsHandler.h"
 
-#include "../DevMode/DevMode.h"
 
 #include "../Save/SaveState.h"
 
@@ -45,6 +44,8 @@ public:
 	std::shared_ptr<Player> _player;
 
 	int _currentMapNumber = 0;
+	std::shared_ptr<Map> _currentMap;
+	std::vector<std::shared_ptr<Map>> _maps;
 
 
 private:
@@ -96,7 +97,6 @@ private:
 	std::shared_ptr<GameWindowInterface> _gameWindowInterface;
 	InventoryWindow _inventoryWindow;
 	StatusWindow _statusWindow;
-	DevMode _devMode;
 	Menu _menu;
 	HelpWindow _help;
 
@@ -109,14 +109,14 @@ private:
 	//////////////////////
 	//Maps related stuff//
 	//////////////////////
-	std::vector<std::shared_ptr<Map>> _maps;
+	//std::vector<std::shared_ptr<Map>> _maps;
 	std::vector<std::shared_ptr<Map>> _mapsWithAvaiableExits;
 	
 	sf::RenderTexture _mapTexture;
 	sf::RenderTexture _mapTextureDisplayed;
 
 	std::shared_ptr<Map> _newMap;
-	std::shared_ptr<Map> _currentMap;
+	//std::shared_ptr<Map> _currentMap;
 	int _currentMapTemplate;
 
 
@@ -220,6 +220,8 @@ private:
 	///////////////
 	void enemyTurn();
 	void moveEnemy();
+
+	int checkEnemyMovement(sf::Vector2i enemy_pos, std::shared_ptr<Enemy> &enemy, std::vector<std::vector<char>> &mapTemplate);
 
 	bool isPlayerNearby(sf::Vector2i position);
 

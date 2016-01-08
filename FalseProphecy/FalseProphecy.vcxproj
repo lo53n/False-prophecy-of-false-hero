@@ -11,13 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DevMode\DevMode.cpp" />
     <ClCompile Include="Enemy\Enemy.cpp" />
     <ClCompile Include="Enemy\EnemiesLoader.cpp" />
     <ClCompile Include="Errors\ErrorHandler.cpp" />
     <ClCompile Include="Events\EventsHandler.cpp" />
     <ClCompile Include="Game\Game.cpp" />
-    <ClCompile Include="Game\GameState.cpp" />
     <ClCompile Include="Interface\GameWindowInterface.cpp" />
     <ClCompile Include="Interface\InventoryWindow.cpp" />
     <ClCompile Include="Interface\HelpWindow.cpp" />
@@ -41,13 +39,11 @@
     <ClCompile Include="StatsCalculations.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DevMode\DevMode.h" />
     <ClInclude Include="Enemy\Enemy.h" />
     <ClInclude Include="Enemy\EnemiesLoader.h" />
     <ClInclude Include="Errors\ErrorHandler.h" />
     <ClInclude Include="Events\EventsHandler.h" />
     <ClInclude Include="Game\Game.h" />
-    <ClInclude Include="Game\GameState.h" />
     <ClInclude Include="Interface\GameWindowInterface.h" />
     <ClInclude Include="Interface\HelpWindow.h" />
     <ClInclude Include="Interface\InventoryWindow.h" />

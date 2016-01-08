@@ -28,10 +28,10 @@ void SaveState::saveGame()
 	oa << _game._player;
 	oa << _game._currentMapNumber;
 
+	oa << _game._maps;
 
 	//oa << _game._currentMap->getEnemies();
 	//oa << _game._currentMap;
-	//oa << _game._maps;
 	//oa << _game._mapsWithAvaiableExits;
 	//std::cout << _events.start_of_game << _events.first_instructions << _events.first_step << _events.items_first_lookout << _events.items_instructions << std::endl;
 
@@ -44,14 +44,20 @@ void SaveState::loadGame()
 	boost::archive::binary_iarchive ia(ifs);
 
 
+	std::shared_ptr<Player> player;
+
+	std::vector<std::shared_ptr<Map>> maps;
+	int currentMapNumber;
+
 	//load game state
 	ia >> _events;
-	ia >> _game._player;
-	ia >> _game._currentMapNumber;
+	ia >> player;
+	ia >> currentMapNumber;
+
+	ia >> maps;
 
 	//ia >> enemies;
 	//ia >> _game._currentMap;
-//	ia >> _game._maps;
 //	ia >> _game._mapsWithAvaiableExits;
 	//_game._player = player;
 	//_game._player->restoreData();
@@ -59,10 +65,14 @@ void SaveState::loadGame()
 	//std::cout << _events.start_of_game << _events.first_instructions << _events.first_step<< _events.items_first_lookout << _events.items_instructions << std::endl;
 	
 
-	_game._eventsHandler->restoreEventData(_events);
 
 	std::cout << std::endl;
 	loadGameData();
+
+	_game._player = player;
+	_game._currentMapNumber = currentMapNumber;
+	_game._maps = maps;
+	_game._eventsHandler->restoreEventData(_events);
 }
 
 void SaveState::saveGameData()

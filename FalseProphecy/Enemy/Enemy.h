@@ -53,6 +53,8 @@ public:
 	int getEnemyId();
 	//Get enemy stats structure
 	Enemy_Stats getEnemyStats();
+	//Get enemy type
+	int getEnemyType();
 	//Get enemy rating
 	int getEnemyRating();
 	//Get enemy class
@@ -68,6 +70,24 @@ public:
 	//Set tile underneath the enemy on map
 	void setTileUnderneathEnemy(char newTile);
 
+
+	/////////////////
+	//Agressiveness//
+	/////////////////
+
+	void setAlarmStatus(bool status);
+	bool isAlarmed();
+	void isPlayerInAggroRange(int range);
+	void setAggroRange();
+
+	//////////////
+	//Directions//
+	//////////////
+
+	void setDirection(int direction);
+	int getActualDirection();
+	int getPreviousDirection();
+	int getBackPreviousDirection();
 
 	/////////////
 	//Animation//
@@ -113,11 +133,15 @@ private:
 	Enemy_Stats _baseStats;
 
 	int _ticksForActions = 0;
+
+	int _aggroRange = 0;
+
 	bool _canTakeAction = false;
 
 	char _tile_underneath;
 
 	bool isAlive = true;
+	bool _isAlarmed = false;
 
 	sf::Vector2f _positionOnMap;	//Position in px
 	sf::Vector2i _positionOnGrid;	//Position on map
@@ -135,6 +159,8 @@ private:
 
 
 	int _direction;
+	int _direction_1 = -1;
+	int _direction_2 = -1;
 	bool _isNeedToMoveSprite = false;
 
 

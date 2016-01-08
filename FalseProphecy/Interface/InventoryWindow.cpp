@@ -447,10 +447,10 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 
 		switch (stats.weapon_handle){
 		case WEAPON_HANDLE::ONEHANDED:
-			descriptionString += "one-handed ";
+			descriptionString += "onehanded ";
 			break;
 		case WEAPON_HANDLE::TWOHANDED:
-			descriptionString += "two-handed ";
+			descriptionString += "twohanded ";
 			break;
 		}
 

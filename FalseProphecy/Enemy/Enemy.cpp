@@ -25,39 +25,32 @@ Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGr
 	_positionOnGrid(positionOnGrid),
 	_tile_underneath(newTile)
 {
+	setAggroRange();
 	_positionOnMap = (sf::Vector2f)(_positionOnGrid * (int)__ENEMY_HEIGHT__);
 
 	if (!_enemyTexture.loadFromFile(_stats.img_path, sf::IntRect(0,0,32,32))){
 		switch (_stats.type){
 		case ENEMY_TYPE::BEAST_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_BEAST__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_BEAST__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::UNDEAD_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_UNDEAD__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_UNDEAD__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::DEMON_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_DEMON__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_DEMON__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::HUMANOID_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_HUMANOID__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_HUMANOID__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::HUMAN_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_HUMAN__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_HUMAN__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::GOLEM_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_GOLEM__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_GOLEM__, sf::IntRect(32, 0, 32, 32));
 			break;
 		}
 	}
-	else{
-		_enemyCorpseTexture.loadFromFile(_stats.img_path, sf::IntRect(32, 0, 32, 32));
-	}
+	_enemyCorpseTexture.loadFromFile("data\\img\\enemy\\grave.png");
 
 
 	_enemyShape.setSize(sf::Vector2f(__ENEMY_WIDTH__, __ENEMY_HEIGHT__));
@@ -67,7 +60,7 @@ Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGr
 
 	_enemyCorpseShape.setSize(sf::Vector2f(__ENEMY_WIDTH__, __ENEMY_HEIGHT__));
 	_enemyCorpseShape.setPosition(_positionOnMap);
-	_enemyCorpseShape.setFillColor(sf::Color(150, 200, 100, 255));
+	_enemyCorpseShape.setTexture(&_enemyCorpseTexture);
 
 	_hpBar.setSize(sf::Vector2f(30.f, 3.f));
 	_hpBar.setPosition(sf::Vector2f(_enemyShape.getPosition().x + 1.f, _enemyShape.getPosition().y + 25.f));
@@ -116,37 +109,33 @@ Enemy::~Enemy()
 
 void Enemy::restoreData()
 {
+	setAggroRange();
+
 	if (!_enemyTexture.loadFromFile(_stats.img_path, sf::IntRect(0, 0, 32, 32))){
 		switch (_stats.type){
 		case ENEMY_TYPE::BEAST_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_BEAST__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_BEAST__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::UNDEAD_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_UNDEAD__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_UNDEAD__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::DEMON_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_DEMON__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_DEMON__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::HUMANOID_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_HUMANOID__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_HUMANOID__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::HUMAN_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_HUMAN__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_HUMAN__, sf::IntRect(32, 0, 32, 32));
 			break;
 		case ENEMY_TYPE::GOLEM_ENEMY:
 			_enemyTexture.loadFromFile(__ENEMY_DEFAULT_GOLEM__, sf::IntRect(0, 0, 32, 32));
-			//_enemyCorpseTexture.loadFromFile(__ENEMY_DEFAULT_GOLEM__, sf::IntRect(32, 0, 32, 32));
 			break;
 		}
 	}
-	else{
-		_enemyCorpseTexture.loadFromFile(_stats.img_path, sf::IntRect(32, 0, 32, 32));
-	}
+
+
+	_enemyCorpseTexture.loadFromFile("data\\img\\enemy\\grave.png");
 
 
 	_enemyShape.setSize(sf::Vector2f(__ENEMY_WIDTH__, __ENEMY_HEIGHT__));
@@ -156,7 +145,7 @@ void Enemy::restoreData()
 
 	_enemyCorpseShape.setSize(sf::Vector2f(__ENEMY_WIDTH__, __ENEMY_HEIGHT__));
 	_enemyCorpseShape.setPosition(_positionOnMap);
-	_enemyCorpseShape.setFillColor(sf::Color(150, 200, 100, 255));
+	_enemyCorpseShape.setTexture(&_enemyCorpseTexture);
 
 	_hpBar.setSize(sf::Vector2f(30.f, 3.f));
 	_hpBar.setPosition(sf::Vector2f(_enemyShape.getPosition().x + 1.f, _enemyShape.getPosition().y + 25.f));
@@ -220,6 +209,11 @@ Enemy_Stats Enemy::getEnemyStats()
 	return _stats;
 }
 
+int Enemy::getEnemyType()
+{
+	return _stats.type;
+}
+
 int Enemy::getEnemyRating()
 {
 	return _stats.current_rating;
@@ -267,6 +261,79 @@ void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		target.draw(_enemyCorpseShape);
 	}
 }
+
+/////////////////
+//Agressiveness//
+/////////////////
+
+void Enemy::setAlarmStatus(bool status)
+{
+	_isAlarmed = status;
+
+}
+bool Enemy::isAlarmed()
+{
+	return _isAlarmed;
+}
+
+void Enemy::isPlayerInAggroRange(int range)
+{
+	if (range <= _aggroRange){
+		setAlarmStatus(true);
+	}
+}
+
+void Enemy::setAggroRange()
+{
+	switch (_stats.type){
+
+	case ENEMY_TYPE::BEAST_ENEMY:
+		_aggroRange = 10;
+		break;
+	case ENEMY_TYPE::DEMON_ENEMY:
+		_aggroRange = 8;
+		break;
+	case ENEMY_TYPE::GOLEM_ENEMY:
+		_aggroRange = 2;
+		break;
+	case ENEMY_TYPE::HUMANOID_ENEMY:
+		_aggroRange = 6;
+		break;
+	case ENEMY_TYPE::HUMAN_ENEMY:
+		_aggroRange = 4;
+		break;
+	case ENEMY_TYPE::UNDEAD_ENEMY:
+		_aggroRange = 0;
+		break;
+
+
+
+	}
+}
+
+//////////////
+//Directions//
+//////////////
+
+void Enemy::setDirection(int direction)
+{
+	_direction_2 = _direction_1;
+	_direction_1 = _direction;
+	_direction = direction;
+}
+int Enemy::getActualDirection()
+{
+	return _direction;
+}
+int Enemy::getPreviousDirection()
+{
+	return _direction_1;
+}
+int Enemy::getBackPreviousDirection()
+{
+	return _direction_2;
+}
+
 
 //////////////
 //Swap tiles//
@@ -359,16 +426,19 @@ void Enemy::moveEnemy(sf::Vector2i newPos)
 
 	//temporary???
 	if (newPos.x > _positionOnGrid.x){
-		_direction = MOVEMENT::RIGHT;
+		setDirection(MOVEMENT::RIGHT);
 	}
 	else if (newPos.y > _positionOnGrid.y){
-		_direction = MOVEMENT::DOWN;
+		setDirection(MOVEMENT::DOWN);
 	}
 	else if (newPos.x < _positionOnGrid.x){
-		_direction = MOVEMENT::LEFT;
+		setDirection(MOVEMENT::LEFT);
 	}
 	else if (newPos.y < _positionOnGrid.y){
-		_direction = MOVEMENT::UP;
+		setDirection(MOVEMENT::UP);
+	}
+	else {
+		setDirection(6);
 	}
 
 	//std::cout << "Move Enemy ID " << getEnemyId() << std::endl;
@@ -405,6 +475,8 @@ void Enemy::moveSprite(float change)
 		break;
 	case 3:
 		changeToSprite = sf::Vector2f(-change, 0);
+		break;
+	default:
 		break;
 	}
 

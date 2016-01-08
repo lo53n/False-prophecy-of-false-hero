@@ -1,35 +1,24 @@
-[[NAME::Kraken Slayer]]           -- nazwa
-[[IMG::axe.png]]		  -- œcie¿ka do obrazu
-[[TYPE::AXE]]			  -- typ broni
-[[SIZE::LARGE]]			  -- rozmiar broni
-[[HANDLE::ONEHANDED]]		  -- typ rêkojeœci
-[[PRIMARY_MULTIPLIER::STR]]	  -- g³ówny mno¿nik obra¿eñ
-[[PRIMARY_MULTIPLIER_VALUE::111]] -- wartoœæ g³ównego mno¿nika
-[[MIN_DMG::102]]		  -- minimalny zakres obra¿eñ
-[[MAX_DMG::203]]		  -- maksymalny zakres obra¿eñ
-[[STR_REQ::20]]			  -- wymagania si³y
-[[END_REQ::0]]			  -- wymagania wytrzymyma³oœci
-[---]				  -- koniec obecnego szablonu
-[[NAME::Kroczker]]
+[[NAME::Krochcer]]
 [[IMG::sword.png]]
 [[TYPE::SWORD]]
 [[SIZE::SMALL]]
 [[HANDLE::TWOHANDED]]
-[[PRIMARY_MULTIPLIER::STR]]
-[[PRIMARY_MULTIPLIER_VALUE::22]]
 [[MIN_DMG::22]]
 [[MAX_DMG::111]]
-[[STR_REQ::10]]
+[[PRIMARY_MULTIPLIER::STR]]
+[[PRIMARY_MULTIPLIER_VALUE::22]]
+[[STR_REQ::21]]
+[[END_REQ::15]]
 [---]
 [[NAME::Holy Spear]]
 [[IMG::spear.png]]
 [[TYPE::SPEAR]]
 [[SIZE::MEDIUM]]
 [[HANDLE::ONEHANDED]]
-[[PRIMARY_MULTIPLIER::STR]]
-[[PRIMARY_MULTIPLIER_VALUE::22]]
 [[MIN_DMG::22]]
 [[MAX_DMG::111]]
+[[PRIMARY_MULTIPLIER::STR]]
+[[PRIMARY_MULTIPLIER_VALUE::22]]
 [[STR_REQ::10]]
 [---]
 [[NAME::Macza]]
@@ -37,10 +26,9 @@
 [[TYPE::MACE]]
 [[SIZE::SMALL]]
 [[HANDLE::ONEHANDED]]
-[[PRIMARY_MULTIPLIER::STR]]
-[[PRIMARY_MULTIPLIER_VALUE::22]]
-[[SPEED::12]]
 [[MIN_DMG::22]]
 [[MAX_DMG::111]]
+[[PRIMARY_MULTIPLIER::STR]]
+[[PRIMARY_MULTIPLIER_VALUE::22]]
 [[STR_REQ::10]]
 [---]

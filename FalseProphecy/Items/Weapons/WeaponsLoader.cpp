@@ -5,6 +5,27 @@ WeaponsLoader::WeaponsLoader(std::shared_ptr<ErrorHandler> errorHandler)
 	_errorHandler(errorHandler)
 {
 	_weaponsData.reserve(100000);
+
+	prepareStruct();
+
+	_currentData.name = "Rusted sword";
+	_currentData.img_path = "data\\img\\weapon\\rustysword.png";
+	_currentData.size = WEAPON_SIZE::LARGE;
+	_currentData.type = WEAPON_TYPE::SWORD;
+	_currentData.weapon_handle = WEAPON_HANDLE::TWOHANDED;
+
+	_currentData.isMagic = false;
+	_currentData.primary_multiplier = HERO_STATS_NAMES::STRENGTH;
+	_currentData.primary_multiplier_value = 140;
+	_currentData.secondary_multiplier = HERO_STATS_NAMES::ENDURANCE;
+	_currentData.secondary_multiplier_value = 55;
+
+	_currentData.min_dmg = 14;
+	_currentData.max_dmg = 33;
+
+	_weaponsData.push_back(_currentData);
+
+
 }
 WeaponsLoader::~WeaponsLoader()
 {

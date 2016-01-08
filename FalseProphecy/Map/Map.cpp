@@ -6,21 +6,22 @@ Map::Map()
 	//_mapTexture.clear();
 
 }
-Map::Map(int id, int resCount, std::vector<std::vector<char>> mapTemplate, int maxX, int maxY/*, std::vector<sf::Vector2i> exitPoints,
-	std::vector<sf::Vector2i> notPairedExits,std::unordered_map<sf::Vector2i, std::shared_ptr<Map>> mapExits,
-	std::vector<std::shared_ptr<Enemy>> enemies, std::vector<std::shared_ptr<Enemy>> deadenemies, 
-	std::unordered_multimap<sf::Vector2i, std::shared_ptr<Item>> itemsOnMap*/)
+Map::Map(int id, int resCount, std::vector<std::vector<char>>& mapTemplate, int maxX, int maxY/*,
+	std::vector<std::shared_ptr<Enemy>> &enemies, std::vector<std::shared_ptr<Enemy>> &deadenemies,
+	std::vector<sf::Vector2i> &exitPoints, std::vector<sf::Vector2i> &notPairedExits,
+	std::unordered_map<sf::Vector2i, std::shared_ptr<Map>> &mapExits,
+	std::unordered_multimap<sf::Vector2i, std::shared_ptr<Item>> &itemsOnMap*/)
 :
 _mapIdentifier(id),
 _respawn_counter(resCount),
 _mapTemplate(mapTemplate),
 _maxDimensionX(maxX),
 _maxDimensionY(maxY)/*,
+_enemies(enemies),
+_deadenemies(deadenemies),
 _exitPoints(exitPoints),
 _notPairedExitPoints(notPairedExits),
 _mapExits(mapExits),
-_enemies(enemies),
-_deadenemies(deadenemies),
 _itemsOnMap(itemsOnMap)*/
 
 {
@@ -46,7 +47,7 @@ Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::Ren
 
 	if (_mapIdentifier == 0){
 		sf::Vector2i position(6, 3);
-		std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[rand()%_resHolder->getAllWeapons().size()]));
+		std::shared_ptr<Item> item(std::make_shared<Weapon>(_resHolder->getAllWeapons()[0]));
 		pushItemToMapStorage(position, item);
 	}
 }
@@ -62,6 +63,10 @@ void Map::restoreMap(sf::RenderTexture& renderTexture, sf::RenderTexture& render
 	_wallTile.setTexture(_resHolder->getWallTexture());
 	_floorTile.setTexture(_resHolder->getTileTexture());
 	_doorTile.setTexture(_resHolder->getDoorTexture());
+
+
+	checkMaxSizes();
+	findAllExitPoints();
 
 
 	for (auto enemy : _enemies){
@@ -212,11 +217,6 @@ void Map::drawMap()
 //Wall//
 void Map::drawWall(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
-	/*sf::RectangleShape tile;
-	//std::cout << "1";
-	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
-	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
-	tile.setFillColor(sf::Color::Blue);*/
 	_wallTile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	mapRenderTexture.draw(_wallTile);
 }
@@ -224,12 +224,6 @@ void Map::drawWall(sf::RenderTexture& mapRenderTexture, int y, int x)
 //Floor//
 void Map::drawFloor(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
-	/*sf::RectangleShape tile;
-	//std::cout << "0";
-	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
-	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
-	tile.setFillColor(sf::Color::Yellow);*/
-
 	_floorTile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 
 	mapRenderTexture.draw(_floorTile);
@@ -238,12 +232,6 @@ void Map::drawFloor(sf::RenderTexture& mapRenderTexture, int y, int x)
 //Entry/Exit. In short: doorway! Or long, lol.//
 void Map::drawEntry(sf::RenderTexture& mapRenderTexture, int y, int x)
 {
-	/*sf::RectangleShape tile;
-	//std::cout << "E";
-	tile.setSize(sf::Vector2f(__TILE_SIZE_X__, __TILE_SIZE_Y__));
-	tile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
-	tile.setFillColor(sf::Color::Color(122,100,23,255));*/
-
 	_wallTile.setPosition(__TILE_SIZE_X__ * x, __TILE_SIZE_Y__ * y);
 	mapRenderTexture.draw(_wallTile);
 
@@ -377,7 +365,7 @@ void Map::increaseRespawnCounter()
 {
 	_respawn_counter++;
 	if (__MAPS_TILL_RESPAWN__ == _respawn_counter){
-		_ratings.overral_rating = (int)(_ratings.overral_rating * 1.2f);
+		_ratings.overral_rating = (int)(_ratings.overral_rating * 1.4f);
 		resurrectAndReinforceEnemies();
 		_respawn_counter = 0;
 	}
@@ -407,6 +395,11 @@ void Map::killOffEnemy(int enemy_id)
 	for (auto enemy : _enemies){
 		if (enemy->getEnemyId() == enemy_id){
 			changeMapTile(__ENEMY_CORPSE_ON_MAP__, enemy->getEnemyPositionOnGrid().x, enemy->getEnemyPositionOnGrid().y);
+			for (auto aliveEnemy : _enemies){
+				if (aliveEnemy->getEnemyPositionOnGrid() == enemy->getEnemyPositionOnGrid() && aliveEnemy->checkIfAlive()){
+
+				}
+			}
 			updateMap();
 			return;
 		}
@@ -431,8 +424,18 @@ void Map::moveEnemy(std::shared_ptr<Enemy> &enemy, sf::Vector2i newPos)
 
 	changeMapTile(enemy->getTileUnderneathEnemy(), position.x, position.y);
 
-
-	enemy->setTileUnderneathEnemy(_mapTemplate[newPos.y][newPos.x]);
+	if (_mapTemplate[newPos.y][newPos.x] != __ENEMY_CORPSE_ON_MAP__ 
+		&& _mapTemplate[newPos.y][newPos.x] != __ENEMY_ON_MAP__){
+		enemy->setTileUnderneathEnemy(_mapTemplate[newPos.y][newPos.x]);
+	}
+	else{
+		for (auto otherEnemy : _enemies){
+			if (otherEnemy->getEnemyPositionOnGrid() == newPos && otherEnemy != enemy){
+				enemy->setTileUnderneathEnemy(otherEnemy->getTileUnderneathEnemy());
+				break;
+			}
+		}
+	}
 	changeMapTile(__ENEMY_ON_MAP__, newPos.x, newPos.y);
 
 	enemy->moveEnemy(newPos);

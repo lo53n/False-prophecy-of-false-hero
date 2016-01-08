@@ -37,7 +37,7 @@ Player::Player()
 
 Player::Player(std::vector<std::shared_ptr<Item>> backpack, std::vector<Ability_Proficiencies> proficiences, Hero_Profile stats,
 	std::shared_ptr<Weapon> mainHand, std::shared_ptr<Armour> offHand, std::shared_ptr<Armour> head, std::shared_ptr<Armour> torso, std::shared_ptr<Armour> legs,
-	float turnTillRegen)
+	float turnTillRegen, int currentMap)
 	:
 	_backpack(backpack),
 	_proficiences(proficiences),
@@ -47,7 +47,8 @@ Player::Player(std::vector<std::shared_ptr<Item>> backpack, std::vector<Ability_
 	_head(head),
 	_torso(torso),
 	_legs(legs),
-	_turnsTillNaturalRegen(turnTillRegen)
+	_turnsTillNaturalRegen(turnTillRegen),
+	_currentMap(currentMap)
 {
 
 }
@@ -287,7 +288,10 @@ Hero_Ratings Player::getPlayerRating()
 {
 	return _ratings;
 }
-
+int Player::getCurrentMap()
+{
+	return _currentMap;
+}
 ///////////
 //Setters//
 ///////////
@@ -315,6 +319,11 @@ void Player::setGameWindowInterface(std::shared_ptr<GameWindowInterface> GWI)
 {
 	_gwi = GWI;
 }
+void Player::setCurrentMap(int mapID)
+{
+	_currentMap = mapID;
+
+}
 ///////////////////
 //Player movement//
 ///////////////////
@@ -340,7 +349,9 @@ void Player::movePlayer(int direction)
 	case 3:
 		movement = sf::Vector2i(-1, 0);
 		break;
+	default:
 
+		break;
 	}
 
 	_direction = direction;
@@ -1334,7 +1345,6 @@ void Player::takeTurn()
 
 void Player::regenHealth(bool forced)
 {
-	int regeneration;
 	if (!forced){
 		_stats.hp += 15 + _stats.willpower / 5;
 	}
@@ -1346,7 +1356,6 @@ void Player::regenHealth(bool forced)
 }
 void Player::regenStamina(bool forced)
 {
-	int regeneration;
 	if (!forced){
 		_stats.stam += 15 + _stats.willpower / 5;
 	}

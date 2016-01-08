@@ -75,12 +75,6 @@
     <Filter Include="Resource Files\Enemy">
       <UniqueIdentifier>{17a26496-1b7d-43e5-8f20-a25f2c57c34c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\DevMode">
-      <UniqueIdentifier>{b70f84a9-1cb8-479d-831c-130a50b17519}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\DevMode">
-      <UniqueIdentifier>{90381106-0bb6-41b6-867f-408d7d1f41eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Error handling">
       <UniqueIdentifier>{b13228f5-89bc-4f9e-864b-71015f57895b}</UniqueIdentifier>
     </Filter>
@@ -152,9 +146,6 @@
     <ClCompile Include="Enemy\Enemy.cpp">
       <Filter>Resource Files\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="DevMode\DevMode.cpp">
-      <Filter>Resource Files\DevMode</Filter>
-    </ClCompile>
     <ClCompile Include="Errors\ErrorHandler.cpp">
       <Filter>Resource Files\Error Handling</Filter>
     </ClCompile>
@@ -175,9 +166,6 @@
     </ClCompile>
     <ClCompile Include="Enemy\EnemiesLoader.cpp">
       <Filter>Resource Files\ResManage</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameState.cpp">
-      <Filter>Resource Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="StatsCalculations.cpp">
       <Filter>Resource Files</Filter>
@@ -355,9 +343,6 @@
     <ClInclude Include="Enemy\Enemy.h">
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="DevMode\DevMode.h">
-      <Filter>Header Files\DevMode</Filter>
-    </ClInclude>
     <ClInclude Include="Errors\ErrorHandler.h">
       <Filter>Header Files\Error handling</Filter>
     </ClInclude>
@@ -378,9 +363,6 @@
     </ClInclude>
     <ClInclude Include="Map\MapLoader.h">
       <Filter>Header Files\ResManage</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameState.h">
-      <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="StatsCalculations.h">
       <Filter>Header Files\----Data----</Filter>

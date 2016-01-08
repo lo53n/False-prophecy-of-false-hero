@@ -6,18 +6,11 @@ namespace Calculations{
 	{
 
 		int rating = 0;
-		rating += (int)((float)(stats.min_dmg + stats.max_dmg) / 2);
+		rating += stats.min_dmg + stats.max_dmg;
 
-		rating -= stats.agi_req / 5;
-		rating -= stats.dex_req / 5;
-		rating -= stats.str_req / 5;
-		rating -= stats.end_req / 5;
-		rating -= stats.int_req / 5;
-		rating -= stats.wil_req / 5;
-
-		rating += stats.primary_multiplier_value / 10;
+		rating += stats.primary_multiplier_value / 6;
 		if (stats.secondary_multiplier >= 0 && stats.secondary_multiplier_value > 0){
-			rating += stats.secondary_multiplier_value / 10;
+			rating += stats.secondary_multiplier_value / 6;
 		}
 
 		if (!second_calc){
@@ -41,8 +34,8 @@ namespace Calculations{
 
 		case ARMOUR_CLASS::AVERAGE:
 		case ARMOUR_CLASS::LEATHER:
-			rating += stats.dodge;
-			rating += stats.defence;
+			rating += stats.dodge * 1.5;
+			rating += stats.defence * 1.5;
 			break;
 
 		case ARMOUR_CLASS::HEAVY:
@@ -54,12 +47,6 @@ namespace Calculations{
 			rating += stats.block;
 		}
 
-		rating -= stats.agi_req / 5;
-		rating -= stats.dex_req / 5;
-		rating -= stats.str_req / 5;
-		rating -= stats.end_req / 5;
-		rating -= stats.int_req / 5;
-		rating -= stats.wil_req / 5;
 
 		if (!second_calc){
 			stats.base_rating = stats.current_rating = rating;
@@ -68,7 +55,6 @@ namespace Calculations{
 			stats.current_rating = rating;
 		}
 	}
-
 
 	void calculateBaseRating(Consumable_struct &stats)
 	{
@@ -180,7 +166,7 @@ namespace Calculations{
 		stats.max_dmg = (int)((float)stats.max_dmg * percentage_difference);
 
 
-		float req_inc = percentage_difference * multiplier;
+		float req_inc = percentage_difference * multiplier / 5;
 
 		stats.agi_req = (int)((float)stats.agi_req * req_inc);
 		stats.dex_req = (int)((float)stats.dex_req * req_inc);
@@ -265,7 +251,7 @@ namespace Calculations{
 		}
 
 
-		float req_inc = percentage_difference *multiplier;
+		float req_inc = percentage_difference *multiplier / 5;
 		//std::cout << "Req_inc: " << req_inc << std::endl;
 
 		stats.agi_req = (int)((float)stats.agi_req * req_inc);

@@ -49,43 +49,21 @@ class Map : public sf::Drawable{
 	void serialize(Archive &ar, const unsigned int version)
 	{
 
-		takeEnemiesFromMap();
 
 		ar  & _mapIdentifier;
 		ar  & _respawn_counter;
+		takeEnemiesFromMap();
 		ar  & _mapTemplate;
-		ar  & _maxDimensionX;
-		ar  & _maxDimensionY;
-
-		//try{
-		//	ar  & _exitPoints;
-		//}
-		//catch (boost::archive::archive_exception){}
-
-		//try{
-		//	ar  & _notPairedExitPoints;
-		//}
-		//catch (boost::archive::archive_exception){}
-
-		//try{
-		//	ar  & _mapExits;
-		//}
-		//catch (boost::archive::archive_exception){}
-
-		//try{
-		//	ar  & _enemies;
-		//}
-		//catch (boost::archive::archive_exception){}
-		//try{
-		//	ar  & _deadenemies;
-		//}
-		//catch (boost::archive::archive_exception){}
-		//try{
-		//	ar  & _itemsOnMap;
-		//}
-		//catch (boost::archive::archive_exception){}
-
 		putEnemiesOnMap();
+		ar  & _maxDimensionX;
+		ar  & _maxDimensionY; /*
+		ar  & _enemies;
+		ar  & _deadenemies;
+		ar  & _exitPoints;
+		ar  & _notPairedExitPoints;
+		ar  & _mapExits;
+		ar  & _itemsOnMap;*/
+		
 	}
 
 public:
@@ -93,9 +71,11 @@ public:
 
 	Map();
 
-	Map(int id, int resCount, std::vector<std::vector<char>> mapTemplate, int maxX, int maxY/*, std::vector<sf::Vector2i> exitPoints, std::vector<sf::Vector2i> notPairedExits,
-		std::unordered_map<sf::Vector2i, std::shared_ptr<Map>> mapExits, std::vector<std::shared_ptr<Enemy>> enemies, std::vector<std::shared_ptr<Enemy>> deadenemies,
-		std::unordered_multimap<sf::Vector2i, std::shared_ptr<Item>> itemsOnMap*/);
+	Map(int id, int resCount, std::vector<std::vector<char>>& mapTemplate, int maxX, int maxY/*,
+		std::vector<std::shared_ptr<Enemy>> &enemies, std::vector<std::shared_ptr<Enemy>> &deadenemies,
+		std::vector<sf::Vector2i> &exitPoints, std::vector<sf::Vector2i> &notPairedExits,
+		std::unordered_map<sf::Vector2i, std::shared_ptr<Map>> &mapExits,
+		std::unordered_multimap<sf::Vector2i, std::shared_ptr<Item>> &itemsOnMap*/);
 
 	Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::RenderTexture& renderTexture, sf::RenderTexture& renderTextureDisplayed, Hero_Ratings ratings);
 	~Map();
