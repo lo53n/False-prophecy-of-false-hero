@@ -16,6 +16,12 @@ Player::Player()
 
 	//_playerSprite.setTexture(_playerTexture.getTexture());
 
+
+	initializeStartValues();
+
+}
+void Player::initializeStartValues()
+{
 	_backpack.reserve(__BACKPACK_CAPACITY__);
 
 	presetHeroStructure();
@@ -31,7 +37,14 @@ Player::Player()
 
 	setAsUnarmed();
 	refreshStatistics();
+	changeDeadStatus(false);
 
+	_backpack.clear();
+	_mainHand = nullptr;
+	_offHand = nullptr;
+	_torso = nullptr;
+	_head = nullptr;
+	_legs = nullptr;
 
 }
 
@@ -149,13 +162,13 @@ void Player::presetHeroStructure()
 
 	_stats.defence = 0;
 	_stats.damage_reduction = 0.f;
-	_stats.max_reduction = 0.80f;
+	_stats.max_reduction = 0.90f;
 
-	_stats.max_block = 0.75f;
+	_stats.max_block = 0.85f;
 	_stats.block = 0;
 	_stats.block_chance = 0.f;
 
-	_stats.max_dodge = 0.75f;
+	_stats.max_dodge = 0.85f;
 	_stats.dodge = 0;
 	_stats.dodge_chance = 0.f;
 
@@ -190,6 +203,7 @@ void Player::presetHeroStructure()
 
 void Player::presetProficiences()
 {
+	_proficiences.clear();
 	for (int i = 0; i < 10; i++){
 		Ability_Proficiencies ability;
 		ability.id = i;
@@ -979,6 +993,7 @@ void Player::takeDamage(int dmg)
 
 	if (_stats.hp < 0){
 		_stats.hp = 0;
+		changeDeadStatus(true);
 	}
 	_gwi->refreshBars(_stats);
 }
@@ -1307,14 +1322,14 @@ void Player::addStatsByArmour()
 
 void Player::calculateChances()
 {
-	_stats.damage_reduction = (((float)_stats.defence * (1.f + _proficiences.at(DEFENCE_PROFICIENCY).effectiveness)) * pow(0.80f, _stats.level)) / 100;
+	_stats.damage_reduction = (((float)_stats.defence * (1.f + _proficiences.at(DEFENCE_PROFICIENCY).effectiveness)) * pow(0.85f, _stats.level)) / 100;
 	//std::cout << "dmg_Red: " << _stats.damage_reduction << "math " << (float)_stats.defence * pow(0.80f, _stats.level) / 100 << std::endl;
 	if (_stats.damage_reduction >= _stats.max_reduction){
 		_stats.damage_reduction = _stats.max_reduction;
 	} 
 
 
-	_stats.dodge_chance = (((float)_stats.dodge * (1.f + _proficiences.at(DEFENCE_PROFICIENCY).effectiveness)) * pow(0.80f, _stats.level)) / 100;
+	_stats.dodge_chance = (((float)_stats.dodge * (1.f + _proficiences.at(DEFENCE_PROFICIENCY).effectiveness)) * pow(0.85f, _stats.level)) / 100;
 	//std::cout << "dodge: " << _stats.dodge_chance << "math " << (float)_stats.dodge * pow(0.80f, _stats.level) / 100 << std::endl;
 	if (_stats.dodge_chance >= _stats.max_dodge){
 		_stats.dodge_chance = _stats.max_dodge;
@@ -1322,7 +1337,7 @@ void Player::calculateChances()
 
 
 	if (_offHand != nullptr){
-		_stats.block_chance = (((float)_stats.block * (1.f + _proficiences.at(DEFENCE_PROFICIENCY).effectiveness)) * pow(0.80f, _stats.level)) / 100;
+		_stats.block_chance = (((float)_stats.block * (1.f + _proficiences.at(DEFENCE_PROFICIENCY).effectiveness)) * pow(0.85f, _stats.level)) / 100;
 		//std::cout << "dodge: " << _stats.block_chance << "math " << (float)_stats.block * pow(0.80f, _stats.level) / 100 << std::endl;
 		if (_stats.block_chance >= _stats.max_block){
 			_stats.block_chance = _stats.max_block;
@@ -1431,4 +1446,15 @@ void Player::increaseStamina(int amount)
 		if (_stats.stam > _stats.max_stam) _stats.stam = _stats.max_stam;
 	}
 
+}
+
+
+void Player::changeDeadStatus(bool status)
+{
+	_isDead = status;
+}
+
+bool Player::isPlayerDead()
+{
+	return _isDead;
 }

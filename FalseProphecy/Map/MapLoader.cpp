@@ -65,17 +65,17 @@ std::vector<std::vector<std::vector<char>>> MapLoader::loadSpecialMaps()
 
 	prepareMapVector();
 	/*
-	xxxxxxxxxxx
-	x...x..xx.x
+	xxxExxxxxxx
+	x.xxx..xx.x
 	xx..x.x...x
 	x...x..x..x
 	xx....x.x.x
-	xxx.......x
-	xxxExxxxxxx
+	 xx.......x
+	  xExxxxxxx
 	*/
-	stringline = "xxxxxxxxxxx";
+	stringline = "xxxExxxxxxx";
 	parseMapLine(stringline);
-	stringline = "x...x..xx.x";
+	stringline = "x.xxx..xx.x";
 	parseMapLine(stringline);
 	stringline = "xx..x.x...x";
 	parseMapLine(stringline);
@@ -83,33 +83,33 @@ std::vector<std::vector<std::vector<char>>> MapLoader::loadSpecialMaps()
 	parseMapLine(stringline);
 	stringline = "xx....x.x.x";
 	parseMapLine(stringline);
-	stringline = "xxx.......x";
+	stringline = " xx.......x";
 	parseMapLine(stringline);
-	stringline = "xxxExxxxxxx";
+	stringline = "  xExxxxxxx";
 	parseMapLine(stringline);
 
 	special_maps.push_back(_map);
 
 	prepareMapVector();
 	/*
-	xxxxxxxxxxx
-	E...xxxxxxx
-	xxx..xxxxxx
-	xxxx...xxxx
-	xxxxxx...xx
-	xxxxxxxxExx
+	xxxxx
+	E...xx
+	xxx..xxx
+	  xx...xx
+	   xx...x
+	    xxxEx
 	*/
-	stringline = "xxxxxxxxxxx";
+	stringline = "xxxxx";
 	parseMapLine(stringline);
-	stringline = "E...xxxxxxx";
+	stringline = "E...xx";
 	parseMapLine(stringline);
-	stringline = "xxx..xxxxxx";
+	stringline = "xxx..xx";
 	parseMapLine(stringline);
-	stringline = "xxxx...xxxx";
+	stringline = "  xx..xxx";
 	parseMapLine(stringline);
-	stringline = "xxxxxx...xx";
+	stringline = "   xx...x";
 	parseMapLine(stringline);
-	stringline = "xxxxxxxxExx";
+	stringline = "    xxxEx";
 	parseMapLine(stringline);
 
 	special_maps.push_back(_map);
@@ -135,5 +135,25 @@ std::vector<std::vector<std::vector<char>>> MapLoader::loadSpecialMaps()
 
 	special_maps.push_back(_map);
 
+	prepareMapVector();
+	/*
+	xxxExxx
+	x.....x
+	x.....x
+	x.....x
+	xxxxxxx
+	*/
+	stringline = "xxxExxx";
+	parseMapLine(stringline);
+	stringline = "x.....x";
+	parseMapLine(stringline);
+	stringline = "x.....x";
+	parseMapLine(stringline);
+	stringline = "x.....x";
+	parseMapLine(stringline);
+	stringline = "xxxxxxx";
+	parseMapLine(stringline);
+
+	special_maps.push_back(_map);
 	return special_maps;
 }

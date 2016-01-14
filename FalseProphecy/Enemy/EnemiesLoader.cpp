@@ -23,6 +23,7 @@ void EnemiesLoader::prepareStruct()
 
 	_currentData.name = "";
 	_currentData.img_path = "";
+	_currentData.special = false;
 
 	_currentData.type = -1;
 
@@ -58,6 +59,7 @@ std::vector<Enemy_Stats>& EnemiesLoader::getSpecialEnemiesData()
 
 	_currentData.name = "Rattling bones";
 	_currentData.img_path = "data\\img\\enemy\\rb.png";
+	_currentData.special = true;
 	_currentData.type = ENEMY_TYPE::UNDEAD_ENEMY;
 	_currentData.hitpoints = 5;
 	_currentData.max_hitpoints = 5;
@@ -69,12 +71,25 @@ std::vector<Enemy_Stats>& EnemiesLoader::getSpecialEnemiesData()
 	prepareStruct();
 	_currentData.name = "Blazing Ravager";
 	_currentData.img_path = "data\\img\\enemy\\blazing.png";
+	_currentData.special = true;
+	_currentData.type = ENEMY_TYPE::HUMAN_ENEMY;
+	_currentData.hitpoints = 1200;
+	_currentData.max_hitpoints = 1200;
+	_currentData.attack = 220;
+	_currentData.defence = 100;
+	_currentData.experience = 10000;
+	_enemiesData.push_back(_currentData);
+
+	prepareStruct();
+	_currentData.name = "Priestess";
+	_currentData.img_path = "data\\img\\enemy\\priestess.png";
+	_currentData.special = true;
 	_currentData.type = ENEMY_TYPE::HUMAN_ENEMY;
 	_currentData.hitpoints = 5000;
 	_currentData.max_hitpoints = 5000;
 	_currentData.attack = 500;
 	_currentData.defence = 300;
-	_currentData.experience = 10000;
+	_currentData.experience = 40000;
 	_enemiesData.push_back(_currentData);
 
 

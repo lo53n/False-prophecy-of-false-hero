@@ -1,25 +1,25 @@
-  xxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxx
+             xxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxx
    xxxxxxxxxxx.x..x.x.x.x..x.x..x..x.x...x....x.x.xxx
    xxx..............................................x
-  xx.............................................xxxx
-  x...xxxxxxxx...................................x
-  x..............................................x
+  xx...xxxxxx....................................xxxx
+  x...xxxx  xx...................................x
+  x.....xxxxx....................................x
  xxxxxxxxxxx................xxxxxxxxxxxxxxxxxxxxx
- E..............................................x
-xxx.xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
+ E..........................xx  xx..............x
+xxx.xxx.....................xxxxxxxxxxx...xxxxxxx
 x..............................................x
 xxxxxxxxxx.....................................x
 x..............................................x
 x..............................................x
 xxxxxxxxxxx................xxxxxxxxxxxxxxxxxxxxx
 x............................................E
-xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
-x..............................................x
-xxxxxxxxxx.....................................xxx
-x................................................x
-x..............................................xxx
-xxxxxxxxxxx................xxxxxxxxxxxxxxxxxxxxx
-x..............................................x
+xxx.................................xxxxxxxxxxxx
+x................xxxx..........................x
+xxxxxxxxxx.......x  x..........................xxx
+x................xxxx............................x
+x..........................xxxxx................xxx
+xxxxxxxxxxx................x   xxxxxx....xxxxxxx
+x..........................xxxxx...............x
 xxx.....................xxxxxxxxxxxxxxxxxxxxxxxx
 x..............................................x
 xxxxxxxxxx.....................................x
@@ -27,6 +27,13 @@ x..............................................x
 x.xxExx.xxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxx
 xxx   xxx                     x.x
                               xEx
+[---]
+xxxxxxxxxxxxx
+x...........x
+x...........x
+x...........x
+x...........x
+xxxxxxExxxxxx
 [---]
 xxxxxxxxxxxxxxxxxxxxxxxxEx xExxxxxxxxxxxxxxxxxxxxxxxxx
 x......................x.x x.x.......................x
@@ -60,9 +67,9 @@ E..............................................x
 x..............................................E
 x..............................................x
 x.............xxxxxxxxxxxxxxx..................x
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxx             xxxxxxxxxxxxxxxxxxxx
 [---]
-xxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxx
+xxxxx                                      xxxxx
 x.x.xxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxx.x.x
 x..............................................x
 x..............................................x
@@ -75,13 +82,52 @@ xxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxx
 x................x............x............x...........x...........x......x
 E......................xxx........x..............xxx.........xxx..........E
-xxxxxx...........x.....xxx........x..............x.x.........x...x....x...x
-xxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxx...........x.....x x........x..............x x.........x...x....x...x
+     xxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 [---]
 xxxxxxxxxExxxxxx
 x...........x..E
 E..............x
 xxxxxxxxxxxxxxxx
+[---]
+                                   xxxxxExxxxx
+                               xExxx.........xxxEx
+                         xxxExxx.................xxxExxx
+                      xxxx.....xxxxx.........xxxxx.....xxxx
+                    xxx..xxx.xxx.................xxx.xxx..xxx
+                    x.....x...x.....xxxxExxxx.....x...x.....x
+                 xExx.......x.......x       x.......x.......xxEx
+                 x..x....xxxxxxx....x       x....xxxxxxx....x..x
+                 x..x....x     x....xxxxxxxxx....x     x....x..x
+                 xx.x....x     x....xx     xx....x     x....x.xx
+              xxxxx......xxxExxx...xx       xx...xxxExxx......xxxxx
+             xx.....xxxx.x.....x..xx         xx..x.....x.xxxx.....xx
+            xx...xxxx  x.xx...xx.xx           xx.xx...xx.x  xxxx...xx
+           xx...xx     x..xx.xx...xx         xx...xx.xx..x     xx...xx
+           x...xx      x...........xx       xx...........x      xx...x
+           x..xx       x............xx     xx............x       xx..x
+           x...xx      x.............xx   xx.............x      xx...x
+        xxxx....xx     x..............xxExx..............x     xx....xxxx
+     xxxx..x.....xxxxxxx.................................xxxxxxx.....x..xxxx
+  xxxx.....x...........x..............xxxxx..............x...........x.....xxxx
+xxx........x...........x..............x   x..............x...........x........xxx
+x.....x....x...........x..............xxxxx..............x...........x....x.....x
+x....xxx...x..........xxx...............................xxx..........x...xxx....x
+x...xx xx..x.........xx xx.............................xx xx.........x..xx xx...x
+xxx..xxx...x........xx   xx........xxxx...xxxx........xx   xx........x...xxx..xxx
+  xxEx x...x.........xxxxx.........x  x...x  x.........xxxxx.........x...x xxEx
+       x..........................xx  xx.xx  xx..........................x
+       xxx.............x.........xx    x.x    xx.........x.............xxx
+         x...........xxxxx......xx     x.x     xx......xxxxx...........x
+         xx........xxx   xxx...xx      x.x      xx...xxx   xxx........xx
+          xx......xx       xx.xx       x.x       xx.xx       xx......xx
+           xxxxxxxxxxx      xEx        x.x        xEx      xxxxxxxxxxx
+             E.......xxxxx             x.x             xxxxx.......E
+             xxxx........xxxxxx xxxxxxxx.xxxxxxxx xxxxxx........xxxx
+                x.............xxx...............xxx.............x
+                xxx...........................................xxx
+                  xxxxxxxx.............................xxxxxxxx
+                         xExxxxxxxxxxxxxxxxxxxxxxxxxxxEx
 [---]
 xxxxxxxxxxxxxxxx
 x..............x
@@ -89,20 +135,35 @@ x..............x
 xxxxxx.........x
      xExxxxxxxxx
 [---]
+xxxx              xxxx
+x..xxxExxxxxxxxExxx..x
+x..x......xx......x..x
+E.........xx.........E
+xxx......xxxx......xxx
+  xxxxExxx  xxxExxxx
+[---]
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+x...............xxxxx..............xxx....x
+E..........xxx.............xxxxxxx......xxx
+xxxxxxx...xx xx...........xx    x......xx
+    x....xx  x...........xxxxxxxx......E
+    xxxxxx   xxxxxxx...................x
+                   xxxxxxxxxxxxxxxxxxxxx
+[---]
 xxxxxxxxxxxxxxxxxx
 x..........x.....E
 xxxxxx........xxxx
 xxxxxxExxxxxxxxxxx
 [---]
-xxxxExxxxxxxxxxxxx
-x......x.....x...E
-x................x
-xxxxxExxxxxxxxExxx
-[---]
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-E....................x......E
-xxxxxxxxxxxxxxx..xx......xxxx
-              xExxxxxxExxxx
+      xxxExxx 
+xxxxxxx.....x
+E...........x
+x........xxxx
+x........x
+xxxxx...xx
+    x...x
+    x..xx
+    xxEx
 [---]
 xxxxExxxxxxxxxxxxx
 x......x.....x...E
@@ -117,6 +178,46 @@ x      xx    xxExxxxxxExxxx
 xxxxxxxxxxEx
 E..........E
 xxxxxxxExxxx
+[---]
+          xEx
+          x.x
+          x.x
+          x.x
+          x.x
+          x.x
+          x.x
+          x.x
+          x.x
+xxxxxxxxxxx.xxxxxxxxx
+E...................E
+xxxxxxxxxxx.xxxxxxxxx
+          x.x
+          x.x
+          x.x
+          x.x
+          x.x
+          x.x
+          x.x
+          x.x
+          xEx
+[---]
+xExxx          xxxEx
+E...x          x...E
+x...x          x...x
+x...xxxxxxxxxxxx...x
+xx.......xx.......xx
+ xxxx....xx....xxxx
+    x....xx....x
+    x....xx....x
+    x..........x
+    x....xx....x
+    x....xx....x
+ xxxx....xx....xxxx
+xx.......xx.......xx
+x...xxxxxxxxxxxx...x
+x...x          x...x
+E...x          x...E
+xExxx          xxxEx
 [---]
 xxxxExxxx
 E.......E

@@ -73,8 +73,15 @@ Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGr
 	_underHpBar.setOutlineColor(sf::Color::Black);
 
 
+	if (!_stats.special){
+		Calculations::calculateNewStats(_stats, heroRating);
+	}
+	else{
+		Calculations::calculateBaseRating(_stats);
+		_stats.base_rating += 500;
+		_stats.current_rating = _stats.base_rating;
+	}
 
-	Calculations::calculateNewStats(_stats, heroRating);
 	_stats.hitpoints = _stats.max_hitpoints;
 
 

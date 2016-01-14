@@ -13,16 +13,28 @@
 //////////
 
 enum EVENT_TYPE{
-	START_OF_GAME,		//start of plot
-	FIRST_INSTRUCTIONS, //about movement
-	FIRST_STEP,			//info about laying items
-	ITEMS_FIRST_LOOKOUT,//lookout for items
-	ITEMS_INSTRUCTIONS,	//instuctions about items
-	FIRST_ENEMY_MEET,	//first enemy meet
-	FIRST_ENEMY_KILLED, //first enemy killed
+	START_OF_GAME,				//start of plot
+	FIRST_INSTRUCTIONS,			//about movement
+	FIRST_STEP,					//info about laying items
+	ITEMS_FIRST_LOOKOUT,		//lookout for items
+	ITEMS_INSTRUCTIONS,			//instuctions about items
+	FIRST_ENEMY_MEET,			//first enemy meet
+	FIRST_ENEMY_MEET_SECOND,	//first enemy meet second part
+	ENEMY_INSTRUCTIONS,			//enemy info
+	FIRST_ENEMY_KILLED,			//first enemy killed
+	HALFWAY_TO_BOSS,			//in halfway to first boss
 
 
-	FIRST_BOSS
+	FIRST_BOSS,					//map with first boss
+	FIRST_BOSS_KILLED,			//as in name
+
+	PRIESTESS_FOUND_TOO_WEAK,	//hero is too weak to match priestess
+	PRIESTESS_FOUND_HERO_LOST,	//hero is too weak and loses mind
+	PRIESTESS_FOUND,			//priestess is found when hero is strong enough
+	PRIESTESS_KILLED,			//priestess is killed aka win
+
+	HERO_DIES,					//dead hero
+	HERO_DIES_SECOND			//dead hero part two
 };
 struct GameEvents{
 	bool start_of_game = false;
@@ -31,9 +43,21 @@ struct GameEvents{
 	bool items_first_lookout = false;
 	bool items_instructions = false;
 	bool first_enemy_meet = false;
+	bool first_enemy_meet_second = false;
+	bool enemy_instructions = false;
 	bool first_enemy_killed = false;
+	bool halfway_to_boss = false;
 
 	bool first_boss = false;
+	bool first_boss_killed = false;
+
+	bool priestess_found_too_weak = false;
+	bool priestess_found_hero_lost = false;
+	bool priestess_found = false;
+	bool priestess_killed = false;
+
+	bool hero_dies = false;
+	bool hero_dies_second = false;
 
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version)
@@ -44,23 +68,32 @@ struct GameEvents{
 		ar  & items_first_lookout;
 		ar  & items_instructions;
 		ar  & first_enemy_meet;
+		ar  & first_enemy_meet_second;
+		ar  & enemy_instructions;
 		ar  & first_enemy_killed;
+		ar  & halfway_to_boss;
 
 
 		ar  & first_boss;
+		ar  & first_boss_killed;
 	}
 
 
 	GameEvents(){}
-	GameEvents(bool s_o_g, bool f_i, bool f_s, bool i_f_l, bool i_i, bool f_e_m, bool f_e_k, /*1st boss*/bool f_b) :
+	GameEvents(bool s_o_g, bool f_i, bool f_s, bool i_f_l, bool i_i, bool f_e_m, bool f_e_m_s, bool e_i, bool f_e_k, bool h_t_b, /*1st boss*/bool f_b, bool f_b_k) :
 		start_of_game(s_o_g),
 		first_instructions(f_i),
 		first_step(f_s),
 		items_first_lookout(i_f_l),
 		items_instructions(i_i),
 		first_enemy_meet(f_e_m),
+		first_enemy_meet_second(f_e_m_s),
+		enemy_instructions(e_i),
 		first_enemy_killed(f_e_k),
-		first_boss(f_b)
+		halfway_to_boss(h_t_b),
+
+		first_boss(f_b),
+		first_boss_killed(f_b_k)
 	{}
 };
 
@@ -429,6 +462,7 @@ enum ENEMY_CLASS{
 struct Enemy_Stats{
 	std::string name;
 	std::string img_path;
+	bool special = false;
 	int hitpoints;
 	int max_hitpoints;
 	int attack;

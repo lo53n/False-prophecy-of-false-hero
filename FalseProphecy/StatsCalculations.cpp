@@ -166,7 +166,7 @@ namespace Calculations{
 		stats.max_dmg = (int)((float)stats.max_dmg * percentage_difference);
 
 
-		float req_inc = percentage_difference * multiplier / 5;
+		float req_inc = percentage_difference * multiplier / 2;
 
 		stats.agi_req = (int)((float)stats.agi_req * req_inc);
 		stats.dex_req = (int)((float)stats.dex_req * req_inc);
@@ -251,7 +251,7 @@ namespace Calculations{
 		}
 
 
-		float req_inc = percentage_difference *multiplier / 5;
+		float req_inc = percentage_difference *multiplier / 2;
 		//std::cout << "Req_inc: " << req_inc << std::endl;
 
 		stats.agi_req = (int)((float)stats.agi_req * req_inc);

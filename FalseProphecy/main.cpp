@@ -14,7 +14,7 @@
 
 int main()
 {
-
+	std::seed_seq seq;
 	srand((unsigned int)time(0));
 	Game game;
 	game.run();

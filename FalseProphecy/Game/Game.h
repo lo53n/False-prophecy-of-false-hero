@@ -64,6 +64,7 @@ private:
 	//Some bool to check events//
 	/////////////////////////////
 	bool _isPlaying = false;
+	bool _isHeroDead = false;
 	bool _isMenu = true;
 	bool _isHelp = false;
 	bool _isStatusWindowOpen = false;

@@ -40,6 +40,7 @@ Map::Map(std::vector<std::vector<char>> mapTemplate, unsigned int mapID, sf::Ren
 	checkMaxSizes(); 
 	findAllExitPoints();
 
+	_generator.seed(time(0));
 
 	_wallTile.setTexture(_resHolder->getWallTexture());
 	_floorTile.setTexture(_resHolder->getTileTexture());
@@ -65,6 +66,7 @@ void Map::restoreMap(sf::RenderTexture& renderTexture, sf::RenderTexture& render
 	_doorTile.setTexture(_resHolder->getDoorTexture());
 
 
+	_generator.seed(time(0));
 	checkMaxSizes();
 	findAllExitPoints();
 

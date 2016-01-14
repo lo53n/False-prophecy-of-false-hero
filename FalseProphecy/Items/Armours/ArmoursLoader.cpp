@@ -161,7 +161,7 @@ void ArmoursLoader::parseTag(std::vector<std::string> &output)
 			_currentData.armour_class = ARMOUR_CLASS::METAL;
 		else if (output[1] == "LIGHT")
 			_currentData.armour_class = ARMOUR_CLASS::LIGHT;
-		else if (output[1] == "MEDIUM")
+		else if (output[1] == "AVERAGE")
 			_currentData.armour_class = ARMOUR_CLASS::AVERAGE;
 		else if (output[1] == "HEAVY")
 			_currentData.armour_class = ARMOUR_CLASS::HEAVY;

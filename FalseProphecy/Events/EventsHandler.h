@@ -21,6 +21,7 @@ public:
 
 	bool getEventStatus();
 
+	void centerText();
 
 
 	void resizeByGameWindow(sf::Vector2f center);
@@ -58,7 +59,6 @@ private:
 	int _messageState;
 
 	bool isEventMessage = false;
-	int errorNumber = 0;
 
 
 	GameEvents _events;
@@ -86,11 +86,32 @@ private:
 	void triggerItemsInstructionEvent();
 	//trigger meeting the first enemy (bones?)
 	void triggerFirstEnemyEvent();
+	//trigger meeting the first enemy (bones?) second part
+	void triggerFirstEnemySecondEvent();
+	//trigger instructions about enemies
+	void triggerEnemyInstructionsEvent();
 	//trigger killing the first enemy (bones?)
 	void triggerKilledFirstEnemyEvent();
+	//trigger after reaching 20th room, half way to boss
+	void triggerHalfwayToBossEvent();
 	//trigger first boss
 	void triggerFirstBossEvent();
+	//trigger after killing first boss
+	void triggerFirstBossKilledEvent();
 
+	//trigger finding priestess when hero is too weak
+	void triggerPriestessFoundHeroWeakEvent();
+	//trigger when priestess if found
+	void triggerPriestessFoundEvent();
+	//trigget killing priestess aka winning game
+	void triggerPriestessKilledEvent();
+
+	//trigger when hero died to priestess
+	void triggerPriestessFoundHeroLostEvent();
+	//trigger after dying
+	void triggerHeroDiesEvent();
+	//trigger after dying part two
+	void triggerHeroDiesSecondEvent();
 
 };
 

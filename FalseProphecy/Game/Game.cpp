@@ -46,6 +46,7 @@ Game::Game()
 
 	_inventoryWindow.setPlayer(_player);
 	_statusWindow.setPlayer(_player);
+	_generator.seed(time(0));
 
 
 	_player->setGameWindowInterface(_gameWindowInterface);
@@ -196,6 +197,7 @@ void Game::draw()
 	_window.setView(_interfaceView);
 	if (_isMenu){
 		_window.draw(_menu);
+		if (_errorHandler->getErrorStatus()) _window.draw(*_errorHandler);
 	}
 	else{
 		_window.draw(*_gameWindowInterface);
@@ -277,6 +279,17 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	//////////////////
 	if (_eventsHandler->getEventStatus()){
 		_eventsHandler->handleInput(key, isPressed);
+		return;
+	}
+
+	/////////////////////
+	//Player  is  dead///
+	//Back to menu ASAP//
+	/////////////////////
+	if (_isHeroDead && isPressed){
+		_isHeroDead = false;
+		_isPlaying = false;
+		_isMenu = true;
 		return;
 	}
 
@@ -536,6 +549,9 @@ bool Game::checkMovement(int direction)
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] == __ENEMY_ON_MAP__){
 		for (auto enemy : _currentMap->getEnemies()){
 			if (enemy->getEnemyPositionOnGrid() == checkForPosition){
+				if (!enemy->checkIfAlive()){
+					continue;
+				}
 				heroAttacksEnemy(checkForPosition);
 				takeTurn();
 				//set as aggroed
@@ -550,6 +566,12 @@ bool Game::checkMovement(int direction)
 					if (_currentMap->getMapId() == 1){
 						_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_ENEMY_KILLED);
 					}
+					if (_currentMap->getMapId() == 40){
+						_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_BOSS_KILLED);
+					}
+					if (_currentMap->getMapId() == 100){
+						_eventsHandler->triggerEvent(EVENT_TYPE::PRIESTESS_KILLED);
+					}
 				}
 				_gameWindowInterface->refreshBars(_player->getPlayerStats());
 			}
@@ -558,7 +580,8 @@ bool Game::checkMovement(int direction)
 	}
 	//events
 	if (_currentMap->getMap()[checkForPosition.y][checkForPosition.x] == 'E'){
-		if (_currentMap->getMapId() == 40)	return false;
+		if (_currentMap->getMapId() == 40 && !(_eventsHandler->getEventsStructure().first_boss_killed))	return false;
+		if (_currentMap->getMapId() == 100 && !(_eventsHandler->getEventsStructure().priestess_killed))	return false;
 
 	}
 		
@@ -597,10 +620,21 @@ bool Game::handleMapTraverse()
 	if (_currentMapNumber == 1){
 		_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_ENEMY_MEET);
 	}
-	if (_currentMapNumber == 40){
+	else if (_currentMapNumber == 20){
+		_eventsHandler->triggerEvent(EVENT_TYPE::HALFWAY_TO_BOSS);
+	}
+	else if (_currentMapNumber == 40){
 		_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_BOSS);
 	}
-
+	else if (_currentMapNumber == 100){
+		if (_player->getPlayerStats().willpower < 100 && _player->getPlayerStats().level < 50){
+			_eventsHandler->triggerEvent(EVENT_TYPE::PRIESTESS_FOUND_TOO_WEAK);
+			_player->takeDamage(999999999);
+		}
+		else{
+			_eventsHandler->triggerEvent(EVENT_TYPE::PRIESTESS_FOUND);
+		}
+	}
 
 
 	if (previousMap == 0 && _currentMapNumber == 1){
@@ -755,6 +789,9 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 	if (mapID == 40){
 		_newMap = std::make_shared<Map>(_resHolder->getSpecialMaps().at(2), mapID, _mapTexture, _mapTextureDisplayed, _player->getPlayerRating());
 	}
+	else if (mapID == 100){
+		_newMap = std::make_shared<Map>(_resHolder->getSpecialMaps().at(3), mapID, _mapTexture, _mapTextureDisplayed, _player->getPlayerRating());
+	}
 	else _newMap = createMapSharedPointer(mapID);
 
 	//Save map
@@ -780,9 +817,15 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 	//Here for special maps:
 	if (mapID == 40){
 		Enemy_Stats enemy_template = _resHolder->getSpecialEnemies()[1];
-		std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(0, enemy_template, sf::Vector2i(4, 4), '.', _player->getPlayerRating().overral_rating));
+		std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(0, enemy_template, sf::Vector2i(3, 2), '.', _player->getPlayerRating().overral_rating));
 		_currentMap->getEnemies().push_back(enemy);
-		_currentMap->changeMapTile(__ENEMY_ON_MAP__, 4, 4);
+		_currentMap->changeMapTile(__ENEMY_ON_MAP__, 3, 2);
+	}
+	else if (mapID == 100){
+		Enemy_Stats enemy_template = _resHolder->getSpecialEnemies()[2];
+		std::shared_ptr<Enemy> enemy(std::make_shared<Enemy>(0, enemy_template, sf::Vector2i(3, 2), '.', _player->getPlayerRating().overral_rating));
+		_currentMap->getEnemies().push_back(enemy);
+		_currentMap->changeMapTile(__ENEMY_ON_MAP__, 3, 2);
 	}
 	//Regular ones
 	else {
@@ -800,8 +843,6 @@ void Game::generateNewMap(sf::Vector2i currentPos)
 						_currentMap->getEnemies().push_back(enemy);
 						_currentMap->changeMapTile(__ENEMY_ON_MAP__, tilex, tiley);
 						enemy_id++;
-						break;
-						break;
 					}
 				}
 				tilex++;
@@ -831,7 +872,7 @@ std::shared_ptr<Map> Game::createMapSharedPointer(unsigned int mapID)
 {
 
 	Hero_Ratings new_rating = _player->getPlayerRating();
-	std::shared_ptr<Map> ptr(std::make_shared<Map>(_resHolder->getMapFromHolder(_currentMapNumber), mapID, _mapTexture, _mapTextureDisplayed, new_rating));
+	std::shared_ptr<Map> ptr(std::make_shared<Map>(_resHolder->getMapFromHolder(_currentMapTemplate), mapID, _mapTexture, _mapTextureDisplayed, new_rating));
 	return ptr;
 }
 
@@ -954,6 +995,14 @@ void Game::enemyTurn()
 		}
 		_isEnemyTurn = false;
 		_currentMap->updateMap();
+		if (_player->isPlayerDead() && _currentMap->getMapId() == 100){
+			_isHeroDead = true;
+			_eventsHandler->triggerEvent(EVENT_TYPE::PRIESTESS_FOUND_HERO_LOST);
+		}
+		else if (_player->isPlayerDead()){
+			_isHeroDead = true;
+			_eventsHandler->triggerEvent(EVENT_TYPE::HERO_DIES);
+		}
 	}
 }
 
@@ -1459,11 +1508,17 @@ void Game::newGame()
 	//std::shared_ptr<Consumable> cons3(std::make_shared<Consumable>(_resHolder->getAllConsumables()[3]));
 	//_player->putItemInBackpack(cons3);
 
-
+	//set initial values
+	_player->initializeStartValues();
 	_eventsHandler->resetEvents();
 	_maps.clear();
 	_currentMapNumber = 0;
+	//refresh interface to match initals
+	_gameWindowInterface->refreshBars(_player->getPlayerStats());
+	//generate new map
 	generateNewMap();
+	//trigger first event
 	_eventsHandler->triggerEvent(EVENT_TYPE::START_OF_GAME);
+	//_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_BOSS_KILLED);
 
 }

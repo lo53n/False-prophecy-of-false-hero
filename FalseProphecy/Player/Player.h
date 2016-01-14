@@ -41,8 +41,7 @@ class Player : public sf::Drawable{
 
 
 public:
-	std::shared_ptr<Item> _item;
-
+	void initializeStartValues();
 	Player();
 	Player(std::vector<std::shared_ptr<Item>> backpack, std::vector<Ability_Proficiencies> proficiences, Hero_Profile stats,
 		std::shared_ptr<Weapon> mainHand, std::shared_ptr<Armour> offHand, std::shared_ptr<Armour> head, std::shared_ptr<Armour> torso, std::shared_ptr<Armour> legs,
@@ -152,6 +151,10 @@ public:
 
 	void takeDamage(int);
 
+	void changeDeadStatus(bool status);
+
+	bool isPlayerDead();
+
 	////////////////
 	//Proficiences//
 	////////////////
@@ -203,6 +206,7 @@ private:
 
 	int _direction;
 	bool _isNeedToMoveSprite = false;
+	bool _isDead = false;
 	int _currentMap;
 
 	std::default_random_engine _generator;
@@ -262,8 +266,8 @@ private:
 	const int __PROFICIENCY_BODY_EFFICIENCY__ = 2;
 	const float __PROFICIENCY_DEFENCE_EFFICIENCY__ = 0.15f;
 
-	const int __BASE_EXPERIENCE__ = 100;
-	const float __EXPIERIENCE_LVL_INCREASE__ = 1.20f;
+	const int __BASE_EXPERIENCE__ = 250;
+	const float __EXPIERIENCE_LVL_INCREASE__ = 1.35f;
 
 	const int __TURNS_FOR_REGEN__ = 25;
 
