@@ -730,7 +730,7 @@ void InventoryWindow::createItemDescription(std::shared_ptr<Item> item_generic)
 				descriptionString += " stamina.";
 				break;
 			case CONSUMABLE_EFFECT::REGENERATE_TICK:
-				descriptionString += " healt and stamina.";
+				descriptionString += " health and stamina.";
 				break;
 			}
 		}

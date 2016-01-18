@@ -426,6 +426,7 @@ std::shared_ptr<Item> Player::dropSelectedItem(int itemNumber, bool inBag)
 {
 	std::shared_ptr<Item> temp;
 	if (inBag){
+		if (itemNumber >= _backpack.size()) return nullptr;
 		temp = _backpack.at(itemNumber);
 		_backpack.erase(_backpack.begin() + itemNumber);
 		return temp;
@@ -703,6 +704,7 @@ void Player::unequipItem(int slot, bool drop_item)
 	case 1:
 		item = _offHand;
 		_offHand = nullptr;
+		if (item == nullptr) return;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
 		_ratings.offhand_rating = 0;
 
@@ -728,6 +730,7 @@ void Player::unequipItem(int slot, bool drop_item)
 	case 2:
 		item = _head;
 		_head = nullptr;
+		if (item == nullptr) return;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
 		_ratings.head_rating = 0;
 
@@ -753,6 +756,7 @@ void Player::unequipItem(int slot, bool drop_item)
 	case 3:
 		item = _torso;
 		_torso = nullptr;
+		if (item == nullptr) return;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
 		_ratings.torso_rating = 0;
 
@@ -777,6 +781,7 @@ void Player::unequipItem(int slot, bool drop_item)
 	case 4:
 		item = _legs;
 		_legs = nullptr;
+		if (item == nullptr) return;
 		stats = std::dynamic_pointer_cast<Armour>(item)->getStatsStruct();
 		_ratings.legs_rating = 0;
 

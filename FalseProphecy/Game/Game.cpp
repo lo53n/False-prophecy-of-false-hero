@@ -248,11 +248,12 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	//Some cheats!//
 	////////////////
 	//No clip - if true, collisions does not apply//
+	/*
 	if (key == sf::Keyboard::Numpad0 && isPressed){
 		if (noClip) noClip = false;
 		else noClip = true;
 	}
-
+	*/
 	////////////////////
 	//Some fast debugs//
 	////////////////////
@@ -484,7 +485,6 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		//////////////////////////
 		if (_isInventoryWindowOpen && !_isStatusWindowOpen && isPressed){
 			if (key == sf::Keyboard::D && isPressed){
-				takeTurn();
 				heroDropsItem();
 				_currentMap->updateMap();
 			}
@@ -620,13 +620,13 @@ bool Game::handleMapTraverse()
 	if (_currentMapNumber == 1){
 		_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_ENEMY_MEET);
 	}
-	else if (_currentMapNumber == 20){
+	else if (_currentMapNumber == 10){
 		_eventsHandler->triggerEvent(EVENT_TYPE::HALFWAY_TO_BOSS);
 	}
-	else if (_currentMapNumber == 40){
+	else if (_currentMapNumber == 25){
 		_eventsHandler->triggerEvent(EVENT_TYPE::FIRST_BOSS);
 	}
-	else if (_currentMapNumber == 100){
+	else if (_currentMapNumber == 50){
 		if (_player->getPlayerStats().willpower < 100 && _player->getPlayerStats().level < 50){
 			_eventsHandler->triggerEvent(EVENT_TYPE::PRIESTESS_FOUND_TOO_WEAK);
 			_player->takeDamage(999999999);
@@ -921,10 +921,11 @@ void Game::takeTurn()
 
 void Game::heroDropsItem()
 {
-		std::shared_ptr<Item> item = _player->dropSelectedItem(_inventoryWindow.getHighlitItem(), _inventoryWindow.isHighlitInBag());
-		if (item == nullptr) return;
-		_currentMap->pushItemToMapStorage(_player->getPlayerPositionOnGrid(), item);
-		_inventoryWindow.putItemsOnTiles();
+	std::shared_ptr<Item> item = _player->dropSelectedItem(_inventoryWindow.getHighlitItem(), _inventoryWindow.isHighlitInBag());
+	if (item == nullptr) return;
+	_currentMap->pushItemToMapStorage(_player->getPlayerPositionOnGrid(), item);
+	_inventoryWindow.putItemsOnTiles();
+	takeTurn();
 }
 ///////////////
 //Enemy stuff//
@@ -1486,7 +1487,8 @@ void Game::restoreData()
 	}
 	
 	//center at player
-	_gameView.setCenter(_player->getPlayerPositionOnMap()); 
+	_gameView.setCenter(_player->getPlayerPositionOnMap());
+	_gameWindowInterface->refreshBars(_player->getPlayerStats());
 }
 
 void Game::newGame()

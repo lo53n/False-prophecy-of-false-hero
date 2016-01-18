@@ -102,7 +102,7 @@ namespace Calculations{
 	{
 		int rating = 0;
 
-		rating += stats.max_hitpoints / 5;
+		rating += stats.max_hitpoints / 8;
 		rating += stats.attack;
 		rating += stats.defence;
 		rating += stats.experience / 20;
@@ -315,7 +315,7 @@ namespace Calculations{
 			percentage_difference = 1 + ((float)rating_difference / (float)heroRating);
 		}
 		//aplly enemy class multiplier
-		percentage_difference *= multiplier;
+		percentage_difference *= multiplier + 0.1f;
 
 		
 

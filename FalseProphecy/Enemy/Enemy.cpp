@@ -95,10 +95,10 @@ Enemy::Enemy(int enemy_id, Enemy_Stats enemy_template, sf::Vector2i positionOnGr
 		_enemyShape.setFillColor(sf::Color(15, 15, 200, 255));
 		break;
 	case ENEMY_CLASS::ELITE_ENEMY:
-		_enemyShape.setFillColor(sf::Color(100, 200, 100, 255));
+		_enemyShape.setFillColor(sf::Color(200, 200, 15, 255));
 		break;
 	case ENEMY_CLASS::MINIBOSS_ENEMY:
-		_enemyShape.setFillColor(sf::Color(15, 15, 100, 255));
+		_enemyShape.setFillColor(sf::Color(100, 100, 120, 255));
 		break;
 	case ENEMY_CLASS::BOSS_ENEMY:
 		_enemyShape.setFillColor(sf::Color(40, 40, 40, 255));

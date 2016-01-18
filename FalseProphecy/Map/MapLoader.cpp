@@ -66,8 +66,8 @@ std::vector<std::vector<std::vector<char>>> MapLoader::loadSpecialMaps()
 	prepareMapVector();
 	/*
 	xxxExxxxxxx
-	x.xxx..xx.x
-	xx..x.x...x
+	x.x.x..xx.x
+	xx.xx.x...x
 	x...x..x..x
 	xx....x.x.x
 	 xx.......x
@@ -75,9 +75,9 @@ std::vector<std::vector<std::vector<char>>> MapLoader::loadSpecialMaps()
 	*/
 	stringline = "xxxExxxxxxx";
 	parseMapLine(stringline);
-	stringline = "x.xxx..xx.x";
+	stringline = "x.x.x..xx.x";
 	parseMapLine(stringline);
-	stringline = "xx..x.x...x";
+	stringline = "xx.xx.x...x";
 	parseMapLine(stringline);
 	stringline = "x...x..x..x";
 	parseMapLine(stringline);
